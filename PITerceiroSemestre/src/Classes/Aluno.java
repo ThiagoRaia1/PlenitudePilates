@@ -7,7 +7,7 @@ public class Aluno {
 	private String telefone;
 	private String cep;
 	private String cidade;
-	private String rua;
+	private String rua; //aaaa
 	private String bairro;
 	private int registradorPor;
 	
