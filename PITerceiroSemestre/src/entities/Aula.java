@@ -1,6 +1,10 @@
 package entities;
 
+import main.BDPI;
+
 public class Aula {
+	private final static String NOME_TABELA = "Aula";
+	
 	private int id;
 	private String data;
 	private String horaComeco;
@@ -8,6 +12,27 @@ public class Aula {
 	private int qtdeVagasDisponiveis;
 	private int vagasOcupadas;
 	private int sala;
+	
+	public static void createAula() {
+		Aula aula= new Aula();
+		// Pedir dados ao usuário
+		aula.setId(1);
+		aula.setData("30/05/2024");
+		aula.setHoraComeco("08:00");
+		aula.setHoraFim("09:00");
+		aula.setQtdeVagasDisponiveis(5);
+		aula.setVagasOcupadas(0);
+		aula.setSala(1);
+		
+		BDPI.create(null, null, aula, null);
+	}
+	
+	public static Aula readAula(int id) {
+		Aula aula = new Aula();
+		aula = (Aula) BDPI.read(id, NOME_TABELA);
+		System.out.println(aula);
+		return aula;
+	}
 	
 	public int getId() {
 		return id;

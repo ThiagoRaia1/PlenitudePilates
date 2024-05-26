@@ -3,6 +3,8 @@ package entities;
 import main.BDPI;
 
 public class Aluno {
+	private final static String NOME_TABELA = "Aluno";
+	
 	private int id;
 	private String nome;
 	private String dataNascimento;
@@ -13,7 +15,7 @@ public class Aluno {
 	private String bairro;
 	private int registradoPor;
 	
-	public static void registrarAluno() {
+	public static void createAluno() {
 		
 		Aluno aluno = new Aluno();
 		
@@ -27,10 +29,17 @@ public class Aluno {
 		aluno.setRua("XXXXXXXXXXXXX");
 		aluno.setRegistradoPor(1);
 
-		BDPI.insertValues(aluno, null, null, null);
+		BDPI.create(null, aluno, null, null);
 		
 		// aluno.setRegistradoPor(1); // Associação binária - Associar ao id do funcionario logado
 		
+	}
+	
+	public static Aluno readAluno(int id) {
+		Aluno aluno = new Aluno();
+		aluno = (Aluno) BDPI.read(id, NOME_TABELA);
+		System.out.println(aluno);
+		return aluno;
 	}
 	
 	public int getId() {

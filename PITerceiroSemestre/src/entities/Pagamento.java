@@ -1,12 +1,36 @@
 package entities;
 
+import main.BDPI;
+
 public class Pagamento {
+	private final static String NOME_TABELA = "Pagamento";
+	
 	private int id;
 	private String data;
 	private String horario;
 	private double valorMensalidade;
 	private int idAluno;
 	private int idFuncionario;
+	
+	public static void createPagamento() {
+		Pagamento pagamento = new Pagamento();
+		
+		pagamento.setId(1); // autonumeração
+		pagamento.setData("30/05/2024");
+		pagamento.setHorario("08:00");
+		pagamento.setValorMensalidade(200.00);
+		pagamento.setIdAluno(1);
+		pagamento.setIdFuncionario(1);
+
+		BDPI.create(null, null, null, pagamento);
+	}
+	
+	public static Pagamento readPagamento(int id) {
+		Pagamento pagamento = new Pagamento();
+		pagamento = (Pagamento) BDPI.read(id, NOME_TABELA);
+		System.out.println(pagamento);
+		return pagamento;
+	}
 	
 	public int getId() {
 		return id;

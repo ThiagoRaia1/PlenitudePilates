@@ -6,7 +6,6 @@ public class CalculaIdade {
 	public static int calculaIdade(String dataNascimento) {
 		// String dataNascimento = JOptionPane.showInputDialog("Digite a data de nascimento do(a) aluno(a) (dd/mm/aaaa):");
 		final String FORMATO_INVALIDO = "Formato inválido";
-		@SuppressWarnings("unused")
 		int diaNascimento = 0, mesNascimento = 0, anoNascimento = 0, idade = 0;
 		int diaAtual = 0, mesAtual = 0, anoAtual = 0;
 		

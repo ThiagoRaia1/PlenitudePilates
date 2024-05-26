@@ -6,6 +6,8 @@ import java.util.List;
 import main.BDPI;
 
 public class Funcionario {
+	private final static String NOME_TABELA = "Funcionario";
+	
 	private int id;
 	private String nome;
 	private String telefone;
@@ -17,9 +19,34 @@ public class Funcionario {
 	private String senha;
 	private int nivelDeAcesso;
 	
-	public static void registrarFuncionario() {
+	public static void createFuncionario() {
 		Funcionario funcionario = new Funcionario();
-		funcionario.id = 1;
+		// Pedir dados ao usuário
+		funcionario.setId(1);
+		funcionario.setNome("Thiago");
+		funcionario.setTelefone("telefone");
+		funcionario.setCep("cep");
+		funcionario.setCidade("Indaiatuba");
+		funcionario.setRua("rua");
+		funcionario.setBairro("bairro");
+		funcionario.setUsuario("Thiago");
+		funcionario.setSenha("Thiago");
+		funcionario.setNivelDeAcesso(2);;
+		
+		BDPI.create(funcionario, null, null, null);
+	}
+	
+	public static Funcionario readFuncionario(int id) {
+		Funcionario funcionario = new Funcionario();
+		funcionario = (Funcionario) BDPI.read(id, NOME_TABELA);
+		System.out.println(funcionario);
+		return funcionario;
+	}
+	
+	public static void updateFuncionario(int id) {
+		Funcionario funcionario = new Funcionario();
+		// Pedir dados ao usuário
+		funcionario.id = id;
 		funcionario.nome = "Thiago";
 		funcionario.telefone = "telefone";
 		funcionario.cep = "cep";
@@ -30,7 +57,11 @@ public class Funcionario {
 		funcionario.senha = "Thiago";
 		funcionario.nivelDeAcesso = 2;
 		
-		BDPI.insertValues(null, funcionario, null, null);
+		BDPI.update(funcionario, null, null, null, id);
+	}
+	
+	public static void deleteFuncionario(int id) {
+		Funcionario funcionario = new Funcionario();
 	}
 	
 	public static List<Funcionario> getFuncionarios() {
@@ -38,7 +69,6 @@ public class Funcionario {
 		// BDPI.main(null, funcionarios)
 		
 		return funcionarios;
-		
 	}
 	
 	public int getId() {
@@ -120,7 +150,22 @@ public class Funcionario {
 		this.senha = senha;
 		this.nivelDeAcesso = nivelDeAcesso;
 	}
-	
+	/*
+	public Funcionario(Funcionario funcionario) {
+		super();
+		this.id = funcionario.id;
+		this.nome = funcionario.nome;
+		this.telefone = funcionario.telefone;
+		this.cep = funcionario.cep;
+		this.cidade = funcionario.cidade;
+		this.rua = funcionario.rua;
+		this.bairro = funcionario.bairro;
+		this.usuario = funcionario.usuario;
+		this.senha = funcionario.senha;
+		this.nivelDeAcesso = funcionario.nivelDeAcesso;
+	}
+	*/
+
 	@Override
 	public String toString() {
 		return "Funcionario [id=" + id + ", nome=" + nome + ", telefone=" + telefone + ", cep=" + cep + ", cidade="
