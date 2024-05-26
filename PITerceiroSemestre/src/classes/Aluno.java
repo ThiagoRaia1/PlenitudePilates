@@ -1,4 +1,6 @@
-package Classes;
+package classes;
+
+import main.BDPI;
 
 public class Aluno {
 	private int id;
@@ -7,13 +9,34 @@ public class Aluno {
 	private String telefone;
 	private String cep;
 	private String cidade;
-	private String rua; //aaaa
+	private String rua;
 	private String bairro;
-	private int registradorPor;
+	private int registradoPor;
+	
+	public static void registrarAluno() { // Como é feito o registro no banco
+		Aluno aluno = new Aluno();
+		
+		aluno.setId(1);
+		aluno.setNome("Thiago");
+		aluno.setDataNascimento("19/09/2004");
+		aluno.setTelefone("(XX)X XXXX-XXXX");
+		aluno.setCep("XXXXX/XXX");
+		aluno.setCidade("Indaiatuba");
+		aluno.setBairro("XXXXXXXXXX");
+		aluno.setRua("XXXXXXXXXXXXX");
+		aluno.setRegistradoPor(1);
+
+		BDPI.insertValues(aluno, null, null, null);
+		
+		System.out.println("Aluno cadastrado.");
+		
+		// aluno.setRegistradoPor(1); // Associação binária - Associar ao id do funcionario logado
+		
+	}
 	
 	public int getId() {
 		return id;
-	}//adsklaslkfjsd
+	}
 
 	public void setId(int id) {
 		this.id = id;
@@ -75,12 +98,12 @@ public class Aluno {
 		this.bairro = bairro;
 	}
 
-	public int getRegistradorPor() {
-		return registradorPor;
+	public int getRegistradoPor() {
+		return registradoPor;
 	}
 
-	public void setRegistradorPor(int registradorPor) {
-		this.registradorPor = registradorPor;
+	public void setRegistradoPor(int registradoPor) {
+		this.registradoPor = registradoPor;
 	}
 
 	public Aluno() {
@@ -88,7 +111,7 @@ public class Aluno {
 	}
 	
 	public Aluno(int id, String nome, String dataNascimento, String telefone, String cep, String cidade, String rua,
-			String bairro, int registradorPor) {
+			String bairro, int registradoPor) {
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -98,13 +121,13 @@ public class Aluno {
 		this.cidade = cidade;
 		this.rua = rua;
 		this.bairro = bairro;
-		this.registradorPor = registradorPor;
+		this.registradoPor = registradoPor;
 	}
 	
 	@Override
 	public String toString() {
 		return "Aluno [id=" + id + ", nome=" + nome + ", dataNascimento=" + dataNascimento + ", telefone=" + telefone
-				+ ", cep=" + cep + ", cidade=" + cidade + ", rua=" + rua + ", bairro=" + bairro + ", registradorPor="
-				+ registradorPor + "]";
+				+ ", cep=" + cep + ", cidade=" + cidade + ", rua=" + rua + ", bairro=" + bairro + ", registradoPor="
+				+ registradoPor + "]";
 	}
 }

@@ -1,4 +1,9 @@
-package Classes;
+package classes;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import main.BDPI;
 
 public class Funcionario {
 	private int id;
@@ -11,6 +16,32 @@ public class Funcionario {
 	private String usuario;
 	private String senha;
 	private int nivelDeAcesso;
+	
+	public static void registrarFuncionario() {
+		Funcionario funcionario = new Funcionario();
+		funcionario.id = 1;
+		funcionario.nome = "Thiago";
+		funcionario.telefone = "telefone";
+		funcionario.cep = "cep";
+		funcionario.cidade = "Indaiatuba";
+		funcionario.rua = "rua";
+		funcionario.bairro = "bairro";
+		funcionario.usuario = "Thiago";
+		funcionario.senha = "Thiago";
+		funcionario.nivelDeAcesso = 2;
+		
+		BDPI.insertValues(null, funcionario, null, null);
+		
+		System.out.println("Funcionario cadastrado.");
+	}
+	
+	public static List<Funcionario> getFuncionarios() {
+		List<Funcionario> funcionarios = new ArrayList<>();
+		// BDPI.main(null, funcionarios)
+		
+		return funcionarios;
+		
+	}
 	
 	public int getId() {
 		return id;
