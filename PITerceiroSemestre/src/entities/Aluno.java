@@ -1,4 +1,4 @@
-package classes;
+package entities;
 
 import main.BDPI;
 
@@ -13,10 +13,11 @@ public class Aluno {
 	private String bairro;
 	private int registradoPor;
 	
-	public static void registrarAluno() { // Como é feito o registro no banco
+	public static void registrarAluno() {
+		
 		Aluno aluno = new Aluno();
 		
-		aluno.setId(1);
+		aluno.setId(1); // autonumeração
 		aluno.setNome("Thiago");
 		aluno.setDataNascimento("19/09/2004");
 		aluno.setTelefone("(XX)X XXXX-XXXX");
@@ -27,8 +28,6 @@ public class Aluno {
 		aluno.setRegistradoPor(1);
 
 		BDPI.insertValues(aluno, null, null, null);
-		
-		System.out.println("Aluno cadastrado.");
 		
 		// aluno.setRegistradoPor(1); // Associação binária - Associar ao id do funcionario logado
 		

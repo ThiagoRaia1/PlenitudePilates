@@ -1,4 +1,4 @@
-package classes;
+package entities;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,8 +31,6 @@ public class Funcionario {
 		funcionario.nivelDeAcesso = 2;
 		
 		BDPI.insertValues(null, funcionario, null, null);
-		
-		System.out.println("Funcionario cadastrado.");
 	}
 	
 	public static List<Funcionario> getFuncionarios() {

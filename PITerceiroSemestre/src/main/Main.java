@@ -1,22 +1,23 @@
 package main;
 
+
 import javax.swing.JOptionPane;
 
-import classes.Aluno;
-import classes.Funcionario;
+import entities.Aluno;
+import entities.Funcionario;
 
 public class Main {
 	
-	public static String Opcao() {
+	public static String opcao() {
 			String opcao = JOptionPane.showInputDialog("Graças a Deus pai, receba");
 		return opcao;
 	}
 	
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		
-		Funcionario.registrarFuncionario();
-		Aluno.registrarAluno();
+		// Funcionario.registrarFuncionario();
+		// Aluno.registrarAluno();
+		
 	}
 
 }

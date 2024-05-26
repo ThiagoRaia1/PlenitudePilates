@@ -36,9 +36,11 @@ drop table Aula
 
 drop table pagamento 
 
-select * from Funcionario 
+select * from Funcionario
 
-delete from Funcionario where id_funcionario = 1 
+select * from Aluno
+
+delete from Funcionario where id_funcionario = 1
 
 create table Pagamento ( 
 id_pagamento int primary key, 

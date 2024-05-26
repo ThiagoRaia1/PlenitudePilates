@@ -6,10 +6,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import classes.Aluno;
-import classes.Aula;
-import classes.Funcionario;
-import classes.Pagamento;
+import com.microsoft.sqlserver.jdbc.SQLServerException;
+
+import entities.Aluno;
+import entities.Aula;
+import entities.Funcionario;
+import entities.Pagamento;
 
 public class BDPI {
 
@@ -33,7 +35,7 @@ public class BDPI {
 		try {
 			Class.forName(DRIVER);
 			con = DriverManager.getConnection(URL,LOGIN,SENHA);
-			System.out.println("Conectou!");
+			//System.out.println("Conectou!");
 			return true;
 		}
 		catch(SQLException erro) {
@@ -63,7 +65,7 @@ public class BDPI {
 		try {
 			if(con!=null) {
 				con.close();
-				System.out.println("Desconectou!");
+				//System.out.println("Desconectou!");
 			}
 		}
 		catch(SQLException e) {}
@@ -89,6 +91,7 @@ public class BDPI {
 					st.setString(9, funcionario.getSenha());
 					st.setInt(10, funcionario.getNivelDeAcesso());
 					st.execute();
+					System.out.println("Funcionario cadastrado.");
 				}
 			
 			if (aluno != null) {
@@ -104,6 +107,7 @@ public class BDPI {
 					st.setString(8, aluno.getBairro());
 					st.setInt(9, aluno.getRegistradoPor());
 					st.execute();
+					System.out.println("Aluno cadastrado.");
 				}
 			
 			if (aula != null) {
@@ -117,6 +121,7 @@ public class BDPI {
 				st.setInt(6, aula.getVagasOcupadas());
 				st.setInt(7, aula.getSala());
 				st.execute();
+				System.out.println("Aula cadastrado.");
 				}
 			
 			if (pagamento != null) {
@@ -129,9 +134,12 @@ public class BDPI {
 				st.setInt(5, pagamento.getIdAluno());
 				st.setInt(6, pagamento.getIdFuncionario());
 				st.execute();
+				System.out.println("Pagamento cadastrado.");
 				}
+			
+		} catch (SQLServerException e) {
+			System.out.println("ID ja registrado.");
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		bd.close();
