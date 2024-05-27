@@ -1,5 +1,9 @@
 package entities;
 
+import java.sql.SQLException;
+
+import com.microsoft.sqlserver.jdbc.SQLServerException;
+
 import main.BDPI;
 
 public class Aluno {
@@ -15,7 +19,9 @@ public class Aluno {
 	private String bairro;
 	private int registradoPor;
 	
-	public static void createAluno() {
+	private static String sql = null;
+	
+	public static void create() {
 		
 		Aluno aluno = new Aluno();
 		
@@ -28,18 +34,120 @@ public class Aluno {
 		aluno.setBairro("XXXXXXXXXX");
 		aluno.setRua("XXXXXXXXXXXXX");
 		aluno.setRegistradoPor(1);
-
-		BDPI.create(null, aluno, null, null);
+		
+		BDPI bd = new BDPI();
+		bd.getConnection();
+		sql = null;
+		try {
+			sql = "insert into Aluno values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			bd.st = bd.con.prepareStatement(sql);
+			bd.st.setInt(1, aluno.getId());
+			bd.st.setString(2, aluno.getNome());
+			bd.st.setString(3, aluno.getDataNascimento());
+			bd.st.setString(4, aluno.getTelefone());
+			bd.st.setString(5, aluno.getCep());
+			bd.st.setString(6, aluno.getCidade());
+			bd.st.setString(7, aluno.getRua());
+			bd.st.setString(8, aluno.getBairro());
+			bd.st.setInt(9, aluno.getRegistradoPor());
+			bd.st.execute();
+			System.out.println("Aluno cadastrado.");
+		} catch (SQLServerException e) {
+			System.out.println("ID ja registrado.");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		bd.close();
+		
 		
 		// aluno.setRegistradoPor(1); // Associação binária - Associar ao id do funcionario logado
 		
 	}
 	
-	public static Aluno readAluno(int id) {
+	public static Aluno read(int id) {
 		Aluno aluno = new Aluno();
-		aluno = (Aluno) BDPI.read(id, NOME_TABELA);
-		System.out.println(aluno);
+		
+		BDPI bd = new BDPI();
+		bd.getConnection();
+		try {
+			sql = "select * from Aluno where id_aluno = ?";
+			bd.st = bd.con.prepareStatement(sql);
+			bd.st.setInt(1, id);
+			bd.rs = bd.st.executeQuery();
+			while(bd.rs.next()) {
+				aluno.setId(bd.rs.getInt("id_aluno"));
+				aluno.setNome(bd.rs.getString("nome_aluno"));
+				aluno.setDataNascimento(bd.rs.getString("dataNascimento_aluno"));
+				aluno.setTelefone(bd.rs.getString("telefone_aluno"));
+				aluno.setCep(bd.rs.getString("cep_aluno"));
+				aluno.setCidade(bd.rs.getString("cidade_aluno"));
+				aluno.setRua(bd.rs.getString("rua_aluno"));
+				aluno.setBairro(bd.rs.getString("bairro_aluno"));
+				aluno.setRegistradoPor(bd.rs.getInt("registradoPor_funcionario"));
+			}
+			if (aluno.getId() != 0) {
+				System.out.println("Aluno lido.");
+			}
+		} catch (SQLServerException e) {
+			System.out.println("ID ja registrado.");
+			System.out.println(e);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		bd.close();
+		if (aluno.id == 0) {
+			System.out.println("ID não encontrado.");
+		}
 		return aluno;
+	}
+	
+	public static void update(int id) {
+		Aluno aluno = new Aluno();
+		
+		// Recebe os dados atuais, campos em branco não serão alterados.
+		aluno = Aluno.read(id);
+		
+		// Pedir dados ao usuário
+		aluno.setNome("Thiago");
+		aluno.setDataNascimento("19/09/2004");
+		aluno.setTelefone("(XX)X XXXX-XXXX");
+		aluno.setCep("XXXXX/XXX");
+		aluno.setCidade("Indaiatuba");
+		aluno.setBairro("XXXXXXXXXX");
+		aluno.setRua("XXXXXXXXXXXXX");
+		
+		BDPI bd = new BDPI();
+		bd.getConnection();
+		try {
+			// alterar para update do aluno
+			sql = "update funcionario set nome_funcionario = ?, telefone_funcionario = ?, "
+					+ "cep_funcionario = ?, cidade_funcionario = ?, rua_funcionario = ?, "
+					+ "bairro_funcionario = ?, usuario_funcionario = ?, senha_funcionario = ?, "
+					+ "nivelDeAcesso_funcionario = ? where id_funcionario = ?";
+			bd.st = bd.con.prepareStatement(sql);
+			bd.st.setInt(1, aluno.getId());
+			bd.st.setString(2, aluno.getNome());
+			bd.st.setString(3, aluno.getDataNascimento());
+			bd.st.setString(4, aluno.getTelefone());
+			bd.st.setString(5, aluno.getCep());
+			bd.st.setString(6, aluno.getCidade());
+			bd.st.setString(7, aluno.getRua());
+			bd.st.setString(8, aluno.getBairro());
+			bd.st.setInt(9, aluno.getRegistradoPor());
+			bd.st.execute();
+			
+			System.out.println("Dados do aluno "+aluno.getNome()+" atualizados.");
+		} catch (SQLServerException e) {
+			System.out.println("ID ja registrado.");
+			System.out.println(e);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		bd.close();
+	}
+	
+	public static void delete() {
+		
 	}
 	
 	public int getId() {

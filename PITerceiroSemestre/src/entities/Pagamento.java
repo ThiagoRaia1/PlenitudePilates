@@ -1,5 +1,9 @@
 package entities;
 
+import java.sql.SQLException;
+
+import com.microsoft.sqlserver.jdbc.SQLServerException;
+
 import main.BDPI;
 
 public class Pagamento {
@@ -12,7 +16,9 @@ public class Pagamento {
 	private int idAluno;
 	private int idFuncionario;
 	
-	public static void createPagamento() {
+	private static String sql = null;
+	
+	public static void create() {
 		Pagamento pagamento = new Pagamento();
 		
 		pagamento.setId(1); // autonumeração
@@ -22,14 +28,103 @@ public class Pagamento {
 		pagamento.setIdAluno(1);
 		pagamento.setIdFuncionario(1);
 
-		BDPI.create(null, null, null, pagamento);
+		BDPI bd = new BDPI();
+		bd.getConnection();
+		try {
+			sql = null;
+			sql = "insert into Pagamento values(?, ?, ?, ?, ?, ?)";
+			bd.st = bd.con.prepareStatement(sql);
+			bd.st.setInt(1, pagamento.getId());
+			bd.st.setString(2, pagamento.getData());
+			bd.st.setString(3, pagamento.getHorario());
+			bd.st.setDouble(4, pagamento.getValorMensalidade());
+			bd.st.setInt(5, pagamento.getIdAluno());
+			bd.st.setInt(6, pagamento.getIdFuncionario());
+			bd.st.execute();
+			System.out.println("Pagamento cadastrado.");
+		} catch (SQLServerException e) {
+			System.out.println("ID ja registrado.");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		bd.close();
 	}
 	
-	public static Pagamento readPagamento(int id) {
+	public static Pagamento read(int id) {
 		Pagamento pagamento = new Pagamento();
-		pagamento = (Pagamento) BDPI.read(id, NOME_TABELA);
-		System.out.println(pagamento);
+		
+		BDPI bd = new BDPI();
+		bd.getConnection();
+		try {
+			sql = "select * from Pagamento where id_pagamento = ?";
+			bd.st = bd.con.prepareStatement(sql);
+			bd.st.setInt(1, id);
+			bd.rs = bd.st.executeQuery();
+			while(bd.rs.next()) {
+				pagamento.setId(bd.rs.getInt("id_pagamento"));
+				pagamento.setData(bd.rs.getString("data_pagamento"));
+				pagamento.setHorario(bd.rs.getString("horario_pagamento"));
+				pagamento.setValorMensalidade(bd.rs.getDouble("valorMensalidade_pagamento"));
+				pagamento.setIdAluno(bd.rs.getInt("id_aluno"));
+				pagamento.setIdFuncionario(bd.rs.getInt("id_funcionario"));
+			}
+			if (pagamento.getId() != 0) {
+				System.out.println("Pagamento lido.");
+			}
+		} catch (SQLServerException e) {
+			System.out.println("ID ja registrado.");
+			System.out.println(e);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		bd.close();
+		if (pagamento.getId() == 0) {
+			System.out.println("ID não encontrado.");
+		}
 		return pagamento;
+	}
+	
+	public static void update(int id) {
+		Pagamento pagamento = new Pagamento();
+		
+		// Recebe os dados atuais, campos em branco não serão alterados.
+		pagamento = Pagamento.read(id);
+
+		// Pedir dados ao usuário
+		pagamento.setData("30/05/2024");
+		pagamento.setHorario("08:00");
+		pagamento.setValorMensalidade(200.00);
+		pagamento.setIdAluno(1);
+		
+		BDPI bd = new BDPI();
+		bd.getConnection();
+		try {
+			// alterar para update do pagamento
+			sql = "update funcionario set nome_funcionario = ?, telefone_funcionario = ?, "
+					+ "cep_funcionario = ?, cidade_funcionario = ?, rua_funcionario = ?, "
+					+ "bairro_funcionario = ?, usuario_funcionario = ?, senha_funcionario = ?, "
+					+ "nivelDeAcesso_funcionario = ? where id_funcionario = ?";
+			bd.st = bd.con.prepareStatement(sql);
+			bd.st.setInt(1, pagamento.getId());
+			bd.st.setString(2, pagamento.getData());
+			bd.st.setString(3, pagamento.getHorario());
+			bd.st.setDouble(4, pagamento.getValorMensalidade());
+			bd.st.setInt(5, pagamento.getIdAluno());
+			bd.st.setInt(6, pagamento.getIdFuncionario());
+			bd.st.execute();
+			
+			System.out.println("Dados do pagamento "+pagamento.getId()+" atualizados.");
+		} catch (SQLServerException e) {
+			System.out.println("ID ja registrado.");
+			System.out.println(e);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		bd.close();
+	}
+	
+	public static void delete(int id) {
+		
 	}
 	
 	public int getId() {

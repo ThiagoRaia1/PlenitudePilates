@@ -17,21 +17,22 @@ public class Main {
 	
 	public static void main(String[] args) {
 		
-		// Funcionario.createFuncionario();
-		// Aluno.createAluno();
-		// Aula.createAula();
-		// Pagamento.createPagamento();
-		
-		Funcionario.readFuncionario(1);
+		Funcionario.create();
+		Aluno.create();
+		Aula.create();
+		Pagamento.create();
 		System.out.println();
 		
-		Aluno.readAluno(1);
+		System.out.println(Funcionario.read(1));
 		System.out.println();
-		
-		Aula.readAula(1);
+
+		System.out.println(Aluno.read(1));
 		System.out.println();
-		
-		Pagamento.readPagamento(1);
+
+		System.out.println(Aula.read(1));
+		System.out.println();
+
+		System.out.println(Pagamento.read(1));
 		System.out.println();
 	}
 
