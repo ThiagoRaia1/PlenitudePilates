@@ -150,7 +150,7 @@ public class Funcionario {
 		BD bd = new BD();
 		bd.getConnection();
 		try {
-				sql = "update funcionario set nome_funcionario = ?, telefone_funcionario = ?, "
+				sql = "update Funcionario set nome_funcionario = ?, telefone_funcionario = ?, "
 						+ "cep_funcionario = ?, cidade_funcionario = ?, rua_funcionario = ?, "
 						+ "bairro_funcionario = ?, usuario_funcionario = ?, senha_funcionario = ?, "
 						+ "nivelDeAcesso_funcionario = ? where id_funcionario = ?";

@@ -11,7 +11,7 @@ import entities.Pagamento;
 public class Main {
 	
 	public static String opcao() {
-			String opcao = JOptionPane.showInputDialog("Graças a Deus pai, receba");
+			String opcao = JOptionPane.showInputDialog("Opção:");
 		return opcao;
 	}
 	
@@ -22,6 +22,20 @@ public class Main {
 		Aula.create();
 		Pagamento.create();
 		System.out.println();
+		
+		/*
+		Funcionario.update(1);
+		System.out.println();
+		
+		Aluno.update(1);
+		System.out.println();
+		
+		Aula.update(1);
+		System.out.println();
+		
+		Pagamento.update(1);
+		System.out.println();
+		*/
 		
 		System.out.println(Funcionario.read(1));
 		System.out.println();

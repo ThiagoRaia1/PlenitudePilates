@@ -99,18 +99,15 @@ public class Pagamento {
 		BD bd = new BD();
 		bd.getConnection();
 		try {
-			// alterar para update do pagamento
-			sql = "update funcionario set nome_funcionario = ?, telefone_funcionario = ?, "
-					+ "cep_funcionario = ?, cidade_funcionario = ?, rua_funcionario = ?, "
-					+ "bairro_funcionario = ?, usuario_funcionario = ?, senha_funcionario = ?, "
-					+ "nivelDeAcesso_funcionario = ? where id_funcionario = ?";
+			sql = "update Pagamento set data_pagamento = ?, horario_pagamento = ?, valorMensalidade_pagamento = ?,"
+					+ "id_aluno = ?, id_pagamento = ? where id_pagamento = ?";
 			bd.st = bd.con.prepareStatement(sql);
-			bd.st.setInt(1, pagamento.getId());
-			bd.st.setString(2, pagamento.getData());
-			bd.st.setString(3, pagamento.getHorario());
-			bd.st.setDouble(4, pagamento.getValorMensalidade());
-			bd.st.setInt(5, pagamento.getIdAluno());
-			bd.st.setInt(6, pagamento.getIdFuncionario());
+			bd.st.setString(1, pagamento.getData());
+			bd.st.setString(2, pagamento.getHorario());
+			bd.st.setDouble(3, pagamento.getValorMensalidade());
+			bd.st.setInt(4, pagamento.getIdAluno());
+			bd.st.setInt(5, pagamento.getIdFuncionario());
+			bd.st.setInt(6, pagamento.getId());
 			bd.st.execute();
 			
 			System.out.println("Dados do pagamento "+pagamento.getId()+" atualizados.");

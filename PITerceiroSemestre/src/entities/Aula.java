@@ -106,19 +106,16 @@ public class Aula {
 		BD bd = new BD();
 		bd.getConnection();
 		try {
-			// alterar para update da aula
-			sql = "update funcionario set nome_funcionario = ?, telefone_funcionario = ?, "
-					+ "cep_funcionario = ?, cidade_funcionario = ?, rua_funcionario = ?, "
-					+ "bairro_funcionario = ?, usuario_funcionario = ?, senha_funcionario = ?, "
-					+ "nivelDeAcesso_funcionario = ? where id_funcionario = ?";
+			sql = "update Aula set data_aula = ?, horaComeco_aula = ?, horaFim_aula = ?, qtdeVagasDisponiveis_aula = ?,"
+					+ "vagasOcupadas_aula = ?, sala_aula = ? where id_aula = ?";
 			bd.st = bd.con.prepareStatement(sql);
-			bd.st.setInt(1, aula.getId());
-			bd.st.setString(2, aula.getData());
-			bd.st.setString(3, aula.getHoraComeco());
-			bd.st.setString(4, aula.getHoraFim());
-			bd.st.setInt(5, aula.getQtdeVagasDisponiveis());
-			bd.st.setInt(6, aula.getVagasOcupadas());
+			bd.st.setString(1, aula.getData());
+			bd.st.setString(2, aula.getHoraComeco());
+			bd.st.setString(3, aula.getHoraFim());
+			bd.st.setInt(4, aula.getQtdeVagasDisponiveis());
+			bd.st.setInt(5, aula.getVagasOcupadas());
 			bd.st.setInt(6, aula.getSala());
+			bd.st.setInt(7, aula.getId());
 			bd.st.execute();
 			
 			System.out.println("Dados da aula "+aula.getId()+" atualizados.");

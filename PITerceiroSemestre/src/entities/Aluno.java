@@ -119,21 +119,17 @@ public class Aluno {
 		BD bd = new BD();
 		bd.getConnection();
 		try {
-			// alterar para update do aluno
-			sql = "update funcionario set nome_funcionario = ?, telefone_funcionario = ?, "
-					+ "cep_funcionario = ?, cidade_funcionario = ?, rua_funcionario = ?, "
-					+ "bairro_funcionario = ?, usuario_funcionario = ?, senha_funcionario = ?, "
-					+ "nivelDeAcesso_funcionario = ? where id_funcionario = ?";
+			sql = "update Aluno set nome_aluno = ?, dataNascimento_aluno = ?, telefone_aluno = ?, cep_aluno = ?,"
+					+ "cidade_aluno = ?, rua_aluno = ?, bairro_aluno = ? where id_aluno = ?";
 			bd.st = bd.con.prepareStatement(sql);
-			bd.st.setInt(1, aluno.getId());
-			bd.st.setString(2, aluno.getNome());
-			bd.st.setString(3, aluno.getDataNascimento());
-			bd.st.setString(4, aluno.getTelefone());
-			bd.st.setString(5, aluno.getCep());
-			bd.st.setString(6, aluno.getCidade());
-			bd.st.setString(7, aluno.getRua());
-			bd.st.setString(8, aluno.getBairro());
-			bd.st.setInt(9, aluno.getRegistradoPor());
+			bd.st.setString(1, aluno.getNome());
+			bd.st.setString(2, aluno.getDataNascimento());
+			bd.st.setString(3, aluno.getTelefone());
+			bd.st.setString(4, aluno.getCep());
+			bd.st.setString(5, aluno.getCidade());
+			bd.st.setString(6, aluno.getRua());
+			bd.st.setString(7, aluno.getBairro());
+			bd.st.setInt(8, aluno.getId());
 			bd.st.execute();
 			
 			System.out.println("Dados do aluno "+aluno.getNome()+" atualizados.");
