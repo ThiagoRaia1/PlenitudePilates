@@ -6,7 +6,7 @@ import java.util.List;
 
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 
-import main.BDPI;
+import main.BD;
 
 public class Funcionario {
 	private final static String NOME_TABELA = "Funcionario";
@@ -38,7 +38,7 @@ public class Funcionario {
 		funcionario.setSenha("Thiago");
 		funcionario.setNivelDeAcesso(2);;
 		
-		BDPI bd = new BDPI();
+		BD bd = new BD();
 		bd.getConnection();
 		sql = null;
 		try {
@@ -67,7 +67,7 @@ public class Funcionario {
 	
 	public static Funcionario read(int id) {
 		Funcionario funcionario = new Funcionario();
-		BDPI bd = new BDPI();
+		BD bd = new BD();
 		bd.getConnection();
 		try {
 			sql = "select * from Funcionario where id_funcionario = ?";
@@ -147,7 +147,7 @@ public class Funcionario {
 			funcionario.setNivelDeAcesso(2); // Update
 		// }
 			
-		BDPI bd = new BDPI();
+		BD bd = new BD();
 		bd.getConnection();
 		try {
 				sql = "update funcionario set nome_funcionario = ?, telefone_funcionario = ?, "
@@ -169,7 +169,6 @@ public class Funcionario {
 				
 				System.out.println("Dados do funcionário "+funcionario.getNome()+" atualizados.");
 		} catch (SQLServerException e) {
-			System.out.println("ID ja registrado.");
 			System.out.println(e);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -178,12 +177,23 @@ public class Funcionario {
 	}
 	
 	public static void delete(int id) {
-		Funcionario funcionario = new Funcionario();
+		BD bd = new BD();
+		bd.getConnection();
+		try {
+			sql = "delete from Funcionario where id_funcionario = ?";
+			bd.st = bd.con.prepareStatement(sql);
+			bd.st.setInt(1, id);
+			bd.st.execute();
+		} catch (SQLServerException e) {
+			System.out.println(e);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		bd.close();
 	}
 	
 	public static List<Funcionario> getFuncionarios() {
 		List<Funcionario> funcionarios = new ArrayList<>();
-		// BDPI.main(null, funcionarios)
 		
 		return funcionarios;
 	}

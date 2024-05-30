@@ -13,7 +13,7 @@ import entities.Aula;
 import entities.Funcionario;
 import entities.Pagamento;
 
-public class BDPI {
+public class BD {
 
 	public Connection con = null;
 	public PreparedStatement st = null;

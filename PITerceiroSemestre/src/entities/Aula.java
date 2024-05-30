@@ -4,7 +4,7 @@ import java.sql.SQLException;
 
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 
-import main.BDPI;
+import main.BD;
 
 public class Aula {
 	private final static String NOME_TABELA = "Aula";
@@ -30,7 +30,7 @@ public class Aula {
 		aula.setVagasOcupadas(0);
 		aula.setSala(1);
 		
-		BDPI bd = new BDPI();
+		BD bd = new BD();
 		bd.getConnection();
 		sql = null;
 		try {
@@ -56,7 +56,7 @@ public class Aula {
 	public static Aula read(int id) {
 		Aula aula = new Aula();
 		
-		BDPI bd = new BDPI();
+		BD bd = new BD();
 		bd.getConnection();
 		try {
 			String sql = "select * from Aula where id_aula = ?";
@@ -103,7 +103,7 @@ public class Aula {
 		aula.setVagasOcupadas(0);
 		aula.setSala(1);
 
-		BDPI bd = new BDPI();
+		BD bd = new BD();
 		bd.getConnection();
 		try {
 			// alterar para update da aula
@@ -132,7 +132,19 @@ public class Aula {
 	}
 	
 	public static void delete(int id) {
-		
+		BD bd = new BD();
+		bd.getConnection();
+		try {
+			sql = "delete from Aula where id_aula = ?";
+			bd.st = bd.con.prepareStatement(sql);
+			bd.st.setInt(1, id);
+			bd.st.execute();
+		} catch (SQLServerException e) {
+			System.out.println(e);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		bd.close();
 	}
 	
 	public int getId() {
