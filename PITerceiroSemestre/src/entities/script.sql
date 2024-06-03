@@ -4,7 +4,7 @@ use DatabasePI
 create table Aluno ( 
 id_aluno int primary key, 
 nome_aluno varchar(70) not null, 
-dataNascimento_aluno varchar(10) not null, 
+dataNascimento_aluno varchar(10) not null, -- alterar varchar para datetime
 telefone_aluno varchar(15), 
 cep_aluno varchar(10) not null, 
 cidade_aluno varchar(50) not null, 
@@ -21,12 +21,37 @@ cep_funcionario varchar(10) not null,
 cidade_funcionario varchar(50) not null, 
 rua_funcionario varchar(50) not null, 
 bairro_funcionario varchar(50) not null, 
-usuario_funcionario varchar(20), 
+usuario_funcionario varchar(20) unique, 
 senha_funcionario varchar(20), 
 nivelDeAcesso_funcionario int not null 
 )
 
-insert into Funcionario values(1, 'Thiago', 'Telefone', 'cep', 'cidade', 'rua', 'bairro', 'usuario', 'senha', 1)   
+create table Pagamento ( 
+id_pagamento int primary key, 
+data_pagamento varchar(10) not null, -- alterar varchar para datetime
+horario_pagamento varchar(10) not null, -- alterar varchar para datetime
+valorMensalidade_pagamento money not null, 
+id_aluno int not null references Aluno, 
+id_funcionario int not null references Funcionario 
+)
+
+create table Aula ( 
+id_aula int primary key, 
+data_aula varchar(10) not null, -- alterar varchar para datetime
+horaComeco_aula varchar(6) not null,
+horaFim_aula varchar(6) not null,
+qtdeVagasDisponiveis_aula int not null, 
+vagasOcupadas_aula int not null, 
+sala_aula int not null 
+)
+
+insert into Funcionario values(2, 'Thiago', 'Telefone', 'cep', 'cidade', 'rua', 'bairro', 'usuario', 'senha', 1)
+
+insert into Aluno values(2, 'Thiago', '19/09/2004', '(XX)X XXXX-XXXX', 'cep', 'Indaiatuba', 'rua', 'bairro', 1)
+
+insert into Aula values(2, '30/05/2024', '08:00', '09:00', 10, 0, 1)
+
+insert into Pagamento values(2, '30/05/2004', '08:00', 200.00, 1, 1)  
 
 drop table Funcionario 
 
@@ -40,23 +65,16 @@ select * from Funcionario
 
 select * from Aluno
 
-delete from Funcionario where id_funcionario = 1
+select * from Pagamento
 
-create table Pagamento ( 
-id_pagamento int primary key, 
-data_pagamento varchar(10) not null, 
-horario_pagamento varchar(10) not null, 
-valorMensalidade_pagamento float not null, 
-id_aluno int not null references Aluno, 
-id_funcionario int not null references Funcionario 
-)
+select * from Aula
 
-create table Aula ( 
-id_aula int primary key, 
-data_aula varchar(10) not null, 
-horaComeco_aula varchar(10) not null, 
-horaFim_aula varchar(10) not null, 
-qtdeVagasDisponiveis_aula int not null, 
-vagasOcupadas_aula int not null, 
-sala_aula int not null 
-)
+select * from Funcionario where id_funcionario = 1
+
+delete from Funcionario
+
+delete from Aluno where id_aluno = 1
+
+delete from Aula where id_aula = 1
+
+delete from Pagamento where id_pagamento = 1

@@ -7,6 +7,7 @@ import entities.Aluno;
 import entities.Aula;
 import entities.Funcionario;
 import entities.Pagamento;
+import telas.MainFrame;
 
 public class Main {
 	
@@ -17,11 +18,13 @@ public class Main {
 	
 	public static void main(String[] args) {
 		
+		/*
 		Funcionario.create();
 		Aluno.create();
 		Aula.create();
 		Pagamento.create();
 		System.out.println();
+		*/
 		
 		/*
 		Funcionario.update(1);
@@ -37,6 +40,7 @@ public class Main {
 		System.out.println();
 		*/
 		
+		/*
 		System.out.println(Funcionario.read(1));
 		System.out.println();
 
@@ -48,6 +52,7 @@ public class Main {
 
 		System.out.println(Pagamento.read(1));
 		System.out.println();
+		*/
 		
 		/*
 		Aula.delete(1);
@@ -62,6 +67,8 @@ public class Main {
 		Funcionario.delete(1);
 		System.out.println("Funcionário excluído.");
 		*/
+		
+		MainFrame.main();
 	}
 
 }

@@ -10,6 +10,7 @@ import main.BD;
 
 public class Funcionario {
 	private final static String NOME_TABELA = "Funcionario";
+	private static String sql = null;
 	
 	private int id;
 	private String nome;
@@ -21,8 +22,6 @@ public class Funcionario {
 	private String usuario;
 	private String senha;
 	private int nivelDeAcesso;
-	
-	private static String sql = null;
 	
 	public static void create() {
 		Funcionario funcionario = new Funcionario();
@@ -40,9 +39,8 @@ public class Funcionario {
 		
 		BD bd = new BD();
 		bd.getConnection();
-		sql = null;
 		try {
-			sql = "insert into Funcionario values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			sql = "insert into "+NOME_TABELA+" values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			bd.st = bd.con.prepareStatement(sql);
 			bd.st.setInt(1, funcionario.getId());
 			bd.st.setString(2, funcionario.getNome());
@@ -64,44 +62,43 @@ public class Funcionario {
 		bd.close();
 	}
 	
-	
 	public static Funcionario read(int id) {
 		Funcionario funcionario = new Funcionario();
 		BD bd = new BD();
-		bd.getConnection();
-		try {
-			sql = "select * from Funcionario where id_funcionario = ?";
-			bd.st = bd.con.prepareStatement(sql);
-			bd.st.setInt(1, id);
-			bd.rs = bd.st.executeQuery();
-			while(bd.rs.next()) {
-				funcionario.setId(bd.rs.getInt("id_funcionario"));
-				funcionario.setNome(bd.rs.getString("nome_funcionario"));
-				funcionario.setTelefone(bd.rs.getString("telefone_funcionario"));
-				funcionario.setCep(bd.rs.getString("cep_funcionario"));
-				funcionario.setCidade(bd.rs.getString("cidade_funcionario"));
-				funcionario.setRua(bd.rs.getString("rua_funcionario"));
-				funcionario.setBairro(bd.rs.getString("bairro_funcionario"));
-				funcionario.setUsuario(bd.rs.getString("usuario_funcionario"));
-				funcionario.setSenha(bd.rs.getString("senha_funcionario"));
-				funcionario.setNivelDeAcesso(bd.rs.getInt("nivelDeAcesso_funcionario"));
+		if (bd.getConnection()) {
+			try {
+				sql = "select * from "+NOME_TABELA+" where id_funcionario = ?";
+				bd.st = bd.con.prepareStatement(sql);
+				bd.st.setInt(1, id);
+				bd.rs = bd.st.executeQuery();
+				while(bd.rs.next()) {
+					funcionario.setId(bd.rs.getInt("id_funcionario"));
+					funcionario.setNome(bd.rs.getString("nome_funcionario"));
+					funcionario.setTelefone(bd.rs.getString("telefone_funcionario"));
+					funcionario.setCep(bd.rs.getString("cep_funcionario"));
+					funcionario.setCidade(bd.rs.getString("cidade_funcionario"));
+					funcionario.setRua(bd.rs.getString("rua_funcionario"));
+					funcionario.setBairro(bd.rs.getString("bairro_funcionario"));
+					funcionario.setUsuario(bd.rs.getString("usuario_funcionario"));
+					funcionario.setSenha(bd.rs.getString("senha_funcionario"));
+					funcionario.setNivelDeAcesso(bd.rs.getInt("nivelDeAcesso_funcionario"));
+				}
+				if (funcionario.getId() != 0) {
+					System.out.println("Funcionario lido.");
+				}
+			} catch (SQLServerException e) {
+				System.out.println("ID ja registrado.");
+				System.out.println(e);
+			} catch (SQLException e) {
+				e.printStackTrace();
 			}
-			if (funcionario.getId() != 0) {
-				System.out.println("Funcionario lido.");
+			bd.close();
+			if (funcionario.id == 0) {
+				System.out.println("ID não encontrado.");
 			}
-		} catch (SQLServerException e) {
-			System.out.println("ID ja registrado.");
-			System.out.println(e);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		bd.close();
-		if (funcionario.id == 0) {
-			System.out.println("ID não encontrado.");
 		}
 		return funcionario;
 	}
-	
 	
 	public static void update(int id) {
 		Funcionario funcionario = new Funcionario();
@@ -148,48 +145,50 @@ public class Funcionario {
 		// }
 			
 		BD bd = new BD();
-		bd.getConnection();
-		try {
-				sql = "update Funcionario set nome_funcionario = ?, telefone_funcionario = ?, "
-						+ "cep_funcionario = ?, cidade_funcionario = ?, rua_funcionario = ?, "
-						+ "bairro_funcionario = ?, usuario_funcionario = ?, senha_funcionario = ?, "
-						+ "nivelDeAcesso_funcionario = ? where id_funcionario = ?";
-				bd.st = bd.con.prepareStatement(sql);
-				bd.st.setString(1, funcionario.getNome());
-				bd.st.setString(2, funcionario.getTelefone());
-				bd.st.setString(3, funcionario.getCep());
-				bd.st.setString(4, funcionario.getCidade());
-				bd.st.setString(5, funcionario.getRua());
-				bd.st.setString(6, funcionario.getBairro());
-				bd.st.setString(7, funcionario.getUsuario());
-				bd.st.setString(8, funcionario.getSenha());
-				bd.st.setInt(9, funcionario.getNivelDeAcesso());
-				bd.st.setInt(10, funcionario.getId());
-				bd.st.execute();
-				
-				System.out.println("Dados do funcionário "+funcionario.getNome()+" atualizados.");
-		} catch (SQLServerException e) {
-			System.out.println(e);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		if (bd.getConnection()) {
+			try {
+					sql = "update "+NOME_TABELA+" set nome_funcionario = ?, telefone_funcionario = ?, "
+							+ "cep_funcionario = ?, cidade_funcionario = ?, rua_funcionario = ?, "
+							+ "bairro_funcionario = ?, usuario_funcionario = ?, senha_funcionario = ?, "
+							+ "nivelDeAcesso_funcionario = ? where id_funcionario = ?";
+					bd.st = bd.con.prepareStatement(sql);
+					bd.st.setString(1, funcionario.getNome());
+					bd.st.setString(2, funcionario.getTelefone());
+					bd.st.setString(3, funcionario.getCep());
+					bd.st.setString(4, funcionario.getCidade());
+					bd.st.setString(5, funcionario.getRua());
+					bd.st.setString(6, funcionario.getBairro());
+					bd.st.setString(7, funcionario.getUsuario());
+					bd.st.setString(8, funcionario.getSenha());
+					bd.st.setInt(9, funcionario.getNivelDeAcesso());
+					bd.st.setInt(10, funcionario.getId());
+					bd.st.execute();
+					
+					System.out.println("Dados do funcionário "+funcionario.getNome()+" atualizados.");
+			} catch (SQLServerException e) {
+				System.out.println(e);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		bd.close();
+		}
 	}
 	
 	public static void delete(int id) {
 		BD bd = new BD();
-		bd.getConnection();
-		try {
-			sql = "delete from Funcionario where id_funcionario = ?";
-			bd.st = bd.con.prepareStatement(sql);
-			bd.st.setInt(1, id);
-			bd.st.execute();
-		} catch (SQLServerException e) {
-			System.out.println(e);
-		} catch (SQLException e) {
-			e.printStackTrace();
+			if (bd.getConnection()) {
+			try {
+				sql = "delete from "+NOME_TABELA+" where id_funcionario = ?";
+				bd.st = bd.con.prepareStatement(sql);
+				bd.st.setInt(1, id);
+				bd.st.execute();
+			} catch (SQLServerException e) {
+				System.out.println(e);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			bd.close();
 		}
-		bd.close();
 	}
 	
 	public static List<Funcionario> getFuncionarios() {

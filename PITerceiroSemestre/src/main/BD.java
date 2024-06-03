@@ -6,13 +6,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import com.microsoft.sqlserver.jdbc.SQLServerException;
-
-import entities.Aluno;
-import entities.Aula;
-import entities.Funcionario;
-import entities.Pagamento;
-
 public class BD {
 
 	public Connection con = null;

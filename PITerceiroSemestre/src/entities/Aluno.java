@@ -8,6 +8,7 @@ import main.BD;
 
 public class Aluno {
 	private final static String NOME_TABELA = "Aluno";
+	private static String sql = null;
 	
 	private int id;
 	private String nome;
@@ -18,8 +19,6 @@ public class Aluno {
 	private String rua;
 	private String bairro;
 	private int registradoPor;
-	
-	private static String sql = null;
 	
 	public static void create() {
 		
@@ -36,28 +35,28 @@ public class Aluno {
 		aluno.setRegistradoPor(1);
 		
 		BD bd = new BD();
-		bd.getConnection();
-		sql = null;
-		try {
-			sql = "insert into Aluno values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
-			bd.st = bd.con.prepareStatement(sql);
-			bd.st.setInt(1, aluno.getId());
-			bd.st.setString(2, aluno.getNome());
-			bd.st.setString(3, aluno.getDataNascimento());
-			bd.st.setString(4, aluno.getTelefone());
-			bd.st.setString(5, aluno.getCep());
-			bd.st.setString(6, aluno.getCidade());
-			bd.st.setString(7, aluno.getRua());
-			bd.st.setString(8, aluno.getBairro());
-			bd.st.setInt(9, aluno.getRegistradoPor());
-			bd.st.execute();
-			System.out.println("Aluno cadastrado.");
-		} catch (SQLServerException e) {
-			System.out.println("ID ja registrado.");
-		} catch (SQLException e) {
-			e.printStackTrace();
+		if (bd.getConnection()) {
+			try {
+				sql = "insert into "+NOME_TABELA+" values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+				bd.st = bd.con.prepareStatement(sql);
+				bd.st.setInt(1, aluno.getId());
+				bd.st.setString(2, aluno.getNome());
+				bd.st.setString(3, aluno.getDataNascimento());
+				bd.st.setString(4, aluno.getTelefone());
+				bd.st.setString(5, aluno.getCep());
+				bd.st.setString(6, aluno.getCidade());
+				bd.st.setString(7, aluno.getRua());
+				bd.st.setString(8, aluno.getBairro());
+				bd.st.setInt(9, aluno.getRegistradoPor());
+				bd.st.execute();
+				System.out.println("Aluno cadastrado.");
+			} catch (SQLServerException e) {
+				System.out.println("ID ja registrado.");
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			bd.close();
 		}
-		bd.close();
 		
 		
 		// aluno.setRegistradoPor(1); // Associação binária - Associar ao id do funcionario logado
@@ -68,35 +67,36 @@ public class Aluno {
 		Aluno aluno = new Aluno();
 		
 		BD bd = new BD();
-		bd.getConnection();
-		try {
-			sql = "select * from Aluno where id_aluno = ?";
-			bd.st = bd.con.prepareStatement(sql);
-			bd.st.setInt(1, id);
-			bd.rs = bd.st.executeQuery();
-			while(bd.rs.next()) {
-				aluno.setId(bd.rs.getInt("id_aluno"));
-				aluno.setNome(bd.rs.getString("nome_aluno"));
-				aluno.setDataNascimento(bd.rs.getString("dataNascimento_aluno"));
-				aluno.setTelefone(bd.rs.getString("telefone_aluno"));
-				aluno.setCep(bd.rs.getString("cep_aluno"));
-				aluno.setCidade(bd.rs.getString("cidade_aluno"));
-				aluno.setRua(bd.rs.getString("rua_aluno"));
-				aluno.setBairro(bd.rs.getString("bairro_aluno"));
-				aluno.setRegistradoPor(bd.rs.getInt("registradoPor_funcionario"));
+		if (bd.getConnection()) {
+			try {
+				sql = "select * from "+NOME_TABELA+" where id_aluno = ?";
+				bd.st = bd.con.prepareStatement(sql);
+				bd.st.setInt(1, id);
+				bd.rs = bd.st.executeQuery();
+				while(bd.rs.next()) {
+					aluno.setId(bd.rs.getInt("id_aluno"));
+					aluno.setNome(bd.rs.getString("nome_aluno"));
+					aluno.setDataNascimento(bd.rs.getString("dataNascimento_aluno"));
+					aluno.setTelefone(bd.rs.getString("telefone_aluno"));
+					aluno.setCep(bd.rs.getString("cep_aluno"));
+					aluno.setCidade(bd.rs.getString("cidade_aluno"));
+					aluno.setRua(bd.rs.getString("rua_aluno"));
+					aluno.setBairro(bd.rs.getString("bairro_aluno"));
+					aluno.setRegistradoPor(bd.rs.getInt("registradoPor_funcionario"));
+				}
+				if (aluno.getId() != 0) {
+					System.out.println("Aluno lido.");
+				}
+			} catch (SQLServerException e) {
+				System.out.println("ID ja registrado.");
+				System.out.println(e);
+			} catch (SQLException e) {
+				e.printStackTrace();
 			}
-			if (aluno.getId() != 0) {
-				System.out.println("Aluno lido.");
+			bd.close();
+			if (aluno.id == 0) {
+				System.out.println("ID não encontrado.");
 			}
-		} catch (SQLServerException e) {
-			System.out.println("ID ja registrado.");
-			System.out.println(e);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		bd.close();
-		if (aluno.id == 0) {
-			System.out.println("ID não encontrado.");
 		}
 		return aluno;
 	}
@@ -117,45 +117,47 @@ public class Aluno {
 		aluno.setRua("XXXXXXXXXXXXX");
 		
 		BD bd = new BD();
-		bd.getConnection();
-		try {
-			sql = "update Aluno set nome_aluno = ?, dataNascimento_aluno = ?, telefone_aluno = ?, cep_aluno = ?,"
-					+ "cidade_aluno = ?, rua_aluno = ?, bairro_aluno = ? where id_aluno = ?";
-			bd.st = bd.con.prepareStatement(sql);
-			bd.st.setString(1, aluno.getNome());
-			bd.st.setString(2, aluno.getDataNascimento());
-			bd.st.setString(3, aluno.getTelefone());
-			bd.st.setString(4, aluno.getCep());
-			bd.st.setString(5, aluno.getCidade());
-			bd.st.setString(6, aluno.getRua());
-			bd.st.setString(7, aluno.getBairro());
-			bd.st.setInt(8, aluno.getId());
-			bd.st.execute();
-			
-			System.out.println("Dados do aluno "+aluno.getNome()+" atualizados.");
-		} catch (SQLServerException e) {
-			System.out.println("ID ja registrado.");
-			System.out.println(e);
-		} catch (SQLException e) {
-			e.printStackTrace();
+		if(bd.getConnection()) {
+			try {
+				sql = "update "+NOME_TABELA+" set nome_aluno = ?, dataNascimento_aluno = ?, telefone_aluno = ?, cep_aluno = ?,"
+						+ "cidade_aluno = ?, rua_aluno = ?, bairro_aluno = ? where id_aluno = ?";
+				bd.st = bd.con.prepareStatement(sql);
+				bd.st.setString(1, aluno.getNome());
+				bd.st.setString(2, aluno.getDataNascimento());
+				bd.st.setString(3, aluno.getTelefone());
+				bd.st.setString(4, aluno.getCep());
+				bd.st.setString(5, aluno.getCidade());
+				bd.st.setString(6, aluno.getRua());
+				bd.st.setString(7, aluno.getBairro());
+				bd.st.setInt(8, aluno.getId());
+				bd.st.execute();
+				
+				System.out.println("Dados do aluno "+aluno.getNome()+" atualizados.");
+			} catch (SQLServerException e) {
+				System.out.println("ID ja registrado.");
+				System.out.println(e);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			bd.close();
 		}
-		bd.close();
 	}
 	
 	public static void delete(int id) {
 		BD bd = new BD();
-		bd.getConnection();
-		try {
-			sql = "delete from Aluno where id_aluno = ?";
-			bd.st = bd.con.prepareStatement(sql);
-			bd.st.setInt(1, id);
-			bd.st.execute();
-		} catch (SQLServerException e) {
-			System.out.println(e);
-		} catch (SQLException e) {
-			e.printStackTrace();
+		if (bd.getConnection()) {
+			try {
+				sql = "delete from "+NOME_TABELA+" where id_aluno = ?";
+				bd.st = bd.con.prepareStatement(sql);
+				bd.st.setInt(1, id);
+				bd.st.execute();
+			} catch (SQLServerException e) {
+				System.out.println(e);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			bd.close();
 		}
-		bd.close();
 	}
 	
 	public int getId() {
