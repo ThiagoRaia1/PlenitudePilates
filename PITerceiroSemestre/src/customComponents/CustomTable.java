@@ -13,27 +13,26 @@ import main.BD;
 public class CustomTable extends JScrollPane {
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * @param opcao - 
+	 * @return
+	 */
 	public static JTable configTabela(String opcao) {
-		String[] colunas = new String[5];
+		int numeroDeColunas = 5;
+		String[] colunas = new String[numeroDeColunas];
 		Object[][] dados = null;
 		String sql = null;
-		int numeroDeLinhasTabelaAluno = 0, numeroDeLinhasTabelaFuncionario = 0;
-		int numeroDeColunas = 5;
+		int numeroDeLinhasTabela = 0;
+		
 		BD bd = new BD();
-		if (opcao.equals("Aluno")) { // Da um jeito de criar essa condicional
+		if (opcao.equals(Aluno.getNOME_TABELA())) {
 			if (bd.getConnection()) {
 				try {
-					sql = "select count(*) from Aluno";
+					sql = "select count(*) from "+Aluno.getNOME_TABELA();
 					bd.st = bd.con.prepareStatement(sql);
 					bd.rs = bd.st.executeQuery();
 	                while (bd.rs.next()) {
-	                    numeroDeLinhasTabelaAluno = bd.rs.getInt(1);
-	                }
-	                sql = "select count(*) from Funcionario";
-	                bd.st = bd.con.prepareStatement(sql);
-					bd.rs = bd.st.executeQuery();
-	                while (bd.rs.next()) {
-	                    numeroDeLinhasTabelaFuncionario = bd.rs.getInt(1);
+	                	numeroDeLinhasTabela = bd.rs.getInt(1);
 	                }
 				} catch (SQLException erro) {
 					erro.printStackTrace();
@@ -44,35 +43,30 @@ public class CustomTable extends JScrollPane {
 			colunas[2] = "Data de nascimento";
 			colunas[3] = "CPF";
 			colunas[4] = "Contato";
-			if (numeroDeLinhasTabelaAluno > numeroDeLinhasTabelaFuncionario) {
-				dados = new Object[numeroDeLinhasTabelaAluno][numeroDeColunas];
-			} else {
-				dados = new Object[numeroDeLinhasTabelaFuncionario][numeroDeColunas];
-			}
-			JTable tabela = new JTable(dados, colunas);
-			tabela.setRowHeight(40);
-			tabela.setEnabled(false);
-			tabela.setFont(new Font("Tahoma", Font.PLAIN, 19));
+
+			Object[][] dadosAlunos = new Object[numeroDeLinhasTabela][numeroDeColunas];
+			
 			Aluno aluno = new Aluno();
-			for (int i = 1; i <= numeroDeLinhasTabelaAluno; i++) {
+			for (int i = 1; i <= numeroDeLinhasTabela; i++) {
 				aluno = Aluno.read(i);
-				dados[i-1][0] = aluno.getNome();
+				dadosAlunos[i-1][0] = aluno.getNome();
 				// dados[i-1][1] = aluno.getMensalidade();
-				dados[i-1][2] = aluno.getDataNascimento();
+				dadosAlunos[i-1][2] = aluno.getDataNascimento();
 				//dados[i-1][3] = aluno.getCpf();
-				dados[i-1][4] = aluno.getTelefone();
+				dadosAlunos[i-1][4] = aluno.getTelefone();
 			}
+			dados = dadosAlunos;
 			bd.close();
 		}
 		
-		if (opcao.equals("Funcionario")) {
-			sql = "select count(*) from Funcionario";
+		if (opcao.equals(Funcionario.getNOME_TABELA())) {
+			sql = "select count(*) from "+Funcionario.getNOME_TABELA();
 			if (bd.getConnection()) {
 				try {
 					bd.st = bd.con.prepareStatement(sql);
 					bd.rs = bd.st.executeQuery();
 	                while (bd.rs.next()) {
-	                    numeroDeLinhasTabelaAluno = bd.rs.getInt(1);
+	                	numeroDeLinhasTabela = bd.rs.getInt(1);
 	                }
 				} catch (SQLException erro) {
 					erro.printStackTrace();
@@ -83,21 +77,26 @@ public class CustomTable extends JScrollPane {
 			colunas[2] = "Data de nascimento";
 			colunas[3] = "CPF";
 			colunas[4] = "Contato";
-			tabela = new JTable(dados, colunas);
-			tabela.setRowHeight(40);
-			tabela.setEnabled(false);
-			tabela.setFont(new Font("Tahoma", Font.PLAIN, 19));
+
+			Object[][] dadosFuncionarios = new Object[numeroDeLinhasTabela][numeroDeColunas];
+			
 			Funcionario funcionario = new Funcionario();
-			for (int i = 1; i <= numeroDeLinhasTabelaAluno; i++) {
+			for (int i = 1; i <= numeroDeLinhasTabela; i++) {
 				funcionario = Funcionario.read(i);
-				dados[i-1][0] = funcionario.getNome();
+				dadosFuncionarios[i-1][0] = funcionario.getNome();
 				// dados[i-1][1] = funcionario.getMensalidade();
 				// dados[i-1][2] = funcionario.getDataNascimento();
 				// dados[i-1][3] = funcionario.getCpf();
-				dados[i-1][4] = funcionario.getTelefone();
+				dadosFuncionarios[i-1][4] = funcionario.getTelefone();
 			}
+			dados = dadosFuncionarios;
 			bd.close();
 		}
+		
+		JTable tabela = new JTable(dados, colunas);
+		tabela.setRowHeight(40);
+		tabela.setEnabled(false);
+		tabela.setFont(new Font("Tahoma", Font.PLAIN, 19));
 		return tabela;
 	}
 	

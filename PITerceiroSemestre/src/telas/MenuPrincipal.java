@@ -1,5 +1,6 @@
 package telas;
 
+import entities.Aluno;
 import entities.Funcionario;
 
 import javax.swing.JPanel;
@@ -31,27 +32,24 @@ public class MenuPrincipal extends JPanel {
 	public MenuPrincipal(Funcionario funcionario) {
 		
 		menuExibicao = new JPanel();
-		menuExibicao.setBounds(161, 0, 289, 300);
 		menuExibicao.setBackground(Color.LIGHT_GRAY);
 		
 		PanelMenu = new JPanel();
-		PanelMenu.setBounds(0, 0, 155, 300);
 		PanelMenu.setBackground(SystemColor.activeCaption);
 		
-		JScrollPane tabelaFuncionarios = new JScrollPane(CustomTable.configTabela("Funcionario"));
-		tabelaFuncionarios.setBounds(10, 37, 269, 252);
-		menuExibicao.add(tabelaFuncionarios);
+		JScrollPane tabelaFuncionarios = new JScrollPane(CustomTable.configTabela(Funcionario.getNOME_TABELA()));
+		tabelaFuncionarios.setVisible(false);
 		
-		JScrollPane tabelaAlunos = new JScrollPane(CustomTable.configTabela("Alunos"));
-		tabelaAlunos.setBounds(10, 41, 269, 248);
+		JScrollPane tabelaAlunos = new JScrollPane(CustomTable.configTabela(Aluno.getNOME_TABELA()));
 		tabelaAlunos.setVisible(false);
-		menuExibicao.add(tabelaAlunos);
 		
 		JButton btnAgenda = new JButton("Agenda");
 		btnAgenda.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				tabelaAlunos.setVisible(false);
 				tabelaFuncionarios.setVisible(false);
+				revalidate(); //refresh
+				repaint();
 			}
 		});
 		btnAgenda.setFont(new Font("Tahoma", Font.BOLD, 20));
@@ -61,9 +59,10 @@ public class MenuPrincipal extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				tabelaAlunos.setVisible(true);
 				tabelaFuncionarios.setVisible(false);
+				revalidate(); //refresh
+				repaint();
 			}
 		});
-		setLayout(null);
 		btnAlunos.setFont(new Font("Tahoma", Font.BOLD, 20));
 		
 		JButton btnEquipe = new JButton("Equipe");
@@ -71,11 +70,21 @@ public class MenuPrincipal extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				tabelaAlunos.setVisible(false);
 				tabelaFuncionarios.setVisible(true);
+				revalidate(); //refresh
+				repaint();
 			}
 		});
 		btnEquipe.setFont(new Font("Tahoma", Font.BOLD, 20));
 		
 		JButton btnFinanceiro = new JButton("Financeiro");
+		btnFinanceiro.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				tabelaAlunos.setVisible(false);
+				tabelaFuncionarios.setVisible(false);
+				revalidate(); //refresh
+				repaint();
+			}
+		});
 		btnFinanceiro.setFont(new Font("Tahoma", Font.BOLD, 20));
 		
 		JPanel panel_2 = new JPanel();
@@ -167,9 +176,41 @@ public class MenuPrincipal extends JPanel {
 		);
 		panel_2_1.setLayout(gl_panel_2_1);
 		PanelMenu.setLayout(gl_PanelMenu);
-		add(PanelMenu);
-		add(menuExibicao);
-		menuExibicao.setLayout(null);
+		GroupLayout groupLayout = new GroupLayout(this);
+		groupLayout.setHorizontalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addComponent(PanelMenu, GroupLayout.DEFAULT_SIZE, 294, Short.MAX_VALUE)
+					.addGap(6)
+					.addComponent(menuExibicao, GroupLayout.DEFAULT_SIZE, 418, Short.MAX_VALUE)
+					.addGap(10))
+		);
+		groupLayout.setVerticalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addComponent(PanelMenu, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addComponent(menuExibicao, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.addGap(11))
+		);
+		GroupLayout gl_menuExibicao = new GroupLayout(menuExibicao);
+		gl_menuExibicao.setHorizontalGroup(
+			gl_menuExibicao.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_menuExibicao.createSequentialGroup()
+					.addGap(10)
+					.addGroup(gl_menuExibicao.createParallelGroup(Alignment.LEADING)
+						.addComponent(tabelaAlunos, GroupLayout.DEFAULT_SIZE, 269, Short.MAX_VALUE)
+						.addComponent(tabelaFuncionarios, GroupLayout.DEFAULT_SIZE, 269, Short.MAX_VALUE)))
+		);
+		gl_menuExibicao.setVerticalGroup(
+			gl_menuExibicao.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_menuExibicao.createSequentialGroup()
+					.addGap(37)
+					.addGroup(gl_menuExibicao.createParallelGroup(Alignment.LEADING)
+						.addComponent(tabelaAlunos, GroupLayout.DEFAULT_SIZE, 252, Short.MAX_VALUE)
+						.addComponent(tabelaFuncionarios, GroupLayout.DEFAULT_SIZE, 252, Short.MAX_VALUE)))
+		);
+		menuExibicao.setLayout(gl_menuExibicao);
+		setLayout(groupLayout);
 
 	}
 }

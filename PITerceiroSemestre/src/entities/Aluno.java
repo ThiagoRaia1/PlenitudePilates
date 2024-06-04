@@ -231,7 +231,9 @@ public class Aluno {
 	public void setRegistradoPor(int registradoPor) {
 		this.registradoPor = registradoPor;
 	}
-
+	public static String getNOME_TABELA() {
+		return NOME_TABELA;
+	}
 	public Aluno() {
 		
 	}

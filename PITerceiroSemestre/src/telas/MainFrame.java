@@ -197,7 +197,6 @@ public class MainFrame extends JFrame {
 						System.out.println("Login realizado.");
 						loginFalhou = false;
 						MenuPrincipal m = new MenuPrincipal(funcionario);
-						AlunosPanel a = new AlunosPanel(funcionario);
 						setContentPane(m);
 						revalidate(); //refresh
 						repaint();

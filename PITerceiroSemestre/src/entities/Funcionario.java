@@ -38,28 +38,29 @@ public class Funcionario {
 		funcionario.setNivelDeAcesso(2);;
 		
 		BD bd = new BD();
-		bd.getConnection();
-		try {
-			sql = "insert into "+NOME_TABELA+" values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-			bd.st = bd.con.prepareStatement(sql);
-			bd.st.setInt(1, funcionario.getId());
-			bd.st.setString(2, funcionario.getNome());
-			bd.st.setString(3, funcionario.getTelefone());
-			bd.st.setString(4, funcionario.getCep());
-			bd.st.setString(5, funcionario.getCidade());
-			bd.st.setString(6, funcionario.getRua());
-			bd.st.setString(7, funcionario.getBairro());
-			bd.st.setString(8, funcionario.getUsuario());
-			bd.st.setString(9, funcionario.getSenha());
-			bd.st.setInt(10, funcionario.getNivelDeAcesso());
-			bd.st.execute();
-			System.out.println("Funcionario cadastrado.");
-		} catch (SQLServerException e) {
-			System.out.println("ID ja registrado.");
-		} catch (SQLException e) {
-			e.printStackTrace();
+		if (bd.getConnection()) {
+			try {
+				sql = "insert into "+NOME_TABELA+" values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+				bd.st = bd.con.prepareStatement(sql);
+				bd.st.setInt(1, funcionario.getId());
+				bd.st.setString(2, funcionario.getNome());
+				bd.st.setString(3, funcionario.getTelefone());
+				bd.st.setString(4, funcionario.getCep());
+				bd.st.setString(5, funcionario.getCidade());
+				bd.st.setString(6, funcionario.getRua());
+				bd.st.setString(7, funcionario.getBairro());
+				bd.st.setString(8, funcionario.getUsuario());
+				bd.st.setString(9, funcionario.getSenha());
+				bd.st.setInt(10, funcionario.getNivelDeAcesso());
+				bd.st.execute();
+				System.out.println("Funcionario cadastrado.");
+			} catch (SQLServerException e) {
+				System.out.println("ID ja registrado.");
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			bd.close();
 		}
-		bd.close();
 	}
 	
 	public static Funcionario read(int id) {
@@ -257,7 +258,9 @@ public class Funcionario {
 	public void setNivelDeAcesso(int nivelDeAcesso) {
 		this.nivelDeAcesso = nivelDeAcesso;
 	}
-	
+	public static String getNOME_TABELA() {
+		return NOME_TABELA;
+	}
 	public Funcionario() {
 		
 	}
