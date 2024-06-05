@@ -62,7 +62,7 @@ public class Main {
 		System.out.println("Pagamento excluído.");
 		
 		Aluno.delete(1);
-		System.out.println("Aluno exclXuído.");
+		System.out.println("Aluno excluído.");
 		
 		Funcionario.delete(1);
 		System.out.println("Funcionário excluído.");

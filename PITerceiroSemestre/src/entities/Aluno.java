@@ -1,5 +1,6 @@
 package entities;
 
+import java.sql.Date;
 import java.sql.SQLException;
 
 import com.microsoft.sqlserver.jdbc.SQLServerException;
@@ -12,7 +13,7 @@ public class Aluno {
 	
 	private int id;
 	private String nome;
-	private String dataNascimento;
+	private Date dataNascimento;
 	private String telefone;
 	private String cep;
 	private String cidade;
@@ -26,7 +27,7 @@ public class Aluno {
 		
 		aluno.setId(1); // autonumeração
 		aluno.setNome("Thiago");
-		aluno.setDataNascimento("19/09/2004");
+		aluno.setDataNascimento(Date.valueOf("2004-09-19 00:00:00.000"));
 		aluno.setTelefone("(XX)X XXXX-XXXX");
 		aluno.setCep("XXXXX/XXX");
 		aluno.setCidade("Indaiatuba");
@@ -41,7 +42,7 @@ public class Aluno {
 				bd.st = bd.con.prepareStatement(sql);
 				bd.st.setInt(1, aluno.getId());
 				bd.st.setString(2, aluno.getNome());
-				bd.st.setString(3, aluno.getDataNascimento());
+				bd.st.setDate(3, aluno.getDataNascimento());
 				bd.st.setString(4, aluno.getTelefone());
 				bd.st.setString(5, aluno.getCep());
 				bd.st.setString(6, aluno.getCidade());
@@ -76,7 +77,7 @@ public class Aluno {
 				while(bd.rs.next()) {
 					aluno.setId(bd.rs.getInt("id_aluno"));
 					aluno.setNome(bd.rs.getString("nome_aluno"));
-					aluno.setDataNascimento(bd.rs.getString("dataNascimento_aluno"));
+					aluno.setDataNascimento(bd.rs.getDate("dataNascimento_aluno"));
 					aluno.setTelefone(bd.rs.getString("telefone_aluno"));
 					aluno.setCep(bd.rs.getString("cep_aluno"));
 					aluno.setCidade(bd.rs.getString("cidade_aluno"));
@@ -109,7 +110,7 @@ public class Aluno {
 		
 		// Pedir dados ao usuário
 		aluno.setNome("Thiago");
-		aluno.setDataNascimento("19/09/2004");
+		aluno.setDataNascimento(Date.valueOf("2004-09-19 00:00:00.000"));
 		aluno.setTelefone("(XX)X XXXX-XXXX");
 		aluno.setCep("XXXXX/XXX");
 		aluno.setCidade("Indaiatuba");
@@ -123,7 +124,7 @@ public class Aluno {
 						+ "cidade_aluno = ?, rua_aluno = ?, bairro_aluno = ? where id_aluno = ?";
 				bd.st = bd.con.prepareStatement(sql);
 				bd.st.setString(1, aluno.getNome());
-				bd.st.setString(2, aluno.getDataNascimento());
+				bd.st.setDate(2, aluno.getDataNascimento());
 				bd.st.setString(3, aluno.getTelefone());
 				bd.st.setString(4, aluno.getCep());
 				bd.st.setString(5, aluno.getCidade());
@@ -176,11 +177,11 @@ public class Aluno {
 		this.nome = nome;
 	}
 
-	public String getDataNascimento() {
+	public Date getDataNascimento() {
 		return dataNascimento;
 	}
 
-	public void setDataNascimento(String dataNascimento) {
+	public void setDataNascimento(Date dataNascimento) {
 		this.dataNascimento = dataNascimento;
 	}
 
@@ -238,7 +239,7 @@ public class Aluno {
 		
 	}
 	
-	public Aluno(int id, String nome, String dataNascimento, String telefone, String cep, String cidade, String rua,
+	public Aluno(int id, String nome, Date dataNascimento, String telefone, String cep, String cidade, String rua,
 			String bairro, int registradoPor) {
 		super();
 		this.id = id;

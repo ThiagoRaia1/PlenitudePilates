@@ -9,13 +9,14 @@ import javax.swing.JTable;
 import entities.Aluno;
 import entities.Funcionario;
 import main.BD;
+import main.CalculaIdade;
 
 public class CustomTable extends JScrollPane {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * @param opcao - 
-	 * @return
+	 * @param opcao - A tabela selecionada
+	 * @return - a tabela com os dados da tabela selecionada e informações escolhidas
 	 */
 	public static JTable configTabela(String opcao) {
 		int numeroDeColunas = 5;
@@ -40,7 +41,7 @@ public class CustomTable extends JScrollPane {
 			}
 			colunas[0] = "Nome";
 			colunas[1] = "Mensalidade";
-			colunas[2] = "Data de nascimento";
+			colunas[2] = "Idade";
 			colunas[3] = "CPF";
 			colunas[4] = "Contato";
 
@@ -51,7 +52,7 @@ public class CustomTable extends JScrollPane {
 				aluno = Aluno.read(i);
 				dadosAlunos[i-1][0] = aluno.getNome();
 				// dados[i-1][1] = aluno.getMensalidade();
-				dadosAlunos[i-1][2] = aluno.getDataNascimento();
+				dadosAlunos[i-1][2] = CalculaIdade.calculaIdade(aluno.getDataNascimento());
 				//dados[i-1][3] = aluno.getCpf();
 				dadosAlunos[i-1][4] = aluno.getTelefone();
 			}
@@ -84,9 +85,9 @@ public class CustomTable extends JScrollPane {
 			for (int i = 1; i <= numeroDeLinhasTabela; i++) {
 				funcionario = Funcionario.read(i);
 				dadosFuncionarios[i-1][0] = funcionario.getNome();
-				// dados[i-1][1] = funcionario.getMensalidade();
-				// dados[i-1][2] = funcionario.getDataNascimento();
-				// dados[i-1][3] = funcionario.getCpf();
+				dadosFuncionarios[i-1][1] = funcionario.getFuncao();
+				// dadosFuncionarios[i-1][2] = funcionario.getDataNascimento();
+				// dadosFuncionarios[i-1][3] = funcionario.getCpf();
 				dadosFuncionarios[i-1][4] = funcionario.getTelefone();
 			}
 			dados = dadosFuncionarios;

@@ -147,7 +147,7 @@ public class MainFrame extends JFrame {
 		);
 		
 		JPictureBox pictureBox = new JPictureBox();
-		pictureBox.setIcon(new ImageIcon("C:\\Users\\thiag\\Desktop\\Telas\\logo.png"));
+		pictureBox.setIcon(new ImageIcon("C:\\Users\\1050482313025\\Desktop\\PlenitudePilates\\PITerceiroSemestre\\src\\telas\\Captura de tela 2024-05-31 162519.png"));
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)

@@ -14,6 +14,7 @@ public class Funcionario {
 	
 	private int id;
 	private String nome;
+	private String funcao;
 	private String telefone;
 	private String cep;
 	private String cidade;
@@ -28,6 +29,7 @@ public class Funcionario {
 		// Pedir dados ao usuário
 		funcionario.setId(1);
 		funcionario.setNome("Thiago");
+		funcionario.setFuncao("Função");
 		funcionario.setTelefone("telefone");
 		funcionario.setCep("cep");
 		funcionario.setCidade("Indaiatuba");
@@ -40,18 +42,19 @@ public class Funcionario {
 		BD bd = new BD();
 		if (bd.getConnection()) {
 			try {
-				sql = "insert into "+NOME_TABELA+" values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+				sql = "insert into "+NOME_TABELA+" values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 				bd.st = bd.con.prepareStatement(sql);
 				bd.st.setInt(1, funcionario.getId());
 				bd.st.setString(2, funcionario.getNome());
-				bd.st.setString(3, funcionario.getTelefone());
-				bd.st.setString(4, funcionario.getCep());
-				bd.st.setString(5, funcionario.getCidade());
-				bd.st.setString(6, funcionario.getRua());
-				bd.st.setString(7, funcionario.getBairro());
-				bd.st.setString(8, funcionario.getUsuario());
-				bd.st.setString(9, funcionario.getSenha());
-				bd.st.setInt(10, funcionario.getNivelDeAcesso());
+				bd.st.setString(3, funcionario.getFuncao());
+				bd.st.setString(4, funcionario.getTelefone());
+				bd.st.setString(5, funcionario.getCep());
+				bd.st.setString(6, funcionario.getCidade());
+				bd.st.setString(7, funcionario.getRua());
+				bd.st.setString(8, funcionario.getBairro());
+				bd.st.setString(9, funcionario.getUsuario());
+				bd.st.setString(10, funcionario.getSenha());
+				bd.st.setInt(11, funcionario.getNivelDeAcesso());
 				bd.st.execute();
 				System.out.println("Funcionario cadastrado.");
 			} catch (SQLServerException e) {
@@ -75,6 +78,7 @@ public class Funcionario {
 				while(bd.rs.next()) {
 					funcionario.setId(bd.rs.getInt("id_funcionario"));
 					funcionario.setNome(bd.rs.getString("nome_funcionario"));
+					funcionario.setFuncao(bd.rs.getString("funcao_funcionario"));
 					funcionario.setTelefone(bd.rs.getString("telefone_funcionario"));
 					funcionario.setCep(bd.rs.getString("cep_funcionario"));
 					funcionario.setCidade(bd.rs.getString("cidade_funcionario"));
@@ -112,6 +116,8 @@ public class Funcionario {
 		// if(JTextLabel != null) {
 			funcionario.setNome("Thiago"); // Update
 		// }
+			
+			funcionario.setFuncao("Função");
 		
 		// if(JTextLabel != null) {
 			funcionario.setTelefone("telefone"); // Update
@@ -148,21 +154,22 @@ public class Funcionario {
 		BD bd = new BD();
 		if (bd.getConnection()) {
 			try {
-					sql = "update "+NOME_TABELA+" set nome_funcionario = ?, telefone_funcionario = ?, "
+					sql = "update "+NOME_TABELA+" set nome_funcionario = ?, funcao_funcionario = ?, telefone_funcionario = ?, "
 							+ "cep_funcionario = ?, cidade_funcionario = ?, rua_funcionario = ?, "
 							+ "bairro_funcionario = ?, usuario_funcionario = ?, senha_funcionario = ?, "
 							+ "nivelDeAcesso_funcionario = ? where id_funcionario = ?";
 					bd.st = bd.con.prepareStatement(sql);
 					bd.st.setString(1, funcionario.getNome());
-					bd.st.setString(2, funcionario.getTelefone());
-					bd.st.setString(3, funcionario.getCep());
-					bd.st.setString(4, funcionario.getCidade());
-					bd.st.setString(5, funcionario.getRua());
-					bd.st.setString(6, funcionario.getBairro());
-					bd.st.setString(7, funcionario.getUsuario());
-					bd.st.setString(8, funcionario.getSenha());
-					bd.st.setInt(9, funcionario.getNivelDeAcesso());
-					bd.st.setInt(10, funcionario.getId());
+					bd.st.setString(2, funcionario.getFuncao());
+					bd.st.setString(3, funcionario.getTelefone());
+					bd.st.setString(4, funcionario.getCep());
+					bd.st.setString(5, funcionario.getCidade());
+					bd.st.setString(6, funcionario.getRua());
+					bd.st.setString(7, funcionario.getBairro());
+					bd.st.setString(8, funcionario.getUsuario());
+					bd.st.setString(9, funcionario.getSenha());
+					bd.st.setInt(10, funcionario.getNivelDeAcesso());
+					bd.st.setInt(11, funcionario.getId());
 					bd.st.execute();
 					
 					System.out.println("Dados do funcionário "+funcionario.getNome()+" atualizados.");
@@ -209,6 +216,12 @@ public class Funcionario {
 	}
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+	public String getFuncao() {
+		return funcao;
+	}
+	public void setFuncao(String funcao) {
+		this.funcao = funcao;
 	}
 	public String getTelefone() {
 		return telefone;
