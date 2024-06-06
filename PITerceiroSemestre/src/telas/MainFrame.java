@@ -104,30 +104,27 @@ public class MainFrame extends JFrame {
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_contentPane.createSequentialGroup()
-					.addComponent(panel, GroupLayout.DEFAULT_SIZE, 531, Short.MAX_VALUE)
-					.addGap(18)
+					.addComponent(panel, GroupLayout.DEFAULT_SIZE, 557, Short.MAX_VALUE)
+					.addGap(68)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
+						.addComponent(panel_3, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 517, Short.MAX_VALUE)
+						.addComponent(panel_1, GroupLayout.DEFAULT_SIZE, 517, Short.MAX_VALUE)
 						.addGroup(gl_contentPane.createSequentialGroup()
-							.addComponent(panel_2, GroupLayout.DEFAULT_SIZE, 69, Short.MAX_VALUE)
-							.addGap(7)
-							.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
-								.addComponent(panel_1, GroupLayout.DEFAULT_SIZE, 441, Short.MAX_VALUE)
-								.addGroup(gl_contentPane.createSequentialGroup()
-									.addGap(35)
-									.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-										.addComponent(btnLogin, GroupLayout.DEFAULT_SIZE, 294, Short.MAX_VALUE)
-										.addComponent(passwordField, GroupLayout.DEFAULT_SIZE, 294, Short.MAX_VALUE)
-										.addComponent(textFieldLogin, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 294, Short.MAX_VALUE))
-									.addGap(32)
-									.addComponent(panel_4, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE))))
-						.addComponent(panel_3, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 517, Short.MAX_VALUE)))
+							.addComponent(panel_2, GroupLayout.DEFAULT_SIZE, 93, Short.MAX_VALUE)
+							.addGap(18)
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+								.addComponent(btnLogin, GroupLayout.DEFAULT_SIZE, 294, Short.MAX_VALUE)
+								.addComponent(passwordField, GroupLayout.DEFAULT_SIZE, 294, Short.MAX_VALUE)
+								.addComponent(textFieldLogin, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 294, Short.MAX_VALUE))
+							.addGap(32)
+							.addComponent(panel_4, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE))))
 		);
 		gl_contentPane.setVerticalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
+					.addComponent(panel_1, GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_contentPane.createSequentialGroup()
-							.addComponent(panel_1, GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
 								.addComponent(panel_4, GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE)
@@ -138,22 +135,18 @@ public class MainFrame extends JFrame {
 									.addPreferredGap(ComponentPlacement.UNRELATED)
 									.addComponent(btnLogin, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
 									.addPreferredGap(ComponentPlacement.RELATED))))
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addContainerGap()
-							.addComponent(panel_2, GroupLayout.PREFERRED_SIZE, 133, GroupLayout.PREFERRED_SIZE)))
+						.addComponent(panel_2, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 133, GroupLayout.PREFERRED_SIZE))
 					.addGap(7)
 					.addComponent(panel_3, GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE))
 				.addComponent(panel, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 501, Short.MAX_VALUE)
 		);
 		
 		JPictureBox pictureBox = new JPictureBox();
-		pictureBox.setIcon(new ImageIcon("C:\\Users\\1050482313025\\Desktop\\PlenitudePilates\\PITerceiroSemestre\\src\\telas\\Captura de tela 2024-05-31 162519.png"));
+		pictureBox.setIcon(new ImageIcon("C:\\Users\\thiag\\Desktop\\Telas\\logo.png"));
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel.createSequentialGroup()
-					.addComponent(pictureBox, GroupLayout.DEFAULT_SIZE, 521, Short.MAX_VALUE)
-					.addContainerGap())
+				.addComponent(pictureBox, GroupLayout.DEFAULT_SIZE, 531, Short.MAX_VALUE)
 		);
 		gl_panel.setVerticalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)

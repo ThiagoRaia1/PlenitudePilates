@@ -1,10 +1,10 @@
 package telas;
 
-import entities.Aluno;
 import entities.Funcionario;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import java.awt.SystemColor;
@@ -13,8 +13,7 @@ import javax.swing.JButton;
 import java.awt.Font;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
-
-import customComponents.CustomTable;
+import javax.swing.table.DefaultTableModel;
 
 import java.awt.Color;
 import java.awt.event.ActionListener;
@@ -25,11 +24,26 @@ public class MenuPrincipal extends JPanel {
 	
 	private static JPanel menuExibicao;
 	private static JPanel PanelMenu;
-
+	
 	/**
 	 * Create the panel.
 	 */
 	public MenuPrincipal(Funcionario funcionario) {
+		
+		JScrollPane scrollPane = new JScrollPane();
+		JTable tabelaFuncionarios = new JTable();
+        tabelaFuncionarios.setModel(new DefaultTableModel(
+        new Object [][] {}, 
+        new String [] 
+        		{"Nome", "Funcao", "Idade", "CPF", "Contato"}
+        ));
+
+		JTable tabelaAlunos = new JTable();
+        tabelaAlunos.setModel(new DefaultTableModel(
+        new Object [][] {}, 
+        new String [] 
+        		{"Nome", "Mensalidade", "Idade", "CPF", "Contato"}
+        ));
 		
 		menuExibicao = new JPanel();
 		menuExibicao.setBackground(Color.LIGHT_GRAY);
@@ -37,17 +51,9 @@ public class MenuPrincipal extends JPanel {
 		PanelMenu = new JPanel();
 		PanelMenu.setBackground(SystemColor.activeCaption);
 		
-		JScrollPane tabelaFuncionarios = new JScrollPane(CustomTable.configTabela(Funcionario.getNOME_TABELA()));
-		tabelaFuncionarios.setVisible(false);
-		
-		JScrollPane tabelaAlunos = new JScrollPane(CustomTable.configTabela(Aluno.getNOME_TABELA()));
-		tabelaAlunos.setVisible(false);
-		
 		JButton btnAgenda = new JButton("Agenda");
 		btnAgenda.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				tabelaAlunos.setVisible(false);
-				tabelaFuncionarios.setVisible(false);
 				revalidate(); //refresh
 				repaint();
 			}
@@ -57,8 +63,11 @@ public class MenuPrincipal extends JPanel {
 		JButton btnAlunos = new JButton("Alunos");
 		btnAlunos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				tabelaAlunos.setVisible(true);
-				tabelaFuncionarios.setVisible(false);
+				DefaultTableModel model = (DefaultTableModel) tabelaAlunos.getModel();
+		        model.addRow(new Object[]
+		        		{"Thiago", "Mensalidade", "19", "CPF", "Contato"}
+		        );
+		        scrollPane.setViewportView(tabelaAlunos);
 				revalidate(); //refresh
 				repaint();
 			}
@@ -68,19 +77,20 @@ public class MenuPrincipal extends JPanel {
 		JButton btnEquipe = new JButton("Equipe");
 		btnEquipe.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				tabelaAlunos.setVisible(false);
-				tabelaFuncionarios.setVisible(true);
+				DefaultTableModel model = (DefaultTableModel) tabelaFuncionarios.getModel();
+		        model.addRow(new Object[]
+		        		{"Thiago", "Funcao", "19", "CPF", "Contato"}
+		        );
+		        scrollPane.setViewportView(tabelaFuncionarios);
 				revalidate(); //refresh
 				repaint();
 			}
 		});
-		btnEquipe.setFont(new Font("Tahoma", Font.BOLD, 20));
+		btnEquipe.setFont(new Font("Tahoma", Font.BOLD, 20));  
 		
 		JButton btnFinanceiro = new JButton("Financeiro");
 		btnFinanceiro.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				tabelaAlunos.setVisible(false);
-				tabelaFuncionarios.setVisible(false);
 				revalidate(); //refresh
 				repaint();
 			}
@@ -180,34 +190,29 @@ public class MenuPrincipal extends JPanel {
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addComponent(PanelMenu, GroupLayout.DEFAULT_SIZE, 294, Short.MAX_VALUE)
-					.addGap(6)
-					.addComponent(menuExibicao, GroupLayout.DEFAULT_SIZE, 418, Short.MAX_VALUE)
-					.addGap(10))
+					.addComponent(PanelMenu, GroupLayout.DEFAULT_SIZE, 229, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(menuExibicao, GroupLayout.DEFAULT_SIZE, 349, Short.MAX_VALUE))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addComponent(PanelMenu, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addComponent(menuExibicao, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-					.addGap(11))
+				.addComponent(menuExibicao, GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
 		);
 		GroupLayout gl_menuExibicao = new GroupLayout(menuExibicao);
 		gl_menuExibicao.setHorizontalGroup(
 			gl_menuExibicao.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_menuExibicao.createSequentialGroup()
 					.addGap(10)
-					.addGroup(gl_menuExibicao.createParallelGroup(Alignment.LEADING)
-						.addComponent(tabelaAlunos, GroupLayout.DEFAULT_SIZE, 269, Short.MAX_VALUE)
-						.addComponent(tabelaFuncionarios, GroupLayout.DEFAULT_SIZE, 269, Short.MAX_VALUE)))
+					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 262, Short.MAX_VALUE)
+					.addGap(10))
 		);
 		gl_menuExibicao.setVerticalGroup(
 			gl_menuExibicao.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_menuExibicao.createSequentialGroup()
-					.addGap(37)
-					.addGroup(gl_menuExibicao.createParallelGroup(Alignment.LEADING)
-						.addComponent(tabelaAlunos, GroupLayout.DEFAULT_SIZE, 252, Short.MAX_VALUE)
-						.addComponent(tabelaFuncionarios, GroupLayout.DEFAULT_SIZE, 252, Short.MAX_VALUE)))
+					.addGap(39)
+					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
+					.addGap(11))
 		);
 		menuExibicao.setLayout(gl_menuExibicao);
 		setLayout(groupLayout);
