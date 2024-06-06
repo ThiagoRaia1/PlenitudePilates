@@ -1,6 +1,10 @@
 package telas;
 
+import entities.Aluno;
 import entities.Funcionario;
+import main.BD;
+import main.CalculaIdade;
+import main.GetRowCount;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -17,7 +21,10 @@ import javax.swing.table.DefaultTableModel;
 
 import java.awt.Color;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.awt.event.ActionEvent;
+import customComponents.JPictureBox;
+import javax.swing.ImageIcon;
 
 public class MenuPrincipal extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -29,14 +36,19 @@ public class MenuPrincipal extends JPanel {
 	 * Create the panel.
 	 */
 	public MenuPrincipal(Funcionario funcionario) {
+		setBackground(new Color(255, 255, 255));
 		
 		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setViewportBorder(null);
 		JTable tabelaFuncionarios = new JTable();
         tabelaFuncionarios.setModel(new DefaultTableModel(
         new Object [][] {}, 
         new String [] 
         		{"Nome", "Funcao", "Idade", "CPF", "Contato"}
         ));
+		tabelaFuncionarios.setRowHeight(40);
+		tabelaFuncionarios.setEnabled(false);
+		tabelaFuncionarios.setFont(new Font("Tahoma", Font.PLAIN, 19));
 
 		JTable tabelaAlunos = new JTable();
         tabelaAlunos.setModel(new DefaultTableModel(
@@ -44,6 +56,9 @@ public class MenuPrincipal extends JPanel {
         new String [] 
         		{"Nome", "Mensalidade", "Idade", "CPF", "Contato"}
         ));
+		tabelaAlunos.setRowHeight(40);
+		tabelaAlunos.setEnabled(false);
+		tabelaAlunos.setFont(new Font("Tahoma", Font.PLAIN, 19));
 		
 		menuExibicao = new JPanel();
 		menuExibicao.setBackground(Color.LIGHT_GRAY);
@@ -54,6 +69,7 @@ public class MenuPrincipal extends JPanel {
 		JButton btnAgenda = new JButton("Agenda");
 		btnAgenda.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				scrollPane.setVisible(false);
 				revalidate(); //refresh
 				repaint();
 			}
@@ -63,10 +79,27 @@ public class MenuPrincipal extends JPanel {
 		JButton btnAlunos = new JButton("Alunos");
 		btnAlunos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				scrollPane.setVisible(true);
 				DefaultTableModel model = (DefaultTableModel) tabelaAlunos.getModel();
-		        model.addRow(new Object[]
-		        		{"Thiago", "Mensalidade", "19", "CPF", "Contato"}
-		        );
+				int numeroDeLinhasTabela = GetRowCount.getRowCount(Aluno.getNOME_TABELA());
+				int qtdeLinhasTabelaAtual = model.getRowCount();
+				System.out.println("Quantidade de linhas atual: "+model.getRowCount());
+				if (qtdeLinhasTabelaAtual != 0) {
+					for (int i = qtdeLinhasTabelaAtual; i > 0; i--) {
+						System.out.println(i);
+						model.removeRow(i-1);
+					}
+				}
+				Aluno aluno = new Aluno();
+				if (numeroDeLinhasTabela >= qtdeLinhasTabelaAtual) {
+					for (int i = 1; i <= numeroDeLinhasTabela; i++) {
+						aluno = Aluno.read(i);
+				        model.addRow(new Object[]
+				        		{aluno.getNome(), "Mensalidade", CalculaIdade.calculaIdade(aluno.getDataNascimento()), 
+				        				"CPF", aluno.getTelefone()}
+				        );
+					}
+				}
 		        scrollPane.setViewportView(tabelaAlunos);
 				revalidate(); //refresh
 				repaint();
@@ -77,10 +110,28 @@ public class MenuPrincipal extends JPanel {
 		JButton btnEquipe = new JButton("Equipe");
 		btnEquipe.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				scrollPane.setVisible(true);
 				DefaultTableModel model = (DefaultTableModel) tabelaFuncionarios.getModel();
-		        model.addRow(new Object[]
-		        		{"Thiago", "Funcao", "19", "CPF", "Contato"}
-		        );
+				int numeroDeLinhasTabela = GetRowCount.getRowCount(Funcionario.getNOME_TABELA());
+				int qtdeLinhasTabelaAtual = model.getRowCount();
+				System.out.println("Quantidade de linhas atual: "+model.getRowCount());
+				if (qtdeLinhasTabelaAtual != 0) {
+					for (int i = qtdeLinhasTabelaAtual; i > 0; i--) {
+						System.out.println(i);
+						model.removeRow(i-1);
+					}
+				}
+				Funcionario funcionario = new Funcionario();
+				if (numeroDeLinhasTabela >= qtdeLinhasTabelaAtual) {
+					for (int i = 1; i <= numeroDeLinhasTabela; i++) {
+						funcionario = Funcionario.read(i);
+				        model.addRow(new Object[]
+				        		{funcionario.getNome(), "Mensalidade", 
+				        				19, 
+				        				"CPF", funcionario.getTelefone()}
+				        );
+					}
+				}
 		        scrollPane.setViewportView(tabelaFuncionarios);
 				revalidate(); //refresh
 				repaint();
@@ -91,6 +142,7 @@ public class MenuPrincipal extends JPanel {
 		JButton btnFinanceiro = new JButton("Financeiro");
 		btnFinanceiro.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				scrollPane.setVisible(false);
 				revalidate(); //refresh
 				repaint();
 			}
@@ -114,59 +166,6 @@ public class MenuPrincipal extends JPanel {
 		
 		JPanel panel_4_1 = new JPanel();
 		panel_4_1.setBackground(SystemColor.activeCaption);
-		GroupLayout gl_PanelMenu = new GroupLayout(PanelMenu);
-		gl_PanelMenu.setHorizontalGroup(
-			gl_PanelMenu.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_PanelMenu.createSequentialGroup()
-					.addComponent(panel_4_1, GroupLayout.PREFERRED_SIZE, 16, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_PanelMenu.createParallelGroup(Alignment.TRAILING)
-						.addGroup(gl_PanelMenu.createSequentialGroup()
-							.addGroup(gl_PanelMenu.createParallelGroup(Alignment.LEADING)
-								.addComponent(panel_3, GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE)
-								.addComponent(btnAgenda, GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE))
-							.addContainerGap())
-						.addGroup(gl_PanelMenu.createSequentialGroup()
-							.addGroup(gl_PanelMenu.createParallelGroup(Alignment.TRAILING)
-								.addComponent(panel_2_1, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 121, Short.MAX_VALUE)
-								.addComponent(panel_2, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 121, Short.MAX_VALUE)
-								.addComponent(panel_3_2, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 121, Short.MAX_VALUE)
-								.addComponent(panel_3_1, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 121, Short.MAX_VALUE)
-								.addComponent(btnAlunos, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 121, Short.MAX_VALUE)
-								.addGroup(Alignment.LEADING, gl_PanelMenu.createSequentialGroup()
-									.addComponent(btnEquipe, GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE)
-									.addGap(2))
-								.addGroup(Alignment.LEADING, gl_PanelMenu.createSequentialGroup()
-									.addComponent(btnFinanceiro, GroupLayout.PREFERRED_SIZE, 117, Short.MAX_VALUE)
-									.addGap(4)))
-							.addGap(12))))
-		);
-		gl_PanelMenu.setVerticalGroup(
-			gl_PanelMenu.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_PanelMenu.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(gl_PanelMenu.createParallelGroup(Alignment.LEADING)
-						.addComponent(panel_4_1, GroupLayout.PREFERRED_SIZE, 278, GroupLayout.PREFERRED_SIZE)
-						.addGroup(gl_PanelMenu.createSequentialGroup()
-							.addComponent(panel_2, GroupLayout.DEFAULT_SIZE, 20, Short.MAX_VALUE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnAgenda, GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE)
-							.addGap(4)
-							.addComponent(panel_3, GroupLayout.DEFAULT_SIZE, 10, Short.MAX_VALUE)
-							.addGap(4)
-							.addComponent(btnAlunos, GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(panel_3_1, GroupLayout.DEFAULT_SIZE, 10, Short.MAX_VALUE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnEquipe, GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(panel_3_2, GroupLayout.DEFAULT_SIZE, 10, Short.MAX_VALUE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnFinanceiro, GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE)
-							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(panel_2_1, GroupLayout.DEFAULT_SIZE, 47, Short.MAX_VALUE)))
-					.addContainerGap())
-		);
 		
 		JLabel lblNomeUsuario_1 = new JLabel(funcionario.getNome());
 		lblNomeUsuario_1.setHorizontalAlignment(SwingConstants.CENTER);
@@ -185,37 +184,143 @@ public class MenuPrincipal extends JPanel {
 					.addComponent(lblNomeUsuario_1, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE))
 		);
 		panel_2_1.setLayout(gl_panel_2_1);
-		PanelMenu.setLayout(gl_PanelMenu);
+		
+		JButton btnNewButton = new JButton("Adicionar");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
+		
+		JButton btnNewButton_1 = new JButton("Editar");
+		
+		JPictureBox pictureBox = new JPictureBox();
+		pictureBox.setIcon(new ImageIcon("C:\\Users\\1050482313025\\git\\PlenitudePilates\\PITerceiroSemestre\\src\\images\\add-friend.png"));
+		
+		JPictureBox pictureBox_1 = new JPictureBox();
+		pictureBox_1.setIcon(new ImageIcon("C:\\Users\\1050482313025\\git\\PlenitudePilates\\PITerceiroSemestre\\src\\images\\edit.png"));
+		JPictureBox pictureBox_2 = new JPictureBox();
+		pictureBox_2.setIcon(new ImageIcon("C:\\Users\\1050482313025\\git\\PlenitudePilates\\PITerceiroSemestre\\src\\images\\fundo.png"));
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addComponent(PanelMenu, GroupLayout.DEFAULT_SIZE, 229, Short.MAX_VALUE)
+					.addComponent(PanelMenu, GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(menuExibicao, GroupLayout.DEFAULT_SIZE, 349, Short.MAX_VALUE))
+					.addComponent(menuExibicao, GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
+					.addGap(0))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addComponent(PanelMenu, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-				.addComponent(menuExibicao, GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addComponent(menuExibicao, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.addContainerGap())
+				.addComponent(PanelMenu, GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
 		);
+		GroupLayout gl_panelMenu = new GroupLayout(PanelMenu);
+		gl_panelMenu.setHorizontalGroup(
+			gl_panelMenu.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panelMenu.createSequentialGroup()
+					.addComponent(panel_4_1, GroupLayout.PREFERRED_SIZE, 16, GroupLayout.PREFERRED_SIZE)
+					.addGap(6)
+					.addGroup(gl_panelMenu.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panelMenu.createSequentialGroup()
+							.addComponent(panel_2, GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)
+							.addGap(2))
+						.addComponent(btnAgenda, GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
+						.addComponent(panel_3, GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
+						.addGroup(gl_panelMenu.createSequentialGroup()
+							.addComponent(btnAlunos, GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)
+							.addGap(2))
+						.addGroup(gl_panelMenu.createSequentialGroup()
+							.addComponent(panel_3_1, GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)
+							.addGap(2))
+						.addGroup(gl_panelMenu.createSequentialGroup()
+							.addComponent(btnEquipe, GroupLayout.DEFAULT_SIZE, 126, Short.MAX_VALUE)
+							.addGap(4))
+						.addGroup(gl_panelMenu.createSequentialGroup()
+							.addComponent(panel_3_2, GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)
+							.addGap(2))
+						.addGroup(gl_panelMenu.createSequentialGroup()
+							.addComponent(btnFinanceiro, GroupLayout.PREFERRED_SIZE, 124, Short.MAX_VALUE)
+							.addGap(6))
+						.addGroup(gl_panelMenu.createSequentialGroup()
+							.addComponent(panel_2_1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addGap(2)))
+					.addGap(9))
+		);
+		gl_panelMenu.setVerticalGroup(
+			gl_panelMenu.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panelMenu.createSequentialGroup()
+					.addGap(11)
+					.addGroup(gl_panelMenu.createParallelGroup(Alignment.LEADING)
+						.addComponent(panel_4_1, GroupLayout.PREFERRED_SIZE, 278, GroupLayout.PREFERRED_SIZE)
+						.addGroup(gl_panelMenu.createSequentialGroup()
+							.addComponent(panel_2, GroupLayout.DEFAULT_SIZE, 20, Short.MAX_VALUE)
+							.addGap(6)
+							.addComponent(btnAgenda, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addGap(4)
+							.addComponent(panel_3, GroupLayout.DEFAULT_SIZE, 10, Short.MAX_VALUE)
+							.addGap(4)
+							.addComponent(btnAlunos, GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE)
+							.addGap(6)
+							.addComponent(panel_3_1, GroupLayout.DEFAULT_SIZE, 10, Short.MAX_VALUE)
+							.addGap(6)
+							.addComponent(btnEquipe, GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE)
+							.addGap(6)
+							.addComponent(panel_3_2, GroupLayout.DEFAULT_SIZE, 10, Short.MAX_VALUE)
+							.addGap(6)
+							.addComponent(btnFinanceiro, GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE)
+							.addGap(11)
+							.addComponent(panel_2_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
+		);
+		PanelMenu.setLayout(gl_panelMenu);
 		GroupLayout gl_menuExibicao = new GroupLayout(menuExibicao);
 		gl_menuExibicao.setHorizontalGroup(
 			gl_menuExibicao.createParallelGroup(Alignment.LEADING)
+				.addGroup(Alignment.TRAILING, gl_menuExibicao.createSequentialGroup()
+					.addGap(90)
+					.addComponent(btnNewButton_1, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE)
+					.addGap(104))
 				.addGroup(gl_menuExibicao.createSequentialGroup()
 					.addGap(10)
 					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 262, Short.MAX_VALUE)
-					.addGap(10))
+					.addGap(17))
+				.addGroup(Alignment.TRAILING, gl_menuExibicao.createSequentialGroup()
+					.addGap(197)
+					.addComponent(pictureBox, GroupLayout.PREFERRED_SIZE, 58, GroupLayout.PREFERRED_SIZE)
+					.addGap(28))
+				.addGroup(Alignment.TRAILING, gl_menuExibicao.createSequentialGroup()
+					.addGap(185)
+					.addComponent(btnNewButton, GroupLayout.PREFERRED_SIZE, 87, GroupLayout.PREFERRED_SIZE)
+					.addGap(11))
+				.addGroup(Alignment.TRAILING, gl_menuExibicao.createSequentialGroup()
+					.addGap(104)
+					.addComponent(pictureBox_1, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)
+					.addGap(119))
+				.addComponent(pictureBox_2, GroupLayout.DEFAULT_SIZE, 289, Short.MAX_VALUE)
 		);
 		gl_menuExibicao.setVerticalGroup(
 			gl_menuExibicao.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_menuExibicao.createSequentialGroup()
-					.addGap(39)
-					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
+					.addGap(11)
+					.addComponent(btnNewButton_1)
+					.addGap(62)
+					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
 					.addGap(11))
+				.addGroup(gl_menuExibicao.createSequentialGroup()
+					.addGap(39)
+					.addComponent(pictureBox, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE))
+				.addGroup(gl_menuExibicao.createSequentialGroup()
+					.addGap(11)
+					.addComponent(btnNewButton))
+				.addGroup(gl_menuExibicao.createSequentialGroup()
+					.addGap(39)
+					.addComponent(pictureBox_1, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE))
+				.addComponent(pictureBox_2, GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
 		);
 		menuExibicao.setLayout(gl_menuExibicao);
 		setLayout(groupLayout);
-
+		
 	}
 }

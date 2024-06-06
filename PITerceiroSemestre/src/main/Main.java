@@ -9,6 +9,7 @@ import entities.Funcionario;
 import entities.Pagamento;
 import telas.MainFrame;
 
+@SuppressWarnings("unused")
 public class Main {
 	
 	public static String opcao() {

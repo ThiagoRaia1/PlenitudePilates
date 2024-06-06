@@ -16,8 +16,8 @@ public class BD {
 	private final String DATABASENAME = "DatabasePI";
 	private final String URL = "jdbc:sqlserver://localhost:1433;databasename="+DATABASENAME;
 	
-	private final String LOGIN = "sa";
-	private final String SENHA = "thiago";
+	private final String LOGIN = "usuario";
+	private final String SENHA = "fatec";
 	
 	
 	/**

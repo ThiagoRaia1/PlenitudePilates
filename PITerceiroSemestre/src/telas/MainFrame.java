@@ -16,7 +16,6 @@ import javax.swing.border.EmptyBorder;
 import customComponents.JPictureBox;
 import entities.Funcionario;
 import main.BD;
-import main.Main;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -142,7 +141,7 @@ public class MainFrame extends JFrame {
 		);
 		
 		JPictureBox pictureBox = new JPictureBox();
-		pictureBox.setIcon(new ImageIcon("C:\\Users\\thiag\\Desktop\\Telas\\logo.png"));
+		pictureBox.setIcon(new ImageIcon("C:\\Users\\1050482313025\\git\\PlenitudePilates\\PITerceiroSemestre\\src\\images\\Captura de tela 2024-05-31 162519.png"));
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
@@ -167,15 +166,16 @@ public class MainFrame extends JFrame {
 				String sql = "select count(*) from Funcionario";
 				int numeroDeLinhas = 0;
 				BD bd = new BD();
-				bd.getConnection();
-				try {
-					bd.st = bd.con.prepareStatement(sql);
-					bd.rs = bd.st.executeQuery();
-	                while (bd.rs.next()) {
-	                    numeroDeLinhas = bd.rs.getInt(1);
-	                }
-				} catch (SQLException erro) {
-					erro.printStackTrace();
+				if (bd.getConnection()) {
+					try {
+						bd.st = bd.con.prepareStatement(sql);
+						bd.rs = bd.st.executeQuery();
+		                while (bd.rs.next()) {
+		                    numeroDeLinhas = bd.rs.getInt(1);
+		                }
+					} catch (SQLException erro) {
+						erro.printStackTrace();
+					}
 				}
                 System.out.println("Número de linhas: "+numeroDeLinhas);
 				
