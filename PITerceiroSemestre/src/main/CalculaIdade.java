@@ -44,10 +44,7 @@ public class CalculaIdade {
 		} else {
 			// System.out.println("Aniversário ainda não passou");
 			idade--;
-		}
-		
-		System.out.println("Idade: "+idade);
-		
+		}	
 	return idade;
 	}
 }

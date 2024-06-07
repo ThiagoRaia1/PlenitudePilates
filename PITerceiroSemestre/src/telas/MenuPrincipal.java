@@ -2,7 +2,6 @@ package telas;
 
 import entities.Aluno;
 import entities.Funcionario;
-import main.BD;
 import main.CalculaIdade;
 import main.GetRowCount;
 
@@ -21,7 +20,6 @@ import javax.swing.table.DefaultTableModel;
 
 import java.awt.Color;
 import java.awt.event.ActionListener;
-import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 import customComponents.JPictureBox;
 import javax.swing.ImageIcon;
@@ -35,7 +33,7 @@ public class MenuPrincipal extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public MenuPrincipal(Funcionario funcionario) {
+	public MenuPrincipal(Funcionario funcionario, MainFrame frame) {
 		setBackground(new Color(255, 255, 255));
 		
 		JScrollPane scrollPane = new JScrollPane();
@@ -44,7 +42,7 @@ public class MenuPrincipal extends JPanel {
         tabelaFuncionarios.setModel(new DefaultTableModel(
         new Object [][] {}, 
         new String [] 
-        		{"Nome", "Funcao", "Idade", "CPF", "Contato"}
+        		{"Nome", "Funcao", "Idade", "CPF", "Contato"} // Nome das colunas da tabela
         ));
 		tabelaFuncionarios.setRowHeight(40);
 		tabelaFuncionarios.setEnabled(false);
@@ -54,7 +52,7 @@ public class MenuPrincipal extends JPanel {
         tabelaAlunos.setModel(new DefaultTableModel(
         new Object [][] {}, 
         new String [] 
-        		{"Nome", "Mensalidade", "Idade", "CPF", "Contato"}
+        		{"Nome", "Mensalidade", "Idade", "CPF", "Contato"} // Nome das colunas da tabela
         ));
 		tabelaAlunos.setRowHeight(40);
 		tabelaAlunos.setEnabled(false);
@@ -95,7 +93,7 @@ public class MenuPrincipal extends JPanel {
 					for (int i = 1; i <= numeroDeLinhasTabela; i++) {
 						aluno = Aluno.read(i);
 				        model.addRow(new Object[]
-				        		{aluno.getNome(), "Mensalidade", CalculaIdade.calculaIdade(aluno.getDataNascimento()), 
+				        		{aluno.getNome(), 200, CalculaIdade.calculaIdade(aluno.getDataNascimento()), 
 				        				"CPF", aluno.getTelefone()}
 				        );
 					}
@@ -114,7 +112,6 @@ public class MenuPrincipal extends JPanel {
 				DefaultTableModel model = (DefaultTableModel) tabelaFuncionarios.getModel();
 				int numeroDeLinhasTabela = GetRowCount.getRowCount(Funcionario.getNOME_TABELA());
 				int qtdeLinhasTabelaAtual = model.getRowCount();
-				System.out.println("Quantidade de linhas atual: "+model.getRowCount());
 				if (qtdeLinhasTabelaAtual != 0) {
 					for (int i = qtdeLinhasTabelaAtual; i > 0; i--) {
 						System.out.println(i);
@@ -126,7 +123,7 @@ public class MenuPrincipal extends JPanel {
 					for (int i = 1; i <= numeroDeLinhasTabela; i++) {
 						funcionario = Funcionario.read(i);
 				        model.addRow(new Object[]
-				        		{funcionario.getNome(), "Mensalidade", 
+				        		{funcionario.getNome(), funcionario.getFuncao(), 
 				        				19, 
 				        				"CPF", funcionario.getTelefone()}
 				        );
@@ -185,37 +182,42 @@ public class MenuPrincipal extends JPanel {
 		);
 		panel_2_1.setLayout(gl_panel_2_1);
 		
-		JButton btnNewButton = new JButton("Adicionar");
-		btnNewButton.addActionListener(new ActionListener() {
+		JButton btnAdicionar = new JButton("Adicionar");
+		btnAdicionar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				AddAluno addPanel = new AddAluno(funcionario, frame);
+				frame.setContentPane(addPanel);
+				frame.revalidate(); //refresh
+				frame.repaint();
 			}
 		});
 		
-		JButton btnNewButton_1 = new JButton("Editar");
+		JButton btnEditar = new JButton("Editar");
+		btnEditar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
 		
-		JPictureBox pictureBox = new JPictureBox();
-		pictureBox.setIcon(new ImageIcon("C:\\Users\\1050482313025\\git\\PlenitudePilates\\PITerceiroSemestre\\src\\images\\add-friend.png"));
+		JPictureBox addIcon = new JPictureBox();
+		addIcon.setIcon(new ImageIcon("C:\\Users\\thiag\\git\\PlenitudePilates\\PITerceiroSemestre\\src\\images\\add-friend.png"));
 		
-		JPictureBox pictureBox_1 = new JPictureBox();
-		pictureBox_1.setIcon(new ImageIcon("C:\\Users\\1050482313025\\git\\PlenitudePilates\\PITerceiroSemestre\\src\\images\\edit.png"));
-		JPictureBox pictureBox_2 = new JPictureBox();
-		pictureBox_2.setIcon(new ImageIcon("C:\\Users\\1050482313025\\git\\PlenitudePilates\\PITerceiroSemestre\\src\\images\\fundo.png"));
+		JPictureBox iconEdit = new JPictureBox();
+		iconEdit.setIcon(new ImageIcon("C:\\Users\\thiag\\git\\PlenitudePilates\\PITerceiroSemestre\\src\\images\\edit.png"));
+		JPictureBox fundo = new JPictureBox();
+		fundo.setIcon(new ImageIcon("C:\\Users\\thiag\\git\\PlenitudePilates\\PITerceiroSemestre\\src\\images\\fundo.png"));
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addComponent(PanelMenu, GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
+					.addComponent(PanelMenu, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(menuExibicao, GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
-					.addGap(0))
+					.addComponent(menuExibicao, GroupLayout.DEFAULT_SIZE, 283, Short.MAX_VALUE)
+					.addContainerGap())
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addComponent(menuExibicao, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-					.addContainerGap())
 				.addComponent(PanelMenu, GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
+				.addComponent(menuExibicao, GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
 		);
 		GroupLayout gl_panelMenu = new GroupLayout(PanelMenu);
 		gl_panelMenu.setHorizontalGroup(
@@ -280,7 +282,7 @@ public class MenuPrincipal extends JPanel {
 			gl_menuExibicao.createParallelGroup(Alignment.LEADING)
 				.addGroup(Alignment.TRAILING, gl_menuExibicao.createSequentialGroup()
 					.addGap(90)
-					.addComponent(btnNewButton_1, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE)
+					.addComponent(btnEditar, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE)
 					.addGap(104))
 				.addGroup(gl_menuExibicao.createSequentialGroup()
 					.addGap(10)
@@ -288,36 +290,36 @@ public class MenuPrincipal extends JPanel {
 					.addGap(17))
 				.addGroup(Alignment.TRAILING, gl_menuExibicao.createSequentialGroup()
 					.addGap(197)
-					.addComponent(pictureBox, GroupLayout.PREFERRED_SIZE, 58, GroupLayout.PREFERRED_SIZE)
+					.addComponent(addIcon, GroupLayout.PREFERRED_SIZE, 58, GroupLayout.PREFERRED_SIZE)
 					.addGap(28))
 				.addGroup(Alignment.TRAILING, gl_menuExibicao.createSequentialGroup()
 					.addGap(185)
-					.addComponent(btnNewButton, GroupLayout.PREFERRED_SIZE, 87, GroupLayout.PREFERRED_SIZE)
+					.addComponent(btnAdicionar, GroupLayout.PREFERRED_SIZE, 87, GroupLayout.PREFERRED_SIZE)
 					.addGap(11))
 				.addGroup(Alignment.TRAILING, gl_menuExibicao.createSequentialGroup()
 					.addGap(104)
-					.addComponent(pictureBox_1, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)
+					.addComponent(iconEdit, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)
 					.addGap(119))
-				.addComponent(pictureBox_2, GroupLayout.DEFAULT_SIZE, 289, Short.MAX_VALUE)
+				.addComponent(fundo, GroupLayout.DEFAULT_SIZE, 289, Short.MAX_VALUE)
 		);
 		gl_menuExibicao.setVerticalGroup(
 			gl_menuExibicao.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_menuExibicao.createSequentialGroup()
 					.addGap(11)
-					.addComponent(btnNewButton_1)
+					.addComponent(btnEditar)
 					.addGap(62)
 					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
 					.addGap(11))
 				.addGroup(gl_menuExibicao.createSequentialGroup()
 					.addGap(39)
-					.addComponent(pictureBox, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE))
+					.addComponent(addIcon, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE))
 				.addGroup(gl_menuExibicao.createSequentialGroup()
 					.addGap(11)
-					.addComponent(btnNewButton))
+					.addComponent(btnAdicionar))
 				.addGroup(gl_menuExibicao.createSequentialGroup()
 					.addGap(39)
-					.addComponent(pictureBox_1, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE))
-				.addComponent(pictureBox_2, GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
+					.addComponent(iconEdit, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE))
+				.addComponent(fundo, GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
 		);
 		menuExibicao.setLayout(gl_menuExibicao);
 		setLayout(groupLayout);

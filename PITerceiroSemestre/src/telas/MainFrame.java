@@ -24,6 +24,8 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.Font;
 import javax.swing.ImageIcon;
 import java.awt.Color;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
 
 public class MainFrame extends JFrame {
 
@@ -140,16 +142,37 @@ public class MainFrame extends JFrame {
 				.addComponent(panel, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 501, Short.MAX_VALUE)
 		);
 		
-		JPictureBox pictureBox = new JPictureBox();
-		pictureBox.setIcon(new ImageIcon("C:\\Users\\1050482313025\\git\\PlenitudePilates\\PITerceiroSemestre\\src\\images\\Captura de tela 2024-05-31 162519.png"));
+		JLabel lblLoginFalhou = new JLabel("Usuário ou senha incorretos.");
+		lblLoginFalhou.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblLoginFalhou.setHorizontalAlignment(SwingConstants.CENTER);
+		GroupLayout gl_panel_3 = new GroupLayout(panel_3);
+		gl_panel_3.setHorizontalGroup(
+			gl_panel_3.createParallelGroup(Alignment.LEADING)
+				.addGroup(Alignment.TRAILING, gl_panel_3.createSequentialGroup()
+					.addGap(20)
+					.addComponent(lblLoginFalhou, GroupLayout.DEFAULT_SIZE, 487, Short.MAX_VALUE)
+					.addContainerGap())
+		);
+		gl_panel_3.setVerticalGroup(
+			gl_panel_3.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel_3.createSequentialGroup()
+					.addGap(5)
+					.addComponent(lblLoginFalhou, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(140, Short.MAX_VALUE))
+		);
+		panel_3.setLayout(gl_panel_3);
+		lblLoginFalhou.setVisible(false);
+		
+		JPictureBox logo = new JPictureBox();
+		logo.setIcon(new ImageIcon("C:\\Users\\thiag\\git\\PlenitudePilates\\PITerceiroSemestre\\src\\images\\Captura de tela 2024-05-31 162519.png"));
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
-				.addComponent(pictureBox, GroupLayout.DEFAULT_SIZE, 531, Short.MAX_VALUE)
+				.addComponent(logo, GroupLayout.DEFAULT_SIZE, 531, Short.MAX_VALUE)
 		);
 		gl_panel.setVerticalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
-				.addComponent(pictureBox, GroupLayout.DEFAULT_SIZE, 501, Short.MAX_VALUE)
+				.addComponent(logo, GroupLayout.DEFAULT_SIZE, 501, Short.MAX_VALUE)
 		);
 		panel.setLayout(gl_panel);
 		contentPane.setLayout(gl_contentPane);
@@ -189,7 +212,7 @@ public class MainFrame extends JFrame {
 					if (login.equals(funcionario.getUsuario()) && senha.equals(funcionario.getSenha())) {
 						System.out.println("Login realizado.");
 						loginFalhou = false;
-						MenuPrincipal m = new MenuPrincipal(funcionario);
+						MenuPrincipal m = new MenuPrincipal(funcionario, frame);
 						setContentPane(m);
 						revalidate(); //refresh
 						repaint();
@@ -197,7 +220,7 @@ public class MainFrame extends JFrame {
 				}
 				// Se o login não for realizado
 				if (loginFalhou) {
-					//lblLoginSenhaIncorretos.setVisible(true);
+					lblLoginFalhou.setVisible(true);
 					System.out.println("Login ou senha incorretos");
 				}
 			}

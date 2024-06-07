@@ -21,47 +21,39 @@ public class Aluno {
 	private String bairro;
 	private int registradoPor;
 	
-	public static void create() {
-		
-		Aluno aluno = new Aluno();
-		
-		aluno.setId(1); // autonumeração
-		aluno.setNome("Thiago");
-		aluno.setDataNascimento(Date.valueOf("2004-09-19 00:00:00.000"));
-		aluno.setTelefone("(XX)X XXXX-XXXX");
-		aluno.setCep("XXXXX/XXX");
-		aluno.setCidade("Indaiatuba");
-		aluno.setBairro("XXXXXXXXXX");
-		aluno.setRua("XXXXXXXXXXXXX");
-		aluno.setRegistradoPor(1);
-		
+	public static String create(Aluno aluno) {
+		int i = 1;
+		String msg = "Aluno cadastrado.";
 		BD bd = new BD();
 		if (bd.getConnection()) {
-			try {
-				sql = "insert into "+NOME_TABELA+" values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
-				bd.st = bd.con.prepareStatement(sql);
-				bd.st.setInt(1, aluno.getId());
-				bd.st.setString(2, aluno.getNome());
-				bd.st.setDate(3, aluno.getDataNascimento());
-				bd.st.setString(4, aluno.getTelefone());
-				bd.st.setString(5, aluno.getCep());
-				bd.st.setString(6, aluno.getCidade());
-				bd.st.setString(7, aluno.getRua());
-				bd.st.setString(8, aluno.getBairro());
-				bd.st.setInt(9, aluno.getRegistradoPor());
-				bd.st.execute();
-				System.out.println("Aluno cadastrado.");
-			} catch (SQLServerException e) {
-				System.out.println("ID ja registrado.");
-			} catch (SQLException e) {
-				e.printStackTrace();
+			while (true) {
+				try {
+					aluno.setId(i); // autonumeração
+					sql = "insert into "+NOME_TABELA+" values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+					bd.st = bd.con.prepareStatement(sql);
+					bd.st.setInt(1, aluno.getId());
+					bd.st.setString(2, aluno.getNome());
+					bd.st.setDate(3, aluno.getDataNascimento());
+					bd.st.setString(4, aluno.getTelefone());
+					bd.st.setString(5, aluno.getCep());
+					bd.st.setString(6, aluno.getCidade());
+					bd.st.setString(7, aluno.getRua());
+					bd.st.setString(8, aluno.getBairro());
+					bd.st.setInt(9, aluno.getRegistradoPor());
+					bd.st.execute();
+					System.out.println("Aluno cadastrado.");
+					bd.close();
+					break;
+				} catch (SQLServerException e) {
+					System.out.println(e);
+					System.out.println("ID ja registrado.");
+					i++;
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
 			}
-			bd.close();
 		}
-		
-		
-		// aluno.setRegistradoPor(1); // Associação binária - Associar ao id do funcionario logado
-		
+		return msg;
 	}
 	
 	public static Aluno read(int id) {

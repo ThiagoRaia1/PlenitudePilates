@@ -14,10 +14,10 @@ public class BD {
 	
 	private final String DRIVER = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
 	private final String DATABASENAME = "DatabasePI";
-	private final String URL = "jdbc:sqlserver://localhost:1433;databasename="+DATABASENAME;
+	private final String URL = "jdbc:sqlserver://192.168.0.20:1433;databasename="+DATABASENAME;
 	
-	private final String LOGIN = "usuario";
-	private final String SENHA = "fatec";
+	private final String LOGIN = "sa";
+	private final String SENHA = "thiago";
 	
 	
 	/**
