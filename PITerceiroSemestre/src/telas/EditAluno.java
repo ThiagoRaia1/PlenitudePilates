@@ -18,7 +18,7 @@ import java.awt.event.ActionListener;
 import java.sql.Date;
 import java.awt.event.ActionEvent;
 
-public class AddAluno extends JPanel {
+public class EditAluno extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private JTextField textField_Nome;
@@ -34,7 +34,7 @@ public class AddAluno extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public AddAluno(Funcionario funcionario, MainFrame frame) {
+	public EditAluno(Funcionario funcionario, MainFrame frame, String alunoProcurado) {
 		setBackground(Color.WHITE);
 		
 		JPanel panel = new JPanel();
@@ -75,7 +75,7 @@ public class AddAluno extends JPanel {
 		JLabel lblMensagem = new JLabel("Preencha todos os dados.");
 		lblMensagem.setVisible(false);
 		
-		JButton btnRegistrar = new JButton("Registrar");
+		JButton btnRegistrar = new JButton("Editar");
 		btnRegistrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				boolean dadosPreenchidos = true;
@@ -124,11 +124,11 @@ public class AddAluno extends JPanel {
 			}
 		});
 		
-		JLabel lblRegistrarAluno = new JLabel("Registrar aluno");
-		lblRegistrarAluno.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblRegistrarAluno.setForeground(Color.DARK_GRAY);
-		lblRegistrarAluno.setBackground(Color.LIGHT_GRAY);
-		lblRegistrarAluno.setHorizontalAlignment(SwingConstants.CENTER);
+		JLabel lblEditarAluno = new JLabel("Editar Aluno");
+		lblEditarAluno.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblEditarAluno.setForeground(Color.DARK_GRAY);
+		lblEditarAluno.setBackground(Color.LIGHT_GRAY);
+		lblEditarAluno.setHorizontalAlignment(SwingConstants.CENTER);
 		
 		JPanel panel_1 = new JPanel();
 		
@@ -137,8 +137,8 @@ public class AddAluno extends JPanel {
 		JButton btnVoltar = new JButton("Voltar");
 		btnVoltar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				MenuPrincipal mp = new MenuPrincipal(funcionario, frame);
-				frame.setContentPane(mp);
+				ChooseAluno ca = new ChooseAluno(funcionario, frame);
+				frame.setContentPane(ca);
 				frame.revalidate(); //refresh
 				frame.repaint();
 			}
@@ -235,7 +235,7 @@ public class AddAluno extends JPanel {
 			gl_panel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel.createSequentialGroup()
 					.addGap(133)
-					.addComponent(lblRegistrarAluno, GroupLayout.DEFAULT_SIZE, 163, Short.MAX_VALUE)
+					.addComponent(lblEditarAluno, GroupLayout.DEFAULT_SIZE, 163, Short.MAX_VALUE)
 					.addGap(130))
 				.addGroup(gl_panel.createSequentialGroup()
 					.addGap(8)
@@ -287,7 +287,7 @@ public class AddAluno extends JPanel {
 			gl_panel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel.createSequentialGroup()
 					.addGap(4)
-					.addComponent(lblRegistrarAluno, GroupLayout.PREFERRED_SIZE, 19, GroupLayout.PREFERRED_SIZE)
+					.addComponent(lblEditarAluno, GroupLayout.PREFERRED_SIZE, 19, GroupLayout.PREFERRED_SIZE)
 					.addGap(11)
 					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
 						.addComponent(lblNome)

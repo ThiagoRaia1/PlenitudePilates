@@ -16,6 +16,7 @@ import javax.swing.border.EmptyBorder;
 import customComponents.JPictureBox;
 import entities.Funcionario;
 import main.BD;
+import main.GetRowCount;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -164,7 +165,7 @@ public class MainFrame extends JFrame {
 		lblLoginFalhou.setVisible(false);
 		
 		JPictureBox logo = new JPictureBox();
-		logo.setIcon(new ImageIcon("C:\\Users\\thiag\\git\\PlenitudePilates\\PITerceiroSemestre\\src\\images\\Captura de tela 2024-05-31 162519.png"));
+		logo.setIcon(new ImageIcon("src\\images\\Captura de tela 2024-05-31 162519.png"));
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
@@ -186,20 +187,7 @@ public class MainFrame extends JFrame {
 				System.out.println(getExtendedState());
 				// buscar o login e senha digitados no banco para validar o login
 				boolean loginFalhou = true;
-				String sql = "select count(*) from Funcionario";
-				int numeroDeLinhas = 0;
-				BD bd = new BD();
-				if (bd.getConnection()) {
-					try {
-						bd.st = bd.con.prepareStatement(sql);
-						bd.rs = bd.st.executeQuery();
-		                while (bd.rs.next()) {
-		                    numeroDeLinhas = bd.rs.getInt(1);
-		                }
-					} catch (SQLException erro) {
-						erro.printStackTrace();
-					}
-				}
+				int numeroDeLinhas = GetRowCount.getRowCount(Funcionario.getNOME_TABELA());
                 System.out.println("Número de linhas: "+numeroDeLinhas);
 				
 				for (int i = 1; i <= numeroDeLinhas; i++) {
