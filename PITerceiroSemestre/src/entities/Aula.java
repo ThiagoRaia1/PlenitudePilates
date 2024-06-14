@@ -8,6 +8,7 @@ import main.BD;
 
 public class Aula {
 	private final static String NOME_TABELA = "Aula";
+	private static String sql = null;
 	
 	private int id;
 	private String data;
@@ -16,8 +17,6 @@ public class Aula {
 	private int qtdeVagasDisponiveis;
 	private int vagasOcupadas;
 	private int sala;
-	
-	private static String sql = null;
 	
 	public static void create() {
 		Aula aula= new Aula();
@@ -31,59 +30,60 @@ public class Aula {
 		aula.setSala(1);
 		
 		BD bd = new BD();
-		bd.getConnection();
-		sql = null;
-		try {
-			sql = "insert into Aula values(?, ?, ?, ?, ?, ?, ?)";
-			bd.st = bd.con.prepareStatement(sql);
-			bd.st.setInt(1, aula.getId());
-			bd.st.setString(2, aula.getData());
-			bd.st.setString(3, aula.getHoraComeco());
-			bd.st.setString(4, aula.getHoraFim());
-			bd.st.setInt(5, aula.getQtdeVagasDisponiveis());
-			bd.st.setInt(6, aula.getVagasOcupadas());
-			bd.st.setInt(7, aula.getSala());
-			bd.st.execute();
-			System.out.println("Aula cadastrado.");
-		} catch (SQLServerException e) {
-			System.out.println("ID ja registrado.");
-		} catch (SQLException e) {
-			e.printStackTrace();
+		if (bd.getConnection()) {
+			try {
+				sql = "insert into "+NOME_TABELA+" values(?, ?, ?, ?, ?, ?, ?)";
+				bd.st = bd.con.prepareStatement(sql);
+				bd.st.setInt(1, aula.getId());
+				bd.st.setString(2, aula.getData());
+				bd.st.setString(3, aula.getHoraComeco());
+				bd.st.setString(4, aula.getHoraFim());
+				bd.st.setInt(5, aula.getQtdeVagasDisponiveis());
+				bd.st.setInt(6, aula.getVagasOcupadas());
+				bd.st.setInt(7, aula.getSala());
+				bd.st.execute();
+				System.out.println("Aula cadastrado.");
+			} catch (SQLServerException e) {
+				System.out.println("ID ja registrado.");
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			bd.close();
 		}
-		bd.close();
 	}
 	
 	public static Aula read(int id) {
 		Aula aula = new Aula();
 		
 		BD bd = new BD();
-		bd.getConnection();
-		try {
-			String sql = "select * from Aula where id_aula = ?";
-			bd.st = bd.con.prepareStatement(sql);
-			bd.st.setInt(1, id);
-			bd.rs = bd.st.executeQuery();
-			while(bd.rs.next()) {
-				aula.setId(bd.rs.getInt("id_aula"));
-				aula.setData(bd.rs.getString("data_aula"));
-				aula.setHoraComeco(bd.rs.getString("horaComeco_aula"));
-				aula.setHoraFim(bd.rs.getString("horaFim_aula"));
-				aula.setQtdeVagasDisponiveis(bd.rs.getInt("qtdeVagasDisponiveis_aula"));
-				aula.setVagasOcupadas(bd.rs.getInt("vagasOcupadas_aula"));
-				aula.setSala(bd.rs.getInt("sala_aula"));
+		if (bd.getConnection()) {
+			try {
+				String sql = "select * from "+NOME_TABELA+" where id_aula = ?";
+				bd.st = bd.con.prepareStatement(sql);
+				bd.st.setInt(1, id);
+				bd.rs = bd.st.executeQuery();
+				while(bd.rs.next()) {
+					aula.setId(bd.rs.getInt("id_aula"));
+					aula.setData(bd.rs.getString("data_aula"));
+					aula.setHoraComeco(bd.rs.getString("horaComeco_aula"));
+					aula.setHoraFim(bd.rs.getString("horaFim_aula"));
+					aula.setQtdeVagasDisponiveis(bd.rs.getInt("qtdeVagasDisponiveis_aula"));
+					aula.setVagasOcupadas(bd.rs.getInt("vagasOcupadas_aula"));
+					aula.setSala(bd.rs.getInt("sala_aula"));
+				}
+				if (aula.getId() != 0) {
+					System.out.println("Aula lida.");
+				}
+			} catch (SQLServerException e) {
+				System.out.println("ID ja registrado.");
+				System.out.println(e);
+			} catch (SQLException e) {
+				e.printStackTrace();
 			}
-			if (aula.getId() != 0) {
-				System.out.println("Aula lida.");
+			bd.close();
+			if (aula.id == 0) {
+				System.out.println("ID não encontrado.");
 			}
-		} catch (SQLServerException e) {
-			System.out.println("ID ja registrado.");
-			System.out.println(e);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		bd.close();
-		if (aula.id == 0) {
-			System.out.println("ID não encontrado.");
 		}
 		return aula;
 	}
@@ -104,44 +104,46 @@ public class Aula {
 		aula.setSala(1);
 
 		BD bd = new BD();
-		bd.getConnection();
-		try {
-			sql = "update Aula set data_aula = ?, horaComeco_aula = ?, horaFim_aula = ?, qtdeVagasDisponiveis_aula = ?,"
-					+ "vagasOcupadas_aula = ?, sala_aula = ? where id_aula = ?";
-			bd.st = bd.con.prepareStatement(sql);
-			bd.st.setString(1, aula.getData());
-			bd.st.setString(2, aula.getHoraComeco());
-			bd.st.setString(3, aula.getHoraFim());
-			bd.st.setInt(4, aula.getQtdeVagasDisponiveis());
-			bd.st.setInt(5, aula.getVagasOcupadas());
-			bd.st.setInt(6, aula.getSala());
-			bd.st.setInt(7, aula.getId());
-			bd.st.execute();
-			
-			System.out.println("Dados da aula "+aula.getId()+" atualizados.");
-		} catch (SQLServerException e) {
-			System.out.println("ID ja registrado.");
-			System.out.println(e);
-		} catch (SQLException e) {
-			e.printStackTrace();
+		if (bd.getConnection()) {
+			try {
+				sql = "update "+NOME_TABELA+" set data_aula = ?, horaComeco_aula = ?, horaFim_aula = ?, qtdeVagasDisponiveis_aula = ?,"
+						+ "vagasOcupadas_aula = ?, sala_aula = ? where id_aula = ?";
+				bd.st = bd.con.prepareStatement(sql);
+				bd.st.setString(1, aula.getData());
+				bd.st.setString(2, aula.getHoraComeco());
+				bd.st.setString(3, aula.getHoraFim());
+				bd.st.setInt(4, aula.getQtdeVagasDisponiveis());
+				bd.st.setInt(5, aula.getVagasOcupadas());
+				bd.st.setInt(6, aula.getSala());
+				bd.st.setInt(7, aula.getId());
+				bd.st.execute();
+				
+				System.out.println("Dados da aula "+aula.getId()+" atualizados.");
+			} catch (SQLServerException e) {
+				System.out.println("ID ja registrado.");
+				System.out.println(e);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			bd.close();
 		}
-		bd.close();
 	}
 	
 	public static void delete(int id) {
 		BD bd = new BD();
-		bd.getConnection();
-		try {
-			sql = "delete from Aula where id_aula = ?";
-			bd.st = bd.con.prepareStatement(sql);
-			bd.st.setInt(1, id);
-			bd.st.execute();
-		} catch (SQLServerException e) {
-			System.out.println(e);
-		} catch (SQLException e) {
-			e.printStackTrace();
+		if (bd.getConnection()) {
+			try {
+				sql = "delete from "+NOME_TABELA+" where id_aula = ?";
+				bd.st = bd.con.prepareStatement(sql);
+				bd.st.setInt(1, id);
+				bd.st.execute();
+			} catch (SQLServerException e) {
+				System.out.println(e);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			bd.close();
 		}
-		bd.close();
 	}
 	
 	public int getId() {

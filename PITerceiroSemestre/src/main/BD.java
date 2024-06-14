@@ -6,13 +6,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import com.microsoft.sqlserver.jdbc.SQLServerException;
-
-import entities.Aluno;
-import entities.Aula;
-import entities.Funcionario;
-import entities.Pagamento;
-
 public class BD {
 
 	public Connection con = null;
@@ -23,8 +16,8 @@ public class BD {
 	private final String DATABASENAME = "DatabasePI";
 	private final String URL = "jdbc:sqlserver://localhost:1433;databasename="+DATABASENAME;
 	
-	private final String LOGIN = "sa";
-	private final String SENHA = "thiago";
+	private final String LOGIN = "CONAN";
+	private final String SENHA = "senha";
 	
 	
 	/**
