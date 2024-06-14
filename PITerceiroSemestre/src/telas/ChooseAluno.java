@@ -62,13 +62,16 @@ public class ChooseAluno extends JPanel {
 					if (alunoProcurado.equals(aluno.getNome())) {
 						System.out.println("Aluno encontrado.");
 						naoEncontrado = false;
-						EditAluno ea = new EditAluno(funcionario, frame, alunoProcurado);
+						EditAluno ea = new EditAluno(funcionario, frame, aluno);
 						frame.setContentPane(ea);
-						revalidate(); //refresh
-						repaint();
+						frame.revalidate(); //refresh
+						frame.repaint();
+						break;
 					}
 				}
-				System.out.println("Aluno não encontrado");
+				if (naoEncontrado) {
+					System.out.println("Aluno não encontrado");
+				}
 			}
 		});
 		

@@ -19,22 +19,22 @@ import java.sql.Date;
 import java.awt.event.ActionEvent;
 
 public class EditAluno extends JPanel {
-
 	private static final long serialVersionUID = 1L;
+	
 	private JTextField textField_Nome;
 	private JTextField textField_DataNascimento_Dia;
+	private JTextField textField_DataNascimento_Mes;
+	private JTextField textField_DataNascimento_Ano;
 	private JTextField textField_Telefone;
 	private JTextField textField_CEP;
 	private JTextField textField_Cidade;
 	private JTextField textField_Rua;
 	private JTextField textField_Bairro;
-	private JTextField textField_DataNascimento_Mes;
-	private JTextField textField_DataNascimento_Ano;
 
 	/**
 	 * Create the panel.
 	 */
-	public EditAluno(Funcionario funcionario, MainFrame frame, String alunoProcurado) {
+	public EditAluno(Funcionario funcionario, MainFrame frame, Aluno alunoProcurado) {
 		setBackground(Color.WHITE);
 		
 		JPanel panel = new JPanel();
@@ -74,6 +74,25 @@ public class EditAluno extends JPanel {
 		
 		JLabel lblMensagem = new JLabel("Preencha todos os dados.");
 		lblMensagem.setVisible(false);
+
+		textField_DataNascimento_Dia = new JTextField();
+		textField_DataNascimento_Dia.setColumns(10);
+		
+		textField_DataNascimento_Mes = new JTextField();
+		textField_DataNascimento_Mes.setColumns(10);
+
+		textField_DataNascimento_Ano = new JTextField();
+		textField_DataNascimento_Ano.setColumns(10);
+		
+		textField_Nome.setText(alunoProcurado.getNome());
+		textField_Cidade.setText(alunoProcurado.getCidade());
+		textField_DataNascimento_Dia.setText(alunoProcurado.getDataNascimento().toString().substring(8, 10));
+		textField_DataNascimento_Mes.setText(alunoProcurado.getDataNascimento().toString().substring(5, 7));
+		textField_DataNascimento_Ano.setText(alunoProcurado.getDataNascimento().toString().substring(0, 4));
+		textField_Telefone.setText(alunoProcurado.getTelefone());
+		textField_CEP.setText(alunoProcurado.getCep());
+		textField_Rua.setText(alunoProcurado.getRua());
+		textField_Bairro.setText(alunoProcurado.getBairro());
 		
 		JButton btnRegistrar = new JButton("Editar");
 		btnRegistrar.addActionListener(new ActionListener() {
@@ -102,16 +121,15 @@ public class EditAluno extends JPanel {
 				if (dadosPreenchidos) {
 					// Adicionar condicional para ter uma idade mínima e máxima
 					try {
-						Aluno aluno = new Aluno();
-						aluno.setNome(dados[0]);
-						aluno.setCidade(dados[1]);
-						aluno.setDataNascimento(Date.valueOf(dados[4] +"-"+ dados[3] +"-"+ 
-												dados[2]));aluno.setTelefone(dados[5]);
-						aluno.setCep(dados[6]);
-						aluno.setRua(dados[7]);
-						aluno.setBairro(dados[8]);
-						aluno.setRegistradoPor(funcionario.getId());
-						lblMensagem.setText(Aluno.create(aluno));
+						alunoProcurado.setNome(dados[0]);
+						alunoProcurado.setCidade(dados[1]);
+						alunoProcurado.setDataNascimento(Date.valueOf(dados[4] +"-"+ dados[3] +"-"+ dados[2]));
+						alunoProcurado.setTelefone(dados[5]);
+						alunoProcurado.setCep(dados[6]);
+						alunoProcurado.setRua(dados[7]);
+						alunoProcurado.setBairro(dados[8]);
+						Aluno.update(alunoProcurado.getId(), alunoProcurado);
+						lblMensagem.setText("Dados do aluno "+ alunoProcurado.getNome() +" atualizados.");
 						lblMensagem.setVisible(true);
 					} catch (NumberFormatException erro) {
 						lblMensagem.setText("Data de nascimento inválida.");
@@ -185,14 +203,6 @@ public class EditAluno extends JPanel {
 		
 		JPanel panel_3 = new JPanel();
 		
-		textField_DataNascimento_Dia = new JTextField();
-		textField_DataNascimento_Dia.setColumns(10);
-		
-				textField_DataNascimento_Mes = new JTextField();
-				textField_DataNascimento_Mes.setColumns(10);
-		
-				textField_DataNascimento_Ano = new JTextField();
-				textField_DataNascimento_Ano.setColumns(10);
 		GroupLayout gl_panel_3 = new GroupLayout(panel_3);
 		gl_panel_3.setHorizontalGroup(
 			gl_panel_3.createParallelGroup(Alignment.LEADING)

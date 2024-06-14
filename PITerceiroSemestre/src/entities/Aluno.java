@@ -94,7 +94,7 @@ public class Aluno {
 		return aluno;
 	}
 	
-	public static void update(int id) {
+	public static void update(int id, Aluno alunoProcurado) {
 		Aluno aluno = new Aluno();
 		
 		// Recebe os dados atuais, campos em branco não serão alterados.
