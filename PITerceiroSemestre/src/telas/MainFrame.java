@@ -4,7 +4,6 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.SQLException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -15,7 +14,6 @@ import javax.swing.border.EmptyBorder;
 
 import customComponents.JPictureBox;
 import entities.Funcionario;
-import main.BD;
 import main.GetRowCount;
 
 import javax.swing.GroupLayout;
@@ -28,6 +26,9 @@ import java.awt.Color;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
+/**
+ * Cria o frame principal da aplicação.
+ */
 public class MainFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -42,7 +43,7 @@ public class MainFrame extends JFrame {
 	private JPanel panel_4;
 
 	/**
-	 * Launch the application.
+	 * Inicia a aplicação.
 	 */
 	public static void main() {
 		EventQueue.invokeLater(new Runnable() {
@@ -58,7 +59,10 @@ public class MainFrame extends JFrame {
 	}
 
 	/**
-	 * Create the frame.
+	 * Cria o frame principal.
+	 */
+	/**
+	 * 
 	 */
 	public MainFrame() {
 		setBackground(Color.WHITE);
@@ -165,7 +169,7 @@ public class MainFrame extends JFrame {
 		lblLoginFalhou.setVisible(false);
 		
 		JPictureBox logo = new JPictureBox();
-		logo.setIcon(new ImageIcon("src\\images\\Captura de tela 2024-05-31 162519.png"));
+		logo.setIcon(new ImageIcon("src\\images\\Logo.png"));
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
@@ -181,10 +185,13 @@ public class MainFrame extends JFrame {
 		setExtendedState(MAXIMIZED_BOTH);
 		
 		btnLogin.addActionListener(new ActionListener() {
+			/**
+			 * Valida o login. Se o login for válido, avança para a tela "MenuPrincipal", se não, exibe
+			 * a mensagem "Usuário ou senha incorretos.".
+			 */
 			public void actionPerformed(ActionEvent e) {
 				String login = textFieldLogin.getText();
 				String senha = String.copyValueOf(passwordField.getPassword());
-				System.out.println(getExtendedState());
 				// buscar o login e senha digitados no banco para validar o login
 				boolean loginFalhou = true;
 				int numeroDeLinhas = GetRowCount.getRowCount(Funcionario.getNOME_TABELA());
@@ -193,7 +200,7 @@ public class MainFrame extends JFrame {
 				for (int i = 1; i <= numeroDeLinhas; i++) {
 					Funcionario funcionario = new Funcionario();
 					/* 
-					 * após validação, as informações do usuario logado serão armazenadas em um objeto
+					 * Após validação, as informações do usuario logado serão armazenadas em um objeto
 					*/
 					funcionario = Funcionario.read(i);
 					
@@ -209,7 +216,7 @@ public class MainFrame extends JFrame {
 				// Se o login não for realizado
 				if (loginFalhou) {
 					lblLoginFalhou.setVisible(true);
-					System.out.println("Login ou senha incorretos");
+					System.out.println("Usuário ou senha incorretos.");
 				}
 			}
 		});

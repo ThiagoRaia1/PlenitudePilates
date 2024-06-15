@@ -34,7 +34,10 @@ public class EditFuncionario extends JPanel {
 	private JTextField textField_NivelDeAcesso;
 
 	/**
-	 * Create the panel.
+	 * Cria um painel para o usuário editar as informações do funcionário pesquisado.
+	 * @param funcionarioLogado
+	 * @param frame
+	 * @param funcionarioProcurado
 	 */
 	public EditFuncionario(Funcionario funcionarioLogado, MainFrame frame, Funcionario funcionarioProcurado) {
 		setBackground(Color.WHITE);
@@ -112,6 +115,10 @@ public class EditFuncionario extends JPanel {
 		
 		JButton btnVoltar = new JButton("Voltar");
 		btnVoltar.addActionListener(new ActionListener() {
+			/**
+			 * Retorna para o menu principal.
+			 * @param e
+			 */
 			public void actionPerformed(ActionEvent e) {
 				MenuPrincipal mp = new MenuPrincipal(funcionarioLogado, frame);
 				frame.setContentPane(mp);
@@ -122,6 +129,9 @@ public class EditFuncionario extends JPanel {
 		
 		JButton btnRegistrar = new JButton("Editar");
 		btnRegistrar.addActionListener(new ActionListener() {
+			/**
+			 * 
+			 */
 			public void actionPerformed(ActionEvent e) {
 				boolean dadosPreenchidos = true;
 				String[] dados = new String[10];
@@ -135,6 +145,8 @@ public class EditFuncionario extends JPanel {
 				dados[7] = textField_Usuario.getText();
 				dados[8] = textField_Senha.getText();
 				dados[9] = textField_NivelDeAcesso.getText();
+				// dados.lenght-3 pois usuario, senha e nivelDeAcesso não são obrigatórios.
+				// alterar pra que caso um dos três tenha sido preenchido, os outros também precisam.
 				for (int i = 0; i < dados.length-3; i++) {
 					if (dados[i].equals("")) {
 						lblMensagem.setText("Preencha todos os dados obrigatórios.");
@@ -192,7 +204,7 @@ public class EditFuncionario extends JPanel {
 							} else {
 								lblMensagem.setText(Funcionario.update(funcionarioProcurado.getId(), funcionario));
 								lblMensagem.setVisible(true);
-								// Atualiza os dados do funcionario logado para alterações na interface
+								// Atualiza os dados do funcionario logado para alterações na interface.
 								if (funcionario.getId() == funcionarioLogado.getId()) {
 									funcionarioLogado.setNome(funcionario.getNome());
 									funcionarioLogado.setFuncao(funcionario.getFuncao());

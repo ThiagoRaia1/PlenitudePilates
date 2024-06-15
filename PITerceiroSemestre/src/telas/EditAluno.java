@@ -32,7 +32,7 @@ public class EditAluno extends JPanel {
 	private JTextField textField_Bairro;
 
 	/**
-	 * Create the panel.
+	 * Cria um painel para o usuário editar as informações do aluno pesquisado.
 	 */
 	public EditAluno(Funcionario funcionario, MainFrame frame, Aluno alunoProcurado) {
 		setBackground(Color.WHITE);
@@ -154,6 +154,10 @@ public class EditAluno extends JPanel {
 		
 		JButton btnVoltar = new JButton("Voltar");
 		btnVoltar.addActionListener(new ActionListener() {
+			/**
+			 * Retorna para o menu principal.
+			 * @param e
+			 */
 			public void actionPerformed(ActionEvent e) {
 				ChooseAluno ca = new ChooseAluno(funcionario, frame);
 				frame.setContentPane(ca);

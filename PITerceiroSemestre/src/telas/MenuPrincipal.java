@@ -203,12 +203,12 @@ public class MenuPrincipal extends JPanel {
 		});
 		
 		JPictureBox addIcon = new JPictureBox();
-		addIcon.setIcon(new ImageIcon("C:\\Users\\1050482313025\\git\\PlenitudePilates\\PITerceiroSemestre\\src\\images\\add-friend.png"));
+		addIcon.setIcon(new ImageIcon("src\\images\\add.png"));
 		
 		JPictureBox iconEdit = new JPictureBox();
-		iconEdit.setIcon(new ImageIcon("C:\\Users\\1050482313025\\git\\PlenitudePilates\\PITerceiroSemestre\\src\\images\\edit.png"));
+		iconEdit.setIcon(new ImageIcon("src\\images\\edit.png"));
 		JPictureBox fundo = new JPictureBox();
-		fundo.setIcon(new ImageIcon("C:\\Users\\1050482313025\\git\\PlenitudePilates\\PITerceiroSemestre\\src\\images\\fundo.png"));
+		fundo.setIcon(new ImageIcon("src\\images\\fundoMenuPrincipal.png"));
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
