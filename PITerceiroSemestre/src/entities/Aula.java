@@ -1,5 +1,6 @@
 package entities;
 
+import java.sql.Date;
 import java.sql.SQLException;
 
 import com.microsoft.sqlserver.jdbc.SQLServerException;
@@ -9,47 +10,48 @@ import main.BD;
 public class Aula {
 	private final static String NOME_TABELA = "Aula";
 	private static String sql = null;
+	private static String msg = null;
 	
 	private int id;
-	private String data;
+	private Date data;
 	private String horaComeco;
 	private String horaFim;
 	private int qtdeVagasDisponiveis;
 	private int vagasOcupadas;
 	private int sala;
+	private int idAluno;
+	private int idFuncionario;
 	
-	public static void create() {
-		Aula aula= new Aula();
-		// Pedir dados ao usuário
-		aula.setId(1);
-		aula.setData("30/05/2024");
-		aula.setHoraComeco("08:00");
-		aula.setHoraFim("09:00");
-		aula.setQtdeVagasDisponiveis(5);
-		aula.setVagasOcupadas(0);
-		aula.setSala(1);
-		
+	public static String create(Aula aula) {
+		msg = "Erro ao registrar aula.";
 		BD bd = new BD();
 		if (bd.getConnection()) {
-			try {
-				sql = "insert into "+NOME_TABELA+" values(?, ?, ?, ?, ?, ?, ?)";
-				bd.st = bd.con.prepareStatement(sql);
-				bd.st.setInt(1, aula.getId());
-				bd.st.setString(2, aula.getData());
-				bd.st.setString(3, aula.getHoraComeco());
-				bd.st.setString(4, aula.getHoraFim());
-				bd.st.setInt(5, aula.getQtdeVagasDisponiveis());
-				bd.st.setInt(6, aula.getVagasOcupadas());
-				bd.st.setInt(7, aula.getSala());
-				bd.st.execute();
-				System.out.println("Aula cadastrado.");
-			} catch (SQLServerException e) {
-				System.out.println("ID ja registrado.");
-			} catch (SQLException e) {
-				e.printStackTrace();
+			while (true) {
+				try {
+					sql = "insert into "+NOME_TABELA+" values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+					bd.st = bd.con.prepareStatement(sql);
+					bd.st.setInt(1, aula.getId());
+					bd.st.setDate(2, aula.getData());
+					bd.st.setString(3, aula.getHoraComeco());
+					bd.st.setString(4, aula.getHoraFim());
+					bd.st.setInt(5, aula.getQtdeVagasDisponiveis());
+					bd.st.setInt(6, aula.getVagasOcupadas());
+					bd.st.setInt(7, aula.getSala());
+					bd.st.setInt(8, aula.getIdAluno());
+					bd.st.setInt(9, aula.getIdFuncionario());
+					bd.st.execute();
+					msg = "Aula cadastrada";
+					System.out.println("Aula cadastrado.");
+					bd.close();
+					break;
+				} catch (SQLServerException e) {
+					System.out.println("ID ja registrado.");
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
 			}
-			bd.close();
 		}
+		return msg;
 	}
 	
 	public static Aula read(int id) {
@@ -64,12 +66,14 @@ public class Aula {
 				bd.rs = bd.st.executeQuery();
 				while(bd.rs.next()) {
 					aula.setId(bd.rs.getInt("id_aula"));
-					aula.setData(bd.rs.getString("data_aula"));
+					aula.setData(bd.rs.getDate("data_aula"));
 					aula.setHoraComeco(bd.rs.getString("horaComeco_aula"));
 					aula.setHoraFim(bd.rs.getString("horaFim_aula"));
 					aula.setQtdeVagasDisponiveis(bd.rs.getInt("qtdeVagasDisponiveis_aula"));
 					aula.setVagasOcupadas(bd.rs.getInt("vagasOcupadas_aula"));
 					aula.setSala(bd.rs.getInt("sala_aula"));
+					aula.setIdAluno(bd.rs.getInt("id_aluno"));
+					aula.setIdFuncionario(bd.rs.getInt("id_funcionario"));
 				}
 				if (aula.getId() != 0) {
 					System.out.println("Aula lida.");
@@ -88,7 +92,8 @@ public class Aula {
 		return aula;
 	}
 	
-	public static void update(int id) {
+	public static void update(Aula aulaExistente) {
+		/*
 		Aula aula = new Aula();
 		
 		// Recebe os dados atuais, campos em branco não serão alterados.
@@ -96,31 +101,28 @@ public class Aula {
 
 		// Pedir dados ao usuário
 		aula.setId(1);
-		aula.setData("30/05/2024");
-		aula.setHoraComeco("08:00");
-		aula.setHoraFim("09:00");
-		aula.setQtdeVagasDisponiveis(5);
-		aula.setVagasOcupadas(0);
+		aula.setHoraComeco(Date.valueOf("2004-05-30 08:00:00"));
+		aula.setHoraFim(Date.valueOf("2004-05-30 09:00:00"));
+		aula.setVagasOcupadas(aula.getVagasOcupadas()+1);
+		aula.setQtdeVagasDisponiveis(5-aula.getVagasOcupadas());
 		aula.setSala(1);
-
+		
+		
+		// Recebe os dados atuais, campos em branco não serão alterados.
+		aula = Aula.read(id);
+		*/
+		
 		BD bd = new BD();
 		if (bd.getConnection()) {
 			try {
-				sql = "update "+NOME_TABELA+" set data_aula = ?, horaComeco_aula = ?, horaFim_aula = ?, qtdeVagasDisponiveis_aula = ?,"
-						+ "vagasOcupadas_aula = ?, sala_aula = ? where id_aula = ?";
+				sql = "update "+NOME_TABELA+" set qtdeVagasDisponiveis_aula = ?, "
+						+ "vagasOcupadas_aula = ? where horaComeco_aula = ?";
 				bd.st = bd.con.prepareStatement(sql);
-				bd.st.setString(1, aula.getData());
-				bd.st.setString(2, aula.getHoraComeco());
-				bd.st.setString(3, aula.getHoraFim());
-				bd.st.setInt(4, aula.getQtdeVagasDisponiveis());
-				bd.st.setInt(5, aula.getVagasOcupadas());
-				bd.st.setInt(6, aula.getSala());
-				bd.st.setInt(7, aula.getId());
+				bd.st.setInt(1, aulaExistente.getQtdeVagasDisponiveis()-1);
+				bd.st.setInt(2, aulaExistente.getVagasOcupadas()+1);
+				bd.st.setDate(3, aulaExistente.getData());
 				bd.st.execute();
-				
-				System.out.println("Dados da aula "+aula.getId()+" atualizados.");
 			} catch (SQLServerException e) {
-				System.out.println("ID ja registrado.");
 				System.out.println(e);
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -152,10 +154,10 @@ public class Aula {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public String getData() {
+	public Date getData() {
 		return data;
 	}
-	public void setData(String data) {
+	public void setData(Date data) {
 		this.data = data;
 	}
 	public String getHoraComeco() {
@@ -188,13 +190,28 @@ public class Aula {
 	public void setSala(int sala) {
 		this.sala = sala;
 	}
-	
+	public int getIdAluno() {
+		return idAluno;
+	}
+	public void setIdAluno(int idAluno) {
+		this.idAluno = idAluno;
+	}
+	public int getIdFuncionario() {
+		return idFuncionario;
+	}
+	public void setIdFuncionario(int idFuncionario) {
+		this.idFuncionario = idFuncionario;
+	}
+	public static String getNomeTabela() {
+		return NOME_TABELA;
+	}
+
 	public Aula() {
 		
 	}
-	
-	public Aula(int id, String data, String horaComeco, String horaFim, int qtdeVagasDisponiveis, int vagasOcupadas,
-			int sala) {
+
+	public Aula(int id, Date data, String horaComeco, String horaFim, int qtdeVagasDisponiveis, int vagasOcupadas,
+			int sala, int idAluno, int idFuncionario) {
 		super();
 		this.id = id;
 		this.data = data;
@@ -203,14 +220,15 @@ public class Aula {
 		this.qtdeVagasDisponiveis = qtdeVagasDisponiveis;
 		this.vagasOcupadas = vagasOcupadas;
 		this.sala = sala;
+		this.idAluno = idAluno;
+		this.idFuncionario = idFuncionario;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "Aula [id=" + id + ", data=" + data + ", horaComeco=" + horaComeco + ", horaFim=" + horaFim
 				+ ", qtdeVagasDisponiveis=" + qtdeVagasDisponiveis + ", vagasOcupadas=" + vagasOcupadas + ", sala="
-				+ sala + "]";
-	}
-	
+				+ sala + ", idAluno=" + idAluno + ", idFuncionario=" + idFuncionario + "]";
+	}	
 	
 }

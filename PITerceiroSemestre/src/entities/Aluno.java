@@ -10,6 +10,7 @@ import main.BD;
 public class Aluno {
 	private final static String NOME_TABELA = "Aluno";
 	private static String sql = null;
+	private static String msg = null;
 	
 	private int id;
 	private String nome;
@@ -21,9 +22,16 @@ public class Aluno {
 	private String bairro;
 	private int registradoPor;
 	
+	/**
+	 * Realiza um insert no banco de dados definido na classe "BD" em "entities".
+	 * @param aluno - Objeto da classe "Aluno" que possui os dados a serem inseridos no banco, dados esses
+	 * que serão solicitados no painel "AddAluno".
+	 * @return - Retorna a variável "msg" contendo o resultado da operação, seja "Erro ao cadastrar aluno." em caso de erro
+	 * e "Aluno cadastrado." em caso de sucesso.
+	 */
 	public static String create(Aluno aluno) {
 		int i = 1;
-		String msg = "Aluno cadastrado.";
+		msg = "Erro ao cadastrar aluno.";
 		BD bd = new BD();
 		if (bd.getConnection()) {
 			while (true) {
@@ -41,6 +49,7 @@ public class Aluno {
 					bd.st.setString(8, aluno.getBairro());
 					bd.st.setInt(9, aluno.getRegistradoPor());
 					bd.st.execute();
+					msg = "Aluno cadastrado.";
 					System.out.println("Aluno cadastrado.");
 					bd.close();
 					break;
@@ -56,6 +65,13 @@ public class Aluno {
 		return msg;
 	}
 	
+	
+	/**
+	 * Realiza a query "select * from Aluno where id_aluno = ?" no banco de dados definido na classe "BD" em "entites",
+	 * onde "?" é substituído pelo parâmetro "id". Pode ser usado em um loop para que todos os alunos sejam lidos.
+	 * @param id - O id do aluno a ser lido.
+	 * @return - Retorna um objeto chamado "aluno" da classe "Aluno" contendo os dados do aluno lido.
+	 */
 	public static Aluno read(int id) {
 		Aluno aluno = new Aluno();
 		
@@ -78,7 +94,7 @@ public class Aluno {
 					aluno.setRegistradoPor(bd.rs.getInt("registradoPor_funcionario"));
 				}
 				if (aluno.getId() != 0) {
-					System.out.println("Aluno lido.");
+					//System.out.println("Aluno lido.");
 				}
 			} catch (SQLServerException e) {
 				System.out.println("ID ja registrado.");
@@ -94,21 +110,16 @@ public class Aluno {
 		return aluno;
 	}
 	
-	public static void update(int id, Aluno alunoProcurado) {
-		Aluno aluno = new Aluno();
-		
-		// Recebe os dados atuais, campos em branco não serão alterados.
-		aluno = Aluno.read(id);
-		
-		// Pedir dados ao usuário
-		aluno.setNome("Thiago");
-		aluno.setDataNascimento(Date.valueOf("2004-09-19 00:00:00.000"));
-		aluno.setTelefone("(XX)X XXXX-XXXX");
-		aluno.setCep("XXXXX/XXX");
-		aluno.setCidade("Indaiatuba");
-		aluno.setBairro("XXXXXXXXXX");
-		aluno.setRua("XXXXXXXXXXXXX");
-		
+	/**
+	 * Realiza um update no banco de dados definido na classe "BD" em "entites" no id do aluno informado no parâmetro
+	 * "aluno".
+	 * @param aluno - Um objeto da classe "Aluno" contendo os dados que serão atualizados (ou não, para os dados que
+	 * não forem alterados) e onde serão atualizados.
+	 * @return - Retorna a variável "msg" contendo o resultado da operação, seja "Erro ao atualizar dados do aluno." 
+	 * em caso de erro e "Dados do aluno (nome do aluno) atualizados." em caso de sucesso.
+	 */
+	public static String update(Aluno aluno) {
+		msg = "Erro ao atualizar dados do aluno.";
 		BD bd = new BD();
 		if(bd.getConnection()) {
 			try {
@@ -125,7 +136,7 @@ public class Aluno {
 				bd.st.setInt(8, aluno.getId());
 				bd.st.execute();
 				
-				System.out.println("Dados do aluno "+aluno.getNome()+" atualizados.");
+				msg = "Dados do aluno "+aluno.getNome()+" atualizados.";
 			} catch (SQLServerException e) {
 				System.out.println("ID ja registrado.");
 				System.out.println(e);
@@ -134,9 +145,17 @@ public class Aluno {
 			}
 			bd.close();
 		}
+		return msg;
 	}
 	
-	public static void delete(int id) {
+	/**
+	 * Deleta o registro no id informado
+	 * @param id - ID que terá os dados deletados.
+	 * @return - Retorna a variável "msg" contendo o resultado da operação, seja "Erro ao deletar dados." 
+	 * em caso de erro e "Dados deletados com sucesso." em caso de sucesso.
+	 */
+	public static String delete(int id) {
+		msg = "Erro ao deletar dados.";
 		BD bd = new BD();
 		if (bd.getConnection()) {
 			try {
@@ -144,6 +163,7 @@ public class Aluno {
 				bd.st = bd.con.prepareStatement(sql);
 				bd.st.setInt(1, id);
 				bd.st.execute();
+				msg = "Dados deletados com sucesso.";
 			} catch (SQLServerException e) {
 				System.out.println(e);
 			} catch (SQLException e) {
@@ -151,8 +171,10 @@ public class Aluno {
 			}
 			bd.close();
 		}
+		return msg;
 	}
 	
+	// GETTERS AND SETTERS
 	public int getId() {
 		return id;
 	}
@@ -227,6 +249,9 @@ public class Aluno {
 	public static String getNOME_TABELA() {
 		return NOME_TABELA;
 	}
+	// GETTERS AND SETTERS
+	
+	// CONSTRUCTORS
 	public Aluno() {
 		
 	}
@@ -244,6 +269,7 @@ public class Aluno {
 		this.bairro = bairro;
 		this.registradoPor = registradoPor;
 	}
+	// CONSTRUCTORS
 	
 	@Override
 	public String toString() {

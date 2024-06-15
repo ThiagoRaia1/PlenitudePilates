@@ -1,8 +1,6 @@
 package entities;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 
@@ -31,7 +29,7 @@ public class Funcionario {
 		if (bd.getConnection()) {
 			while (true) {
 				try {
-					funcionario.setId(i); // autonumeraÃ§Ã£o
+					funcionario.setId(i); // autonumeração
 					sql = "insert into "+NOME_TABELA+" values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 					bd.st = bd.con.prepareStatement(sql);
 					bd.st.setInt(1, funcionario.getId());
@@ -94,7 +92,7 @@ public class Funcionario {
 			}
 			bd.close();
 			if (funcionario.id == 0) {
-				System.out.println("ID nÃ£o encontrado.");
+				System.out.println("ID nao encontrado.");
 			}
 		}
 		return funcionario;
@@ -123,7 +121,7 @@ public class Funcionario {
 					bd.st.setInt(11, funcionario.getId());
 					bd.st.execute();
 					
-					msg = "Dados do funcionÃ¡rio "+funcionario.getNome()+" atualizados.";
+					msg = "Dados do funcionário "+funcionario.getNome()+" atualizados.";
 			} catch (SQLServerException e) {
 				System.out.println(e);
 			} catch (SQLException e) {

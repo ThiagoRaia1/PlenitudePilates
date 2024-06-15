@@ -32,7 +32,8 @@ public class EditAluno extends JPanel {
 	private JTextField textField_Bairro;
 
 	/**
-	 * Cria um painel para o usuário editar as informações do aluno pesquisado.
+	 * Cria um painel para o usuário editar as informações do aluno pesquisado. Os campos são iniciados contendo
+	 * as informações atuais do aluno.
 	 */
 	public EditAluno(Funcionario funcionario, MainFrame frame, Aluno alunoProcurado) {
 		setBackground(Color.WHITE);
@@ -84,6 +85,7 @@ public class EditAluno extends JPanel {
 		textField_DataNascimento_Ano = new JTextField();
 		textField_DataNascimento_Ano.setColumns(10);
 		
+		// Os campos são preenchidos com os dados atuais do aluno.
 		textField_Nome.setText(alunoProcurado.getNome());
 		textField_Cidade.setText(alunoProcurado.getCidade());
 		textField_DataNascimento_Dia.setText(alunoProcurado.getDataNascimento().toString().substring(8, 10));
@@ -93,9 +95,15 @@ public class EditAluno extends JPanel {
 		textField_CEP.setText(alunoProcurado.getCep());
 		textField_Rua.setText(alunoProcurado.getRua());
 		textField_Bairro.setText(alunoProcurado.getBairro());
+		// Os campos são preenchidos com os dados atuais do aluno.
 		
 		JButton btnRegistrar = new JButton("Editar");
 		btnRegistrar.addActionListener(new ActionListener() {
+			/**
+			 * Valida se todos os dados foram preenchidos corretamente, se sim, exibe
+			 * "Dados do aluno (nome do aluno) atualizados.", se não, "Preencha todos os dados." caso algum campo
+			 * não tenha sido preenchido ou "Data de nascimento inválida." caso a data de nascimento não seja válida.
+			 */
 			public void actionPerformed(ActionEvent e) {
 				boolean dadosPreenchidos = true;
 				String[] dados = new String[9];
@@ -119,7 +127,6 @@ public class EditAluno extends JPanel {
 					}
 				}
 				if (dadosPreenchidos) {
-					// Adicionar condicional para ter uma idade mínima e máxima
 					try {
 						alunoProcurado.setNome(dados[0]);
 						alunoProcurado.setCidade(dados[1]);
@@ -128,8 +135,7 @@ public class EditAluno extends JPanel {
 						alunoProcurado.setCep(dados[6]);
 						alunoProcurado.setRua(dados[7]);
 						alunoProcurado.setBairro(dados[8]);
-						Aluno.update(alunoProcurado.getId(), alunoProcurado);
-						lblMensagem.setText("Dados do aluno "+ alunoProcurado.getNome() +" atualizados.");
+						lblMensagem.setText(Aluno.update(alunoProcurado));
 						lblMensagem.setVisible(true);
 					} catch (NumberFormatException erro) {
 						lblMensagem.setText("Data de nascimento inválida.");
