@@ -24,46 +24,41 @@ public class Funcionario {
 	private String senha;
 	private int nivelDeAcesso;
 	
-	public static void create() {
-		Funcionario funcionario = new Funcionario();
-		// Pedir dados ao usuário
-		funcionario.setId(1);
-		funcionario.setNome("Thiago");
-		funcionario.setFuncao("Função");
-		funcionario.setTelefone("telefone");
-		funcionario.setCep("cep");
-		funcionario.setCidade("Indaiatuba");
-		funcionario.setRua("rua");
-		funcionario.setBairro("bairro");
-		funcionario.setUsuario("Thiago");
-		funcionario.setSenha("Thiago");
-		funcionario.setNivelDeAcesso(2);;
-		
+	public static String create(Funcionario funcionario) {
+		int i = 1;
+		String msg = "Funcionario cadastrado.";
 		BD bd = new BD();
 		if (bd.getConnection()) {
-			try {
-				sql = "insert into "+NOME_TABELA+" values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-				bd.st = bd.con.prepareStatement(sql);
-				bd.st.setInt(1, funcionario.getId());
-				bd.st.setString(2, funcionario.getNome());
-				bd.st.setString(3, funcionario.getFuncao());
-				bd.st.setString(4, funcionario.getTelefone());
-				bd.st.setString(5, funcionario.getCep());
-				bd.st.setString(6, funcionario.getCidade());
-				bd.st.setString(7, funcionario.getRua());
-				bd.st.setString(8, funcionario.getBairro());
-				bd.st.setString(9, funcionario.getUsuario());
-				bd.st.setString(10, funcionario.getSenha());
-				bd.st.setInt(11, funcionario.getNivelDeAcesso());
-				bd.st.execute();
-				System.out.println("Funcionario cadastrado.");
-			} catch (SQLServerException e) {
-				System.out.println("ID ja registrado.");
-			} catch (SQLException e) {
-				e.printStackTrace();
+			while (true) {
+				try {
+					funcionario.setId(i); // autonumeraÃ§Ã£o
+					sql = "insert into "+NOME_TABELA+" values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+					bd.st = bd.con.prepareStatement(sql);
+					bd.st.setInt(1, funcionario.getId());
+					bd.st.setString(2, funcionario.getNome());
+					bd.st.setString(3, funcionario.getFuncao());
+					bd.st.setString(4, funcionario.getTelefone());
+					bd.st.setString(5, funcionario.getCep());
+					bd.st.setString(6, funcionario.getCidade());
+					bd.st.setString(7, funcionario.getRua());
+					bd.st.setString(8, funcionario.getBairro());
+					bd.st.setString(9, funcionario.getUsuario());
+					bd.st.setString(10, funcionario.getSenha());
+					bd.st.setInt(11, funcionario.getNivelDeAcesso());
+					bd.st.execute();
+					// System.out.println("Funcionario cadastrado.");
+					bd.close();
+					break;
+				} catch (SQLServerException e) {
+					System.out.println(e);
+					// System.out.println("ID ja registrado.");
+					i++;
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
 			}
-			bd.close();
 		}
+		return msg;
 	}
 	
 	public static Funcionario read(int id) {
@@ -89,7 +84,7 @@ public class Funcionario {
 					funcionario.setNivelDeAcesso(bd.rs.getInt("nivelDeAcesso_funcionario"));
 				}
 				if (funcionario.getId() != 0) {
-					System.out.println("Funcionario lido.");
+					//System.out.println("Funcionario lido.");
 				}
 			} catch (SQLServerException e) {
 				System.out.println("ID ja registrado.");
@@ -99,58 +94,14 @@ public class Funcionario {
 			}
 			bd.close();
 			if (funcionario.id == 0) {
-				System.out.println("ID não encontrado.");
+				System.out.println("ID nÃ£o encontrado.");
 			}
 		}
 		return funcionario;
 	}
 	
-	public static void update(int id) {
-		Funcionario funcionario = new Funcionario();
-		
-		// Recebe os dados atuais, campos em branco não serão alterados.
-		funcionario = Funcionario.read(id);
-		
-		// Pedir dados ao usuário
-		
-		// if(JTextLabel != null) {
-			funcionario.setNome("Thiago"); // Update
-		// }
-			
-			funcionario.setFuncao("Função");
-		
-		// if(JTextLabel != null) {
-			funcionario.setTelefone("telefone"); // Update
-		// }
-		
-		// if(JTextLabel != null) {
-			funcionario.setCep("cep"); // Update
-		// }
-		
-		// if(JTextLabel != null) {
-			funcionario.setCidade("Indaiatuba"); // Update
-		// }
-		
-		// if(JTextLabel != null) {
-			funcionario.setRua("rua"); // Update
-		// }
-		
-		// if(JTextLabel != null) {
-			funcionario.setBairro("bairro"); // Update
-		// }
-		
-		// if(JTextLabel != null) {
-			funcionario.setUsuario("Thiago"); // Update
-		// }
-			
-		// if(JTextLabel != null) {
-			funcionario.setSenha("Thiago"); // Update
-		// }
-			
-		// if(JTextLabel != null && nivelDeAcesso do login atual == 1) {
-			funcionario.setNivelDeAcesso(2); // Update
-		// }
-			
+	public static String update(int id, Funcionario funcionario) {
+		String msg = "Erro ao atualizar dados.";
 		BD bd = new BD();
 		if (bd.getConnection()) {
 			try {
@@ -172,7 +123,7 @@ public class Funcionario {
 					bd.st.setInt(11, funcionario.getId());
 					bd.st.execute();
 					
-					System.out.println("Dados do funcionário "+funcionario.getNome()+" atualizados.");
+					msg = "Dados do funcionÃ¡rio "+funcionario.getNome()+" atualizados.";
 			} catch (SQLServerException e) {
 				System.out.println(e);
 			} catch (SQLException e) {
@@ -180,6 +131,7 @@ public class Funcionario {
 			}
 		bd.close();
 		}
+		return msg;
 	}
 	
 	public static void delete(int id) {
@@ -197,12 +149,6 @@ public class Funcionario {
 			}
 			bd.close();
 		}
-	}
-	
-	public static List<Funcionario> getFuncionarios() {
-		List<Funcionario> funcionarios = new ArrayList<>();
-		
-		return funcionarios;
 	}
 	
 	public int getId() {
@@ -292,21 +238,6 @@ public class Funcionario {
 		this.senha = senha;
 		this.nivelDeAcesso = nivelDeAcesso;
 	}
-	/*
-	public Funcionario(Funcionario funcionario) {
-		super();
-		this.id = funcionario.id;
-		this.nome = funcionario.nome;
-		this.telefone = funcionario.telefone;
-		this.cep = funcionario.cep;
-		this.cidade = funcionario.cidade;
-		this.rua = funcionario.rua;
-		this.bairro = funcionario.bairro;
-		this.usuario = funcionario.usuario;
-		this.senha = funcionario.senha;
-		this.nivelDeAcesso = funcionario.nivelDeAcesso;
-	}
-	*/
 
 	@Override
 	public String toString() {
