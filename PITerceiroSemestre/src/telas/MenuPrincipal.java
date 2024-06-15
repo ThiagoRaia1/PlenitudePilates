@@ -21,10 +21,15 @@ import javax.swing.table.DefaultTableModel;
 
 import java.awt.Color;
 import java.awt.event.ActionListener;
+import java.awt.font.NumericShaper;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.awt.event.ActionEvent;
 import customComponents.JPictureBox;
 import javax.swing.ImageIcon;
 import com.toedter.calendar.JCalendar;
+import javax.swing.JTextField;
 
 public class MenuPrincipal extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -35,6 +40,7 @@ public class MenuPrincipal extends JPanel {
 	private static final int PERMISSAO_MINIMA_PARA_REGISTRAR_AULA = 2;
 	private static final int PERMISSAO_MINIMA_PARA_REGISTRAR_ALUNO = 2;
 	private static final int PERMISSAO_MINIMA_PARA_REGISTRAR_FUNCIONARIO = 1;
+	private JTextField textFieldHorario;
 	
 	/**
 	 * Create the panel.
@@ -78,9 +84,17 @@ public class MenuPrincipal extends JPanel {
 		
 		JPictureBox fundo = new JPictureBox();
 		fundo.setIcon(new ImageIcon("src\\images\\fundoMenuPrincipal.png"));
-		
+
 		addIcon.setVisible(false);
 		iconEdit.setVisible(false);
+		
+		JLabel lblHorario = new JLabel("Horario:");
+		
+		textFieldHorario = new JTextField();
+		textFieldHorario.setColumns(10);
+		
+		JLabel lblMensagem = new JLabel("");
+		lblMensagem.setVisible(true);
 		
 		JButton btnLogout = new JButton("Logout");
 		btnLogout.addActionListener(new ActionListener() {
@@ -95,12 +109,76 @@ public class MenuPrincipal extends JPanel {
 		PanelMenu = new JPanel();
 		PanelMenu.setBackground(SystemColor.activeCaption);
 		
-		JButton btnUm = new JButton("Buscar agendamento");
+		JButton btnUm = new JButton("Consultar");
 		btnUm.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (menuAtual == Aula.getNOME_TABELA()) {
-					ChooseAula ca = new ChooseAula(funcionario, frame);
-					frame.setContentPane(ca);
+					String padraoBr = "dd/MM/yyyy";
+					SimpleDateFormat formatoBr = new SimpleDateFormat(padraoBr);
+					
+					String padraoDate = "yyyy-MM-dd";
+					SimpleDateFormat formatoDate = new SimpleDateFormat(padraoDate);
+					
+					String dataProcurada = formatoDate.format(calendar.getDate());
+					
+					String dataBr = formatoBr.format(calendar.getDate());
+					
+					String horarioComeco = textFieldHorario.getText();
+					
+					try {
+						int horas = Integer.parseInt(horarioComeco.substring(0,2));
+						int minutos = Integer.parseInt(horarioComeco.substring(3,5));
+						if (horas <= 0 || horas > 23 || minutos < 0 || minutos > 59 || horarioComeco.charAt(2) != ':'
+								|| horarioComeco.length() != 5) {
+							lblMensagem.setText("Horário inválido.");
+							lblMensagem.setVisible(true);
+							System.out.println("Horário inválido.");
+						} else {
+							boolean naoEncontrado = true;
+							int qtdeLinhasTabela = GetRowCount.getRowCount(Aula.getNOME_TABELA());
+							Aula[] alunosNaAula = new Aula[qtdeLinhasTabela];
+							Aula aula = new Aula();
+							int qtdeDeAlunosNaAula = 0;
+							for (int i = 1; i <= qtdeLinhasTabela; i++) {
+								aula = Aula.read(i);
+								if (dataProcurada.equals(aula.getData().toString().substring(0, 10))
+										&& horarioComeco.equals(aula.getHoraComeco()) ) {
+									System.out.println("Aula encontrada.");
+									naoEncontrado = false;
+									alunosNaAula[qtdeDeAlunosNaAula] = aula;
+									qtdeDeAlunosNaAula++;
+								}
+							}
+							if (naoEncontrado) {
+								lblMensagem.setText("Não há nenhum aluno registrado para a aula procurada.");
+								lblMensagem.setVisible(true);
+								System.out.println("Aula não encontrada");
+							} else {
+								ConsultAgenda ca = new ConsultAgenda(funcionario, frame, alunosNaAula, qtdeDeAlunosNaAula, dataBr);
+								frame.setContentPane(ca);
+								frame.revalidate(); //refresh
+								frame.repaint();
+							}
+							
+							// ConsultAgenda ca = new ConsultAgenda(funcionario, frame, null, flags, dataBr);
+							/*
+							ChooseAula ca = new ChooseAula(funcionario, frame);
+							frame.setContentPane(ca);
+							*/
+						}
+					} catch (NumberFormatException erro) {
+						erro.printStackTrace();
+						lblMensagem.setText("Horário inválido.");
+						lblMensagem.setVisible(true);
+						System.out.println("Horário inválido.");
+					} catch (StringIndexOutOfBoundsException erro) {
+						erro.printStackTrace();
+						lblMensagem.setText("Horário inválido.");
+						lblMensagem.setVisible(true);
+						System.out.println("Horário inválido.");
+					}
+					
+					
 				}
 				if (menuAtual == Aluno.getNOME_TABELA()) {
 					ChooseAluno ca = new ChooseAluno(funcionario, frame);
@@ -115,7 +193,7 @@ public class MenuPrincipal extends JPanel {
 			}
 		});
 
-		JButton btnDois = new JButton("Novo agendamento");
+		JButton btnDois = new JButton("Novo");
 		btnDois.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (menuAtual == Aula.getNOME_TABELA()) {
@@ -146,13 +224,17 @@ public class MenuPrincipal extends JPanel {
 		JButton btnAgenda = new JButton("Agenda");
 		btnAgenda.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				lblMensagem.setText("");
+				lblMensagem.setVisible(true);
 				menuAtual = Aula.getNOME_TABELA();
 				scrollPane.setVisible(false);
-				btnUm.setText("Buscar agendamento");
-				btnDois.setText("Novo agendamento");
+				btnUm.setText("Consultar");
+				btnDois.setText("Novo");
 				addIcon.setVisible(false);
 				iconEdit.setVisible(false);
 				calendar.setVisible(true);
+				lblHorario.setVisible(true);
+				textFieldHorario.setVisible(true);				
 				if (funcionario.getNivelDeAcesso() > PERMISSAO_MINIMA_PARA_REGISTRAR_AULA) {
 		        	btnDois.setEnabled(false);
 		        	btnUm.setEnabled(true);
@@ -174,10 +256,14 @@ public class MenuPrincipal extends JPanel {
 				calendar.setVisible(false);
 				menuAtual = Aluno.getNOME_TABELA();
 				btnUm.setText("Editar");
-				btnDois.setText("Adicionar");
+				btnDois.setText("Novo");
 				addIcon.setVisible(true);
 				iconEdit.setVisible(true);
+				lblHorario.setVisible(false);
+				textFieldHorario.setVisible(false);
+				lblMensagem.setVisible(false);
 				scrollPane.setVisible(true);
+				
 				DefaultTableModel model = (DefaultTableModel) tabelaAlunos.getModel();
 				int numeroDeLinhasTabela = GetRowCount.getRowCount(Aluno.getNOME_TABELA());
 				int qtdeLinhasTabelaAtual = model.getRowCount();
@@ -220,10 +306,14 @@ public class MenuPrincipal extends JPanel {
 				calendar.setVisible(false);
 				menuAtual = Funcionario.getNOME_TABELA();
 				btnUm.setText("Editar");
-				btnDois.setText("Adicionar");
+				btnDois.setText("Novo");
 				addIcon.setVisible(true);
 				iconEdit.setVisible(true);
+				lblHorario.setVisible(false);
+				textFieldHorario.setVisible(false);
+				lblMensagem.setVisible(false);
 				scrollPane.setVisible(true);
+				
 				DefaultTableModel model = (DefaultTableModel) tabelaFuncionarios.getModel();
 				int numeroDeLinhasTabela = GetRowCount.getRowCount(Funcionario.getNOME_TABELA());
 				int qtdeLinhasTabelaAtual = model.getRowCount();
@@ -362,48 +452,75 @@ public class MenuPrincipal extends JPanel {
 							.addComponent(panel_2_1, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE))))
 		);
 		PanelMenu.setLayout(gl_panelMenu);
+		
 		GroupLayout gl_menuExibicao = new GroupLayout(menuExibicao);
 		gl_menuExibicao.setHorizontalGroup(
 			gl_menuExibicao.createParallelGroup(Alignment.LEADING)
 				.addGroup(Alignment.TRAILING, gl_menuExibicao.createSequentialGroup()
-					.addGap(185)
+					.addGap(90)
+					.addComponent(btnUm, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE)
+					.addGap(6)
 					.addComponent(btnDois, GroupLayout.PREFERRED_SIZE, 87, GroupLayout.PREFERRED_SIZE)
+					.addGap(11))
+				.addGroup(Alignment.TRAILING, gl_menuExibicao.createSequentialGroup()
+					.addGap(186)
+					.addComponent(textFieldHorario, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addGap(11))
 				.addGroup(Alignment.TRAILING, gl_menuExibicao.createSequentialGroup()
 					.addGap(104)
 					.addComponent(iconEdit, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)
-					.addGap(33)
+					.addGap(119))
+				.addGroup(Alignment.TRAILING, gl_menuExibicao.createSequentialGroup()
+					.addGap(197)
 					.addComponent(addIcon, GroupLayout.PREFERRED_SIZE, 58, GroupLayout.PREFERRED_SIZE)
 					.addGap(28))
-				.addGroup(gl_menuExibicao.createSequentialGroup()
-					.addGap(10)
-					.addGroup(gl_menuExibicao.createParallelGroup(Alignment.LEADING)
-						.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
-						.addComponent(calendar, GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE))
-					.addGap(17))
 				.addGroup(Alignment.TRAILING, gl_menuExibicao.createSequentialGroup()
 					.addGap(90)
-					.addComponent(btnUm, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE)
+					.addComponent(lblMensagem, GroupLayout.PREFERRED_SIZE, 182, GroupLayout.PREFERRED_SIZE)
+					.addGap(11))
+				.addGroup(Alignment.TRAILING, gl_menuExibicao.createSequentialGroup()
+					.addGap(90)
+					.addComponent(lblHorario, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE)
 					.addGap(104))
+				.addGroup(gl_menuExibicao.createSequentialGroup()
+					.addGap(10)
+					.addComponent(calendar, GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
+					.addGap(17))
+				.addGroup(gl_menuExibicao.createSequentialGroup()
+					.addGap(10)
+					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
+					.addGap(17))
 				.addComponent(fundo, GroupLayout.DEFAULT_SIZE, 283, Short.MAX_VALUE)
 		);
 		gl_menuExibicao.setVerticalGroup(
 			gl_menuExibicao.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_menuExibicao.createSequentialGroup()
 					.addGap(11)
-					.addComponent(btnDois)
+					.addGroup(gl_menuExibicao.createParallelGroup(Alignment.LEADING)
+						.addComponent(btnUm)
+						.addComponent(btnDois))
 					.addGap(5)
-					.addGroup(gl_menuExibicao.createParallelGroup(Alignment.LEADING)
-						.addComponent(iconEdit, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
-						.addComponent(addIcon, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE))
-					.addGap(11)
-					.addGroup(gl_menuExibicao.createParallelGroup(Alignment.LEADING)
-						.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
-						.addComponent(calendar, GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE))
+					.addComponent(textFieldHorario, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+				.addGroup(gl_menuExibicao.createSequentialGroup()
+					.addGap(39)
+					.addComponent(iconEdit, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE))
+				.addGroup(gl_menuExibicao.createSequentialGroup()
+					.addGap(39)
+					.addComponent(addIcon, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE))
+				.addGroup(gl_menuExibicao.createSequentialGroup()
+					.addGap(71)
+					.addComponent(lblMensagem, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE))
+				.addGroup(gl_menuExibicao.createSequentialGroup()
+					.addGap(39)
+					.addComponent(lblHorario, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE))
+				.addGroup(gl_menuExibicao.createSequentialGroup()
+					.addGap(96)
+					.addComponent(calendar, GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
 					.addGap(11))
 				.addGroup(gl_menuExibicao.createSequentialGroup()
-					.addGap(11)
-					.addComponent(btnUm))
+					.addGap(96)
+					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
+					.addGap(11))
 				.addComponent(fundo, GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
 		);
 		menuExibicao.setLayout(gl_menuExibicao);
