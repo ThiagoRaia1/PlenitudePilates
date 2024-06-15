@@ -202,7 +202,7 @@ public class Aula {
 	public void setIdFuncionario(int idFuncionario) {
 		this.idFuncionario = idFuncionario;
 	}
-	public static String getNomeTabela() {
+	public static String getNOME_TABELA() {
 		return NOME_TABELA;
 	}
 

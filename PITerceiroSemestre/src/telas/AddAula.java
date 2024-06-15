@@ -171,7 +171,7 @@ public class AddAula extends JPanel {
 							aula.setIdFuncionario(Integer.parseInt(dados[3]));
 							
 							boolean aulaSeraRegistrada = true, vagasAtualizadas = false;
-							int numeroDeLinhas = GetRowCount.getRowCount(Aula.getNomeTabela());
+							int numeroDeLinhas = GetRowCount.getRowCount(Aula.getNOME_TABELA());
 							Aula aulaExistente = new Aula();
 							for (int i = 1; i <= numeroDeLinhas; i++) {
 								aulaExistente = Aula.read(i);

@@ -75,7 +75,7 @@ public class ChooseAula extends JPanel {
 					} else {
 						aulaProcurada = ano+"-"+mes+"-"+dia;
 						boolean naoEncontrado = true;
-						int qtdeLinhasTabela = GetRowCount.getRowCount(Aula.getNomeTabela());
+						int qtdeLinhasTabela = GetRowCount.getRowCount(Aula.getNOME_TABELA());
 						Aula[] alunosNaAula = new Aula[qtdeLinhasTabela];
 						Aula aula = new Aula();
 						int qtdeDeAlunosNaAula = 0;

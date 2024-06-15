@@ -27,7 +27,7 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
 /**
- * Cria o frame principal da aplicação.
+ * Classe para instanciação do frame principal da aplicação.
  */
 public class MainFrame extends JFrame {
 
@@ -60,9 +60,6 @@ public class MainFrame extends JFrame {
 
 	/**
 	 * Cria o frame principal.
-	 */
-	/**
-	 * 
 	 */
 	public MainFrame() {
 		setBackground(Color.WHITE);
