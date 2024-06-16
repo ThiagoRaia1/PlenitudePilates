@@ -10,6 +10,7 @@ import java.awt.Font;
 import javax.swing.JLayeredPane;
 import java.awt.CardLayout;
 import customComponents.TextField;
+import entities.Aluno;
 import entities.Aula;
 import entities.Funcionario;
 import main.GetRowCount;
@@ -156,53 +157,86 @@ public class AddAula extends JPanel {
 							int numeroDeLinhas = GetRowCount.getRowCount(Aula.getNOME_TABELA());
 							Aula aulaExistente = new Aula();
 
-							// Verifica se ja existe um registro do aluno na data e hora informadas.
-							for (int i = 1; i <= numeroDeLinhas; i++) {
-								aulaExistente = Aula.read(i);
-								if (aulaExistente.getData().equals(aula.getData())
-										&& aulaExistente.getHoraComeco().equals(aula.getHoraComeco()) 
-										&& aulaExistente.getIdAluno() == aula.getIdAluno()) {
-									lblMensagem.setText("Aluno ja registrado para esta aula.");
-									lblMensagem.setVisible(true);
-									aulaSeraRegistrada = false;
-									vagasAtualizadas = false;
-									break;
-								} else {
-									aulaSeraRegistrada = true;
-								}
-							}
-							if (aulaSeraRegistrada) {
-								// Verifica se há registros de outros alunos nesta mesma hora e data.
-								for (int i = 1; i <= numeroDeLinhas; i++) {
-									aulaExistente = Aula.read(i);
-									if (aulaExistente.getData().equals(aula.getData())
-											&& aulaExistente.getHoraComeco().equals(aula.getHoraComeco())) {
-										System.out.println("Há registros de outros alunos nesta mesma hora e data.");
-										if (aulaExistente.getQtdeVagasDisponiveis() > 0) {
-											Aula.update(aulaExistente);
-											aulaExistente = Aula.read(i);
-											vagasAtualizadas = true;
-											aulaSeraRegistrada = true;
-											break;
-										} else {
-											lblMensagem.setText("Não há mais vagas para esta aula.");
+							// Verificar se existe um aluno no ID informado.
+							if (Aluno.read(aula.getIdAluno()).getId() != 0) {
+								// Verificar se existe um aluno no ID informado.
+								if (Funcionario.read(aula.getIdFuncionario()).getId() != 0) {
+									// Verifica se ja existe um registro do aluno na data e hora informadas.
+									for (int i = 1; i <= numeroDeLinhas; i++) {
+										aulaExistente = Aula.read(i);
+										if (aulaExistente.getData().equals(aula.getData())
+												&& aulaExistente.getHoraComeco().equals(aula.getHoraComeco()) 
+												&& aulaExistente.getIdAluno() == aula.getIdAluno()) {
+											lblMensagem.setText("Aluno ja registrado para esta aula.");
 											lblMensagem.setVisible(true);
 											aulaSeraRegistrada = false;
+											vagasAtualizadas = false;
 											break;
+										} else {
+											aulaSeraRegistrada = true;
+										}
+									}
+									if (aulaSeraRegistrada) {
+										// Verifica se há registros de outros alunos nesta mesma hora e data.
+										for (int i = 1; i <= numeroDeLinhas; i++) {
+											aulaExistente = Aula.read(i);
+											if (aulaExistente.getData().equals(aula.getData())
+													&& aulaExistente.getHoraComeco().equals(aula.getHoraComeco())) {
+												if (aula.getIdFuncionario() == aulaExistente.getIdFuncionario()) {
+													System.out.println("Há registros de outros alunos nesta mesma hora e data.");
+													if (aulaExistente.getQtdeVagasDisponiveis() > 0) {
+														Aula.update(aulaExistente);
+														aulaExistente = Aula.read(i);
+														vagasAtualizadas = true;
+														aulaSeraRegistrada = true;
+														break;
+													} else {
+														lblMensagem.setText("Não há mais vagas para esta aula.");
+														lblMensagem.setVisible(true);
+														aulaSeraRegistrada = false;
+														break;
+													}
+												} else {
+													lblMensagem.setText("O funcionário com ID "+ aulaExistente.getIdFuncionario() 
+													+" já está registrado para esta aula.");
+													lblMensagem.setVisible(true);
+													aulaSeraRegistrada = false;
+												}
+											} else {
+												System.out.println("Não há registros de outros alunos nesta mesma hora e data.");
+												aulaSeraRegistrada = true;
+											}
+										}
+									}
+									if (aulaExistente.getIdFuncionario() != 0) {
+										if (aula.getIdFuncionario() == aulaExistente.getIdFuncionario()) {
+											if (vagasAtualizadas) {
+												// System.out.println("vagas disponiveis: "+aulaExistente.getQtdeVagasDisponiveis());
+												// System.out.println("vagas ocupadas: "+aulaExistente.getVagasOcupadas());
+												aula.setQtdeVagasDisponiveis(aulaExistente.getQtdeVagasDisponiveis());
+												aula.setVagasOcupadas(aulaExistente.getVagasOcupadas());
+												aulaSeraRegistrada = true;
+											}
+										} else {
+											lblMensagem.setText("O funcionário com ID "+ aulaExistente.getIdFuncionario() 
+											+" já está registrado para esta aula.");
+											lblMensagem.setVisible(true);
+											aulaSeraRegistrada = false;
 										}
 									} else {
-										System.out.println("Não há registros de outros alunos nesta mesma hora e data.");
+										aulaSeraRegistrada = true;
 									}
+									if (aulaSeraRegistrada) {
+										lblMensagem.setText(Aula.create(aula));
+										lblMensagem.setVisible(true);
+									}
+								} else {
+									lblMensagem.setText("Não há funcionário com o ID: "+aula.getIdFuncionario());
+									lblMensagem.setVisible(true);
 								}
-							}
-							if (vagasAtualizadas) {
-								System.out.println("vagas disponiveis: "+aulaExistente.getQtdeVagasDisponiveis());
-								System.out.println("vagas ocupadas: "+aulaExistente.getVagasOcupadas());
-								aula.setQtdeVagasDisponiveis(aulaExistente.getQtdeVagasDisponiveis());
-								aula.setVagasOcupadas(aulaExistente.getVagasOcupadas());
-							}
-							if (aulaSeraRegistrada) {
-								lblMensagem.setText(Aula.create(aula));
+							} else {
+								// System.out.println("aluno read id == 0: "+Aluno.read(aula.getIdAluno()));
+								lblMensagem.setText("Não há aluno com o ID: "+aula.getIdAluno());
 								lblMensagem.setVisible(true);
 							}
 							
