@@ -35,9 +35,9 @@ public class EditFuncionario extends JPanel {
 
 	/**
 	 * Cria um painel para o usuário editar as informações do funcionário pesquisado.
-	 * @param funcionarioLogado
-	 * @param frame
-	 * @param funcionarioProcurado
+	 * @param funcionarioLogado - Dados do funcionario logado.
+	 * @param frame - Frame principal.
+	 * @param funcionarioProcurado - Dados do funcionario buscado no painel "ChooseFuncionario".
 	 */
 	public EditFuncionario(Funcionario funcionarioLogado, MainFrame frame, Funcionario funcionarioProcurado) {
 		setBackground(Color.WHITE);
@@ -89,6 +89,7 @@ public class EditFuncionario extends JPanel {
 		textField_NivelDeAcesso = new JTextField();
 		textField_NivelDeAcesso.setColumns(10);
 
+		// Os campos são preenchidos com os dados atuais do aluno.
 		textField_Nome.setText(funcionarioProcurado.getNome());
 		textField_Cidade.setText(funcionarioProcurado.getCidade());
 		textField_Funcao.setText(funcionarioProcurado.getFuncao());
@@ -99,6 +100,7 @@ public class EditFuncionario extends JPanel {
 		textField_Usuario.setText(funcionarioProcurado.getUsuario());
 		textField_Senha.setText(funcionarioProcurado.getSenha());
 		textField_NivelDeAcesso.setText(String.valueOf(funcionarioProcurado.getNivelDeAcesso()));
+		// Os campos são preenchidos com os dados atuais do aluno.
 		
 		JLabel lblMensagem = new JLabel("Preencha todos os dados obrigatórios.");
 		lblMensagem.setVisible(false);
@@ -130,7 +132,12 @@ public class EditFuncionario extends JPanel {
 		JButton btnRegistrar = new JButton("Editar");
 		btnRegistrar.addActionListener(new ActionListener() {
 			/**
-			 * 
+			 * Valida se todos os dados foram preenchidos corretamente, se sim, exibe
+			 * "Dados do funcionario (nome do funcionario) atualizados.", 
+			 * se não, "Preencha todos os dados obrigatórios." caso algum campo não tenha sido preenchido, 
+			 * "Nome de usuario já em uso." caso o usuario digitado ja esteja em uso,
+			 * "Nível de acesso inválido." caso o nível de acesso digitado não seja 1, 2 ou 3.
+			 * Se atualizarmos os dados do funcionario que esta logado, seus dados serão substituídos pelos novos.
 			 */
 			public void actionPerformed(ActionEvent e) {
 				boolean dadosPreenchidos = true;
@@ -152,7 +159,6 @@ public class EditFuncionario extends JPanel {
 						lblMensagem.setText("Preencha todos os dados obrigatórios.");
 						lblMensagem.setVisible(true);
 						dadosPreenchidos = false;
-						System.out.println("Preencha todos os dados obrigatórios.");
 						break;
 					} else {
 						dadosPreenchidos = true;
@@ -161,10 +167,8 @@ public class EditFuncionario extends JPanel {
 				boolean usuarioNaoEstaEmUso = true;
 				if (dadosPreenchidos) {
 					int numeroDeLinhas = GetRowCount.getRowCount(Funcionario.getNOME_TABELA());
-	                System.out.println("Número de linhas: "+numeroDeLinhas);
+					
 	                // Se o nome de usuário não for mantido, verifica se o usuário digitado está disponível
-	                System.out.println(funcionarioProcurado.getUsuario());
-	                System.out.println(dados[7]);
 					if (!dados[7].equals(funcionarioProcurado.getUsuario())) {
 						System.out.println("O usuário será alterado.");
 						for (int i = 1; i <= numeroDeLinhas; i++) {
