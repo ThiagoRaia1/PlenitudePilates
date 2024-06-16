@@ -47,13 +47,15 @@ public class MenuPrincipal extends JPanel {
 	SimpleDateFormat formatoDate = new SimpleDateFormat(PADRAO_DATE);
 	
 	/**
-	 * Create the panel.
+	 * Cria o painel do menu principal para navegação.
 	 * @param funcionario - Dados do funcionario logado.
-	 * @param frame - Frame principal
+	 * @param frame - Frame principal.
 	 */
 	public MenuPrincipal(Funcionario funcionario, MainFrame frame) {
 		setBackground(new Color(255, 255, 255));
-
+		
+		menuAtual = Aula.getNOME_TABELA();
+		
 		JCalendar calendar = new JCalendar();
 		calendar.setVisible(true);
 		
@@ -103,6 +105,9 @@ public class MenuPrincipal extends JPanel {
 		
 		JButton btnLogout = new JButton("Logout");
 		btnLogout.addActionListener(new ActionListener() {
+			/**
+			 * Fecha a aplicação.
+			 */
 			public void actionPerformed(ActionEvent e) {
 				System.exit(0);
 			}
@@ -114,8 +119,16 @@ public class MenuPrincipal extends JPanel {
 		PanelMenu = new JPanel();
 		PanelMenu.setBackground(SystemColor.activeCaption);
 		
+		
 		JButton btnUm = new JButton("Consultar");
 		btnUm.addActionListener(new ActionListener() {
+			/**
+			 * Direciona para a próxima tela de acordo com o menu selecionado.
+			 * "ConsultAgenda", se "Agenda" estiver selecionada;
+			 * "ChooseAluno", se "Alunos" estiver selecionado;
+			 * "ChooseFuncionario", se a "Equipe" estiver selecionado";
+			 * @param e
+			 */
 			public void actionPerformed(ActionEvent e) {
 				if (menuAtual == Aula.getNOME_TABELA()) {
 					
@@ -171,8 +184,8 @@ public class MenuPrincipal extends JPanel {
 						System.out.println("Horário inválido.");
 					}
 					
-					
 				}
+				
 				if (menuAtual == Aluno.getNOME_TABELA()) {
 					ChooseAluno ca = new ChooseAluno(funcionario, frame);
 					frame.setContentPane(ca);
@@ -188,6 +201,13 @@ public class MenuPrincipal extends JPanel {
 
 		JButton btnDois = new JButton("Novo");
 		btnDois.addActionListener(new ActionListener() {
+			/**
+			 * Direciona para a próxima tela de acordo com o menu selecionado.
+			 * "AddAula", se "Agenda" estiver selecionada;
+			 * "AddAluno", se "Alunos" estiver selecionado;
+			 * "AddFuncionario", se a "Equipe" estiver selecionado";
+			 * @param e
+			 */
 			public void actionPerformed(ActionEvent e) {
 				if (menuAtual == Aula.getNOME_TABELA()) {
 					
@@ -206,7 +226,6 @@ public class MenuPrincipal extends JPanel {
 							lblMensagem.setVisible(true);
 							System.out.println("Horário inválido.");
 						} else {
-							boolean naoEncontrado = true;
 							int qtdeLinhasTabela = GetRowCount.getRowCount(Aula.getNOME_TABELA());
 							Aula[] alunosNaAula = new Aula[qtdeLinhasTabela];
 							Aula aula = new Aula();
@@ -216,7 +235,6 @@ public class MenuPrincipal extends JPanel {
 								if (dataProcurada.equals(aula.getData().toString().substring(0, 10))
 										&& horarioComeco.equals(aula.getHoraComeco()) ) {
 									System.out.println("Aula encontrada.");
-									naoEncontrado = false;
 									alunosNaAula[qtdeDeAlunosNaAula] = aula;
 									qtdeDeAlunosNaAula++;
 								}
@@ -253,6 +271,7 @@ public class MenuPrincipal extends JPanel {
 			}
 		});
 		
+		// Verifica se o usuário ter permissão para registrar novas aulas, para iniciar habilitado ou não.
 		if (funcionario.getNivelDeAcesso() > PERMISSAO_MINIMA_PARA_REGISTRAR_AULA) {
         	btnDois.setEnabled(false);
         	btnUm.setEnabled(true);
@@ -263,6 +282,10 @@ public class MenuPrincipal extends JPanel {
 		
 		JButton btnAgenda = new JButton("Agenda");
 		btnAgenda.addActionListener(new ActionListener() {
+			/**
+			 * Faz as alterações necessárias para que apenas os componentes relacionados a "Agenda" sejam exibidos.
+			 * @param e
+			 */
 			public void actionPerformed(ActionEvent e) {
 				lblMensagem.setText("Selecione a data e hora.");
 				lblMensagem.setVisible(true);
@@ -274,7 +297,8 @@ public class MenuPrincipal extends JPanel {
 				iconEdit.setVisible(false);
 				calendar.setVisible(true);
 				lblHorario.setVisible(true);
-				textFieldHorario.setVisible(true);				
+				textFieldHorario.setVisible(true);
+				// Verifica se o usuário ter permissão para registrar novas aulas.		
 				if (funcionario.getNivelDeAcesso() > PERMISSAO_MINIMA_PARA_REGISTRAR_AULA) {
 		        	btnDois.setEnabled(false);
 		        	btnUm.setEnabled(true);
@@ -292,6 +316,10 @@ public class MenuPrincipal extends JPanel {
 		
 		JButton btnAlunos = new JButton("Alunos");
 		btnAlunos.addActionListener(new ActionListener() {
+			/**
+			 * Faz as alterações necessárias para que apenas os componentes relacionados a "Alunos" sejam exibidos.
+			 * @param e
+			 */
 			public void actionPerformed(ActionEvent e) {
 				calendar.setVisible(false);
 				menuAtual = Aluno.getNOME_TABELA();
@@ -342,6 +370,10 @@ public class MenuPrincipal extends JPanel {
 		
 		JButton btnEquipe = new JButton("Equipe");
 		btnEquipe.addActionListener(new ActionListener() {
+			/**
+			 * Faz as alterações necessárias para que apenas os componentes relacionados a "Alunos" sejam exibidos.
+			 * @param e
+			 */
 			public void actionPerformed(ActionEvent e) {
 				calendar.setVisible(false);
 				menuAtual = Funcionario.getNOME_TABELA();
