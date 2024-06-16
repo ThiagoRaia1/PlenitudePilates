@@ -26,7 +26,9 @@ public class ChooseAluno extends JPanel {
 	private JTextField textField;
 
 	/**
-	 * Create the panel.
+	 * Cria o painel para que o usuário digite o nome completo do aluno que deseja editar.
+	 * @param funcionario - Dados do funcionario logado.
+	 * @param frame - Frame principal.
 	 */
 	public ChooseAluno(Funcionario funcionario, MainFrame frame) {
 		setBackground(Color.WHITE);
@@ -38,6 +40,10 @@ public class ChooseAluno extends JPanel {
 		
 		JButton btnNewButton = new JButton("Voltar");
 		btnNewButton.addActionListener(new ActionListener() {
+			/**
+			 * Retorna ao menu principal.
+			 * @param e
+			 */
 			public void actionPerformed(ActionEvent e) {
 				MenuPrincipal mp = new MenuPrincipal(funcionario, frame);
 				frame.setContentPane(mp);
@@ -50,8 +56,15 @@ public class ChooseAluno extends JPanel {
 		lblDigiteONomeDoAluno.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblDigiteONomeDoAluno.setHorizontalAlignment(SwingConstants.CENTER);
 		
+		JLabel lblMensagem = new JLabel("Aluno não encontrado.");
+		lblMensagem.setVisible(false);
+		
 		JButton btnNewButton_1 = new JButton("Avançar");
 		btnNewButton_1.addActionListener(new ActionListener() {
+			/**
+			 * Valida se o nome digitado existe no banco de dados, se sim, direciona para a tela "EditAluno",
+			 * se não, exibe a mensagem "Aluno não encontrado".
+			 */
 			public void actionPerformed(ActionEvent e) {
 				String alunoProcurado = textField.getText();
 				boolean naoEncontrado = true;
@@ -70,7 +83,8 @@ public class ChooseAluno extends JPanel {
 					}
 				}
 				if (naoEncontrado) {
-					System.out.println("Aluno não encontrado");
+					lblMensagem.setText("Aluno não encontrado.");
+					lblMensagem.setVisible(false);
 				}
 			}
 		});
@@ -81,9 +95,7 @@ public class ChooseAluno extends JPanel {
 		
 		JPanel panel_2 = new JPanel();
 		
-		JLabel lblNewLabel = new JLabel("Aluno não encontrado.");
-		lblNewLabel.setVisible(false);
-		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		lblMensagem.setHorizontalAlignment(SwingConstants.CENTER);
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.TRAILING)
@@ -103,7 +115,7 @@ public class ChooseAluno extends JPanel {
 							.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING)
 								.addComponent(panel_2, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 211, Short.MAX_VALUE)
 								.addComponent(lblDigiteONomeDoAluno, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 211, Short.MAX_VALUE)
-								.addComponent(lblNewLabel, GroupLayout.DEFAULT_SIZE, 211, Short.MAX_VALUE))
+								.addComponent(lblMensagem, GroupLayout.DEFAULT_SIZE, 211, Short.MAX_VALUE))
 							.addPreferredGap(ComponentPlacement.RELATED)))
 					.addComponent(panel_1_1, GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE)
 					.addContainerGap())
@@ -121,7 +133,7 @@ public class ChooseAluno extends JPanel {
 							.addGap(18)
 							.addComponent(textField, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE)
 							.addGap(18)
-							.addComponent(lblNewLabel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addComponent(lblMensagem, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(btnNewButton_1)
 							.addPreferredGap(ComponentPlacement.RELATED)
