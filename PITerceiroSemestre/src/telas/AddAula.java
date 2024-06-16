@@ -21,7 +21,6 @@ import java.awt.event.ActionEvent;
 import javax.swing.SwingConstants;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
-import javax.swing.LayoutStyle.ComponentPlacement;
 
 public class AddAula extends JPanel {
 
@@ -30,11 +29,13 @@ public class AddAula extends JPanel {
 	private static final int NUMERO_MAXIMO_DE_ALUNOS_POR_AULA = 5;
 
 	/**
-	 * Create the panel.
-	 * @param funcionario - dados do funcionario logado
-	 * @param frame - frame principal
+	 * Cria o painel.
+	 * @param funcionario - Dados do funcionario logado
+	 * @param frame - Frame principal
+	 * @param horarioComeco - O horário de início da aula digitado pelo usuário.
+	 * @param dataBr - A data escolhida pelo usuário no formato dd/MM/yyyy
 	 */
-	public AddAula(Funcionario funcionario, MainFrame frame) {
+	public AddAula(Funcionario funcionario, MainFrame frame, String dataBr, String horarioComeco) {
 		
 		JLayeredPane layeredPane = new JLayeredPane();
 		
@@ -57,6 +58,9 @@ public class AddAula extends JPanel {
 		TextField textFieldHora = new TextField();
 		
 		TextField textFieldSala = new TextField();
+		
+		textFieldData.setText(dataBr);
+		textFieldHora.setText(horarioComeco);
 		
 		CustomButton cstmbtnVoltar = new CustomButton();
 		cstmbtnVoltar.setBackground(new Color(255, 255, 255));
@@ -88,13 +92,6 @@ public class AddAula extends JPanel {
 				int anoAtual = Integer.parseInt(LocalDate.now().toString().substring(0, 4));
 				int mesAtual = Integer.parseInt(LocalDate.now().toString().substring(5, 7));
 				int diaAtual = Integer.parseInt(LocalDate.now().toString().substring(8, 10));
-				System.out.println("Dia atual: "+diaAtual);
-				System.out.println("Mes atual: "+mesAtual);
-				System.out.println("Ano atual: "+anoAtual);
-				
-				System.out.println(dia);
-				System.out.println(mes);
-				System.out.println(ano);
 				
 				if (anoAtual > ano) {
 					lblMensagem.setText("Data inválida.");
@@ -109,7 +106,6 @@ public class AddAula extends JPanel {
 					boolean dadosPreenchidos = true;
 					String[] dados = new String[5];
 					dados[0] = ano +"-"+ mes +"-"+ dia;
-					
 					dados[1] = textFieldHora.getText();
 					dados[2] = textFieldAluno.getText();
 					dados[3] = textFieldInstrutor.getText();
@@ -128,19 +124,13 @@ public class AddAula extends JPanel {
 						// Adicionar condicional para ter uma idade mínima e máxima
 						try {
 							Aula aula = new Aula();
-							System.out.println("Dados[0]: "+dados[0]);
-							System.out.println("Dados[1]: "+dados[1]);
-							System.out.println("horaComeco: "+dados[0]+" "+dados[1]);
-							
 							// Adionar horario
 							aula.setData(Date.valueOf(dados[0]));
 							aula.setHoraComeco(dados[1]);
 							
-							System.out.println("Dados[1] (substring 0-2) = "+dados[1].substring(0, 2));
-							
 							int horaFim = Integer.parseInt(dados[1].substring(0, 2));
 							horaFim++;
-							System.out.println("horaFim: "+horaFim);
+							
 							if (horaFim > 9) {
 								aula.setHoraFim(horaFim +":00");
 							} else {
@@ -156,37 +146,49 @@ public class AddAula extends JPanel {
 							boolean aulaSeraRegistrada = true, vagasAtualizadas = false;
 							int numeroDeLinhas = GetRowCount.getRowCount(Aula.getNOME_TABELA());
 							Aula aulaExistente = new Aula();
+
+							// Verifica se ja existe um registro do aluno na data e hora informadas.
 							for (int i = 1; i <= numeroDeLinhas; i++) {
 								aulaExistente = Aula.read(i);
-								
-								if (aulaExistente.getHoraComeco().equals(aula.getHoraComeco()) 
+								if (aulaExistente.getData().equals(aula.getData())
+										&& aulaExistente.getHoraComeco().equals(aula.getHoraComeco()) 
 										&& aulaExistente.getIdAluno() == aula.getIdAluno()) {
 									lblMensagem.setText("Aluno ja registrado para esta aula.");
 									lblMensagem.setVisible(true);
 									aulaSeraRegistrada = false;
+									vagasAtualizadas = false;
 									break;
 								} else {
 									aulaSeraRegistrada = true;
 								}
-									
-								if (aulaExistente.getData().equals(aula.getData())
-										&& aulaExistente.getHoraComeco().equals(aula.getHoraComeco())) {
-									if (aulaExistente.getQtdeVagasDisponiveis() > 0) {
-										Aula.update(aulaExistente);
-										aulaExistente = Aula.read(i);
-										vagasAtualizadas = true;
-										aulaSeraRegistrada = true;
-										break;
+							}
+							if (aulaSeraRegistrada) {
+								// Verifica se há registros de outros alunos nesta mesma hora e data.
+								for (int i = 1; i <= numeroDeLinhas; i++) {
+									aulaExistente = Aula.read(i);
+									if (aulaExistente.getData().equals(aula.getData())
+											&& aulaExistente.getHoraComeco().equals(aula.getHoraComeco())) {
+										System.out.println("Há registros de outros alunos nesta mesma hora e data.");
+										if (aulaExistente.getQtdeVagasDisponiveis() > 0) {
+											Aula.update(aulaExistente);
+											aulaExistente = Aula.read(i);
+											vagasAtualizadas = true;
+											aulaSeraRegistrada = true;
+											break;
+										} else {
+											lblMensagem.setText("Não há mais vagas para esta aula.");
+											lblMensagem.setVisible(true);
+											aulaSeraRegistrada = false;
+											break;
+										}
 									} else {
-										lblMensagem.setText("Não há mais vagas para esta aula.");
-										lblMensagem.setVisible(true);
-										aulaSeraRegistrada = false;
-										break;
+										System.out.println("Não há registros de outros alunos nesta mesma hora e data.");
 									}
 								}
-								
 							}
 							if (vagasAtualizadas) {
+								System.out.println("vagas disponiveis: "+aulaExistente.getQtdeVagasDisponiveis());
+								System.out.println("vagas ocupadas: "+aulaExistente.getVagasOcupadas());
 								aula.setQtdeVagasDisponiveis(aulaExistente.getQtdeVagasDisponiveis());
 								aula.setVagasOcupadas(aulaExistente.getVagasOcupadas());
 							}
@@ -218,7 +220,7 @@ public class AddAula extends JPanel {
 		lblNewLabel.setForeground(new Color(159, 150, 138));
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 14));
 		
-		JLabel lblHora = new JLabel("Hora: (99:99)");
+		JLabel lblHora = new JLabel("Hora: (XX:XX)");
 		lblHora.setForeground(new Color(159, 150, 138));
 		lblHora.setFont(new Font("Tahoma", Font.BOLD, 14));
 		

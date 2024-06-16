@@ -21,10 +21,7 @@ import javax.swing.table.DefaultTableModel;
 
 import java.awt.Color;
 import java.awt.event.ActionListener;
-import java.awt.font.NumericShaper;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.awt.event.ActionEvent;
 import customComponents.JPictureBox;
 import javax.swing.ImageIcon;
@@ -36,11 +33,18 @@ public class MenuPrincipal extends JPanel {
 	
 	private static JPanel menuExibicao;
 	private static JPanel PanelMenu;
-	private String menuAtual = Aula.getNOME_TABELA();
+	private static JTextField textFieldHorario;
+	
+	private static String menuAtual = Aula.getNOME_TABELA();
 	private static final int PERMISSAO_MINIMA_PARA_REGISTRAR_AULA = 2;
 	private static final int PERMISSAO_MINIMA_PARA_REGISTRAR_ALUNO = 2;
 	private static final int PERMISSAO_MINIMA_PARA_REGISTRAR_FUNCIONARIO = 1;
-	private JTextField textFieldHorario;
+	
+	private static final String PADRAO_BR = "dd/MM/yyyy";
+	SimpleDateFormat formatoBr = new SimpleDateFormat(PADRAO_BR);
+	
+	private static final String PADRAO_DATE = "yyyy-MM-dd";
+	SimpleDateFormat formatoDate = new SimpleDateFormat(PADRAO_DATE);
 	
 	/**
 	 * Create the panel.
@@ -94,7 +98,7 @@ public class MenuPrincipal extends JPanel {
 		textFieldHorario.setToolTipText("(XX:XX)");
 		textFieldHorario.setColumns(10);
 		
-		JLabel lblMensagem = new JLabel("");
+		JLabel lblMensagem = new JLabel("Selecione a data e hora.");
 		lblMensagem.setVisible(true);
 		
 		JButton btnLogout = new JButton("Logout");
@@ -114,11 +118,78 @@ public class MenuPrincipal extends JPanel {
 		btnUm.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (menuAtual == Aula.getNOME_TABELA()) {
-					String padraoBr = "dd/MM/yyyy";
-					SimpleDateFormat formatoBr = new SimpleDateFormat(padraoBr);
 					
-					String padraoDate = "yyyy-MM-dd";
-					SimpleDateFormat formatoDate = new SimpleDateFormat(padraoDate);
+					String dataProcurada = formatoDate.format(calendar.getDate());
+					
+					String dataBr = formatoBr.format(calendar.getDate());
+					
+					String horarioComeco = textFieldHorario.getText();
+					
+					try {
+						int horas = Integer.parseInt(horarioComeco.substring(0,2));
+						int minutos = Integer.parseInt(horarioComeco.substring(3,5));
+						if (horas <= 0 || horas > 23 || minutos < 0 || minutos > 59 || horarioComeco.charAt(2) != ':'
+								|| horarioComeco.length() != 5) {
+							lblMensagem.setText("Horário inválido.");
+							lblMensagem.setVisible(true);
+						} else {
+							boolean naoEncontrado = true;
+							int qtdeLinhasTabela = GetRowCount.getRowCount(Aula.getNOME_TABELA());
+							Aula[] alunosNaAula = new Aula[qtdeLinhasTabela];
+							Aula aula = new Aula();
+							int qtdeDeAlunosNaAula = 0;
+							for (int i = 1; i <= qtdeLinhasTabela; i++) {
+								aula = Aula.read(i);
+								if (dataProcurada.equals(aula.getData().toString().substring(0, 10))
+										&& horarioComeco.equals(aula.getHoraComeco()) ) {
+									System.out.println("Aula encontrada.");
+									naoEncontrado = false;
+									alunosNaAula[qtdeDeAlunosNaAula] = aula;
+									qtdeDeAlunosNaAula++;
+								}
+							}
+							if (naoEncontrado) {
+								lblMensagem.setText("Nenhum aluno registrado.");
+								lblMensagem.setVisible(true);
+								System.out.println("Aula não encontrada");
+							} else {
+								ConsultAgenda ca = new ConsultAgenda(funcionario, frame, alunosNaAula, qtdeDeAlunosNaAula, dataBr);
+								frame.setContentPane(ca);
+								frame.revalidate(); //refresh
+								frame.repaint();
+							}
+						}
+					} catch (NumberFormatException erro) {
+						// erro.printStackTrace();
+						lblMensagem.setText("Horário inválido.");
+						lblMensagem.setVisible(true);
+						System.out.println("Horário inválido.");
+					} catch (StringIndexOutOfBoundsException erro) {
+						// erro.printStackTrace();
+						lblMensagem.setText("Horário inválido.");
+						lblMensagem.setVisible(true);
+						System.out.println("Horário inválido.");
+					}
+					
+					
+				}
+				if (menuAtual == Aluno.getNOME_TABELA()) {
+					ChooseAluno ca = new ChooseAluno(funcionario, frame);
+					frame.setContentPane(ca);
+				}
+				if (menuAtual == Funcionario.getNOME_TABELA()) {
+					ChooseFuncionario cf = new ChooseFuncionario(funcionario, frame);
+					frame.setContentPane(cf);
+				}
+				frame.revalidate(); //refresh
+				frame.repaint();
+			}
+		});
+
+		JButton btnDois = new JButton("Novo");
+		btnDois.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (menuAtual == Aula.getNOME_TABELA()) {
 					
 					String dataProcurada = formatoDate.format(calendar.getDate());
 					
@@ -150,64 +221,32 @@ public class MenuPrincipal extends JPanel {
 									qtdeDeAlunosNaAula++;
 								}
 							}
-							if (naoEncontrado) {
-								lblMensagem.setText("Não há nenhum aluno registrado para a aula procurada.");
+							if (qtdeDeAlunosNaAula == 5) {
+								lblMensagem.setText("Não há vagas disponíveis.");
 								lblMensagem.setVisible(true);
-								System.out.println("Aula não encontrada");
 							} else {
-								ConsultAgenda ca = new ConsultAgenda(funcionario, frame, alunosNaAula, qtdeDeAlunosNaAula, dataBr);
-								frame.setContentPane(ca);
-								frame.revalidate(); //refresh
-								frame.repaint();
+								System.out.println(qtdeDeAlunosNaAula);
+								AddAula addAula = new AddAula(funcionario, frame, dataBr, horarioComeco);
+								frame.setContentPane(addAula);
 							}
-							
-							// ConsultAgenda ca = new ConsultAgenda(funcionario, frame, null, flags, dataBr);
-							/*
-							ChooseAula ca = new ChooseAula(funcionario, frame);
-							frame.setContentPane(ca);
-							*/
 						}
 					} catch (NumberFormatException erro) {
-						erro.printStackTrace();
+						// erro.printStackTrace();
 						lblMensagem.setText("Horário inválido.");
 						lblMensagem.setVisible(true);
-						System.out.println("Horário inválido.");
 					} catch (StringIndexOutOfBoundsException erro) {
-						erro.printStackTrace();
+						// erro.printStackTrace();
 						lblMensagem.setText("Horário inválido.");
 						lblMensagem.setVisible(true);
-						System.out.println("Horário inválido.");
 					}
-					
-					
 				}
 				if (menuAtual == Aluno.getNOME_TABELA()) {
-					ChooseAluno ca = new ChooseAluno(funcionario, frame);
-					frame.setContentPane(ca);
+					AddAluno addAluno = new AddAluno(funcionario, frame);
+					frame.setContentPane(addAluno);
 				}
 				if (menuAtual == Funcionario.getNOME_TABELA()) {
-					ChooseFuncionario cf = new ChooseFuncionario(funcionario, frame);
-					frame.setContentPane(cf);
-				}
-				frame.revalidate(); //refresh
-				frame.repaint();
-			}
-		});
-
-		JButton btnDois = new JButton("Novo");
-		btnDois.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (menuAtual == Aula.getNOME_TABELA()) {
-					AddAula addPanel = new AddAula(funcionario, frame);
-					frame.setContentPane(addPanel);
-				}
-				if (menuAtual == Aluno.getNOME_TABELA()) {
-					AddAluno addPanel = new AddAluno(funcionario, frame);
-					frame.setContentPane(addPanel);
-				}
-				if (menuAtual == Funcionario.getNOME_TABELA()) {
-					AddFuncionario addPanel = new AddFuncionario(funcionario, frame);
-					frame.setContentPane(addPanel);
+					AddFuncionario addFuncionario = new AddFuncionario(funcionario, frame);
+					frame.setContentPane(addFuncionario);
 				}
 				frame.revalidate(); //refresh
 				frame.repaint();
@@ -225,7 +264,7 @@ public class MenuPrincipal extends JPanel {
 		JButton btnAgenda = new JButton("Agenda");
 		btnAgenda.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				lblMensagem.setText("");
+				lblMensagem.setText("Selecione a data e hora.");
 				lblMensagem.setVisible(true);
 				menuAtual = Aula.getNOME_TABELA();
 				scrollPane.setVisible(false);

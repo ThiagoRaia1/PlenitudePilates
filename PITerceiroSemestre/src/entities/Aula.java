@@ -24,10 +24,12 @@ public class Aula {
 	
 	public static String create(Aula aula) {
 		msg = "Erro ao registrar aula.";
+		int i = 1;
 		BD bd = new BD();
 		if (bd.getConnection()) {
 			while (true) {
 				try {
+					aula.setId(i);
 					sql = "insert into "+NOME_TABELA+" values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
 					bd.st = bd.con.prepareStatement(sql);
 					bd.st.setInt(1, aula.getId());
@@ -41,11 +43,12 @@ public class Aula {
 					bd.st.setInt(9, aula.getIdFuncionario());
 					bd.st.execute();
 					msg = "Aula cadastrada";
-					System.out.println("Aula cadastrado.");
+					System.out.println("Aula cadastrada.");
 					bd.close();
 					break;
 				} catch (SQLServerException e) {
 					System.out.println("ID ja registrado.");
+					i++;
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
@@ -76,7 +79,7 @@ public class Aula {
 					aula.setIdFuncionario(bd.rs.getInt("id_funcionario"));
 				}
 				if (aula.getId() != 0) {
-					System.out.println("Aula lida.");
+					//System.out.println("Aula lida.");
 				}
 			} catch (SQLServerException e) {
 				System.out.println("ID ja registrado.");
@@ -116,11 +119,12 @@ public class Aula {
 		if (bd.getConnection()) {
 			try {
 				sql = "update "+NOME_TABELA+" set qtdeVagasDisponiveis_aula = ?, "
-						+ "vagasOcupadas_aula = ? where horaComeco_aula = ?";
+						+ "vagasOcupadas_aula = ? where data_aula = ? and horaComeco_aula = ?";
 				bd.st = bd.con.prepareStatement(sql);
 				bd.st.setInt(1, aulaExistente.getQtdeVagasDisponiveis()-1);
 				bd.st.setInt(2, aulaExistente.getVagasOcupadas()+1);
 				bd.st.setDate(3, aulaExistente.getData());
+				bd.st.setString(4, aulaExistente.getHoraComeco());
 				bd.st.execute();
 			} catch (SQLServerException e) {
 				System.out.println(e);

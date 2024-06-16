@@ -189,10 +189,9 @@ public class MainFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				String login = textFieldLogin.getText();
 				String senha = String.copyValueOf(passwordField.getPassword());
-				// buscar o login e senha digitados no banco para validar o login
+				
 				boolean loginFalhou = true;
 				int numeroDeLinhas = GetRowCount.getRowCount(Funcionario.getNOME_TABELA());
-                System.out.println("Número de linhas: "+numeroDeLinhas);
 				
 				for (int i = 1; i <= numeroDeLinhas; i++) {
 					Funcionario funcionario = new Funcionario();
@@ -213,7 +212,6 @@ public class MainFrame extends JFrame {
 				// Se o login não for realizado
 				if (loginFalhou) {
 					lblLoginFalhou.setVisible(true);
-					System.out.println("Usuário ou senha incorretos.");
 				}
 			}
 		});
