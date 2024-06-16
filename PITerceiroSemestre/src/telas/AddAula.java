@@ -19,6 +19,9 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.awt.event.ActionEvent;
 import javax.swing.SwingConstants;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
 
 public class AddAula extends JPanel {
 
@@ -32,11 +35,8 @@ public class AddAula extends JPanel {
 	 * @param frame - frame principal
 	 */
 	public AddAula(Funcionario funcionario, MainFrame frame) {
-		setLayout(null);
 		
 		JLayeredPane layeredPane = new JLayeredPane();
-		layeredPane.setBounds(218, 5, 233, 31);
-		add(layeredPane);
 		
 		RoundedBorder roundedBorder = new RoundedBorder();
 		roundedBorder.setBorder(new LineBorder(new Color(159, 150, 138), 2));
@@ -45,31 +45,18 @@ public class AddAula extends JPanel {
 		roundedBorder.setRoundTopLeft(50);
 		roundedBorder.setRoundBottomLeft(50);
 		roundedBorder.setBackground(new Color(236, 236, 236));
-		roundedBorder.setBounds(20, 18, 638, 394);
-		add(roundedBorder);
-		roundedBorder.setLayout(null);
 		
 		TextField textFieldData = new TextField();
 		textFieldData.setShadowColor(new Color(0, 128, 255));
 		textFieldData.setBackground(new Color(255, 255, 255));
-		textFieldData.setBounds(33, 87, 196, 50);
-		roundedBorder.add(textFieldData);
 		
 		TextField textFieldAluno = new TextField();
-		textFieldAluno.setBounds(33, 195, 196, 50);
-		roundedBorder.add(textFieldAluno);
 		
 		TextField textFieldInstrutor = new TextField();
-		textFieldInstrutor.setBounds(33, 275, 196, 50);
-		roundedBorder.add(textFieldInstrutor);
 		
 		TextField textFieldHora = new TextField();
-		textFieldHora.setBounds(289, 87, 196, 50);
-		roundedBorder.add(textFieldHora);
 		
 		TextField textFieldSala = new TextField();
-		textFieldSala.setBounds(285, 201, 200, 44);
-		roundedBorder.add(textFieldSala);
 		
 		CustomButton cstmbtnVoltar = new CustomButton();
 		cstmbtnVoltar.setBackground(new Color(255, 255, 255));
@@ -85,14 +72,10 @@ public class AddAula extends JPanel {
 				frame.repaint();
 			}
 		});
-		cstmbtnVoltar.setBounds(397, 351, 117, 33);
-		roundedBorder.add(cstmbtnVoltar);
 		
 		JLabel lblMensagem = new JLabel("Preencha todos os dados.");
 		lblMensagem.setHorizontalAlignment(SwingConstants.CENTER);
-		lblMensagem.setBounds(33, 335, 294, 49);
 		lblMensagem.setVisible(false);
-		roundedBorder.add(lblMensagem);
 		
 		CustomButton cstmbtnSalvar = new CustomButton();
 		cstmbtnSalvar.addActionListener(new ActionListener() {
@@ -230,38 +213,26 @@ public class AddAula extends JPanel {
 		cstmbtnSalvar.setForeground(new Color(159, 150, 138));
 		cstmbtnSalvar.setFont(new Font("Tahoma", Font.BOLD, 14));
 		cstmbtnSalvar.setText("SALVAR");
-		cstmbtnSalvar.setBounds(524, 351, 92, 33);
-		roundedBorder.add(cstmbtnSalvar);
 		
 		JLabel lblNewLabel = new JLabel("Data: (dd/mm/aaaa)");
 		lblNewLabel.setForeground(new Color(159, 150, 138));
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblNewLabel.setBounds(42, 64, 187, 21);
-		roundedBorder.add(lblNewLabel);
 		
 		JLabel lblHora = new JLabel("Hora: (99:99)");
 		lblHora.setForeground(new Color(159, 150, 138));
 		lblHora.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblHora.setBounds(300, 64, 185, 21);
-		roundedBorder.add(lblHora);
 		
 		JLabel lblNewLabel_1_1 = new JLabel("ID do Aluno:");
 		lblNewLabel_1_1.setForeground(new Color(159, 150, 138));
 		lblNewLabel_1_1.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblNewLabel_1_1.setBounds(42, 174, 187, 21);
-		roundedBorder.add(lblNewLabel_1_1);
 		
 		JLabel lblNewLabel_1_1_1 = new JLabel("ID do Instrutor");
 		lblNewLabel_1_1_1.setForeground(new Color(159, 150, 138));
 		lblNewLabel_1_1_1.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblNewLabel_1_1_1.setBounds(43, 252, 186, 21);
-		roundedBorder.add(lblNewLabel_1_1_1);
 		
 		JLabel lblNewLabel_1_1_1_1 = new JLabel("Sala:");
 		lblNewLabel_1_1_1_1.setForeground(new Color(159, 150, 138));
 		lblNewLabel_1_1_1_1.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblNewLabel_1_1_1_1.setBounds(300, 178, 92, 21);
-		roundedBorder.add(lblNewLabel_1_1_1_1);
 		layeredPane.setLayout(new CardLayout(0, 0));
 		
 	
@@ -275,6 +246,120 @@ public class AddAula extends JPanel {
 		cstmbtnNovoAgendamento.setText("NOVO AGENDAMENTO");
 		cstmbtnNovoAgendamento.setRadius(50);
 		cstmbtnNovoAgendamento.setBorderColor(new Color(159, 150, 138));
+		GroupLayout groupLayout = new GroupLayout(this);
+		groupLayout.setHorizontalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(218)
+					.addComponent(layeredPane, GroupLayout.DEFAULT_SIZE, 223, Short.MAX_VALUE)
+					.addGap(225))
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(20)
+					.addComponent(roundedBorder, GroupLayout.DEFAULT_SIZE, 628, Short.MAX_VALUE)
+					.addGap(18))
+		);
+		groupLayout.setVerticalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(5)
+							.addComponent(layeredPane, GroupLayout.PREFERRED_SIZE, 31, GroupLayout.PREFERRED_SIZE))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(18)
+							.addComponent(roundedBorder, GroupLayout.DEFAULT_SIZE, 394, Short.MAX_VALUE)))
+					.addGap(19))
+		);
+		
+		JPanel panel = new JPanel();
+		panel.setBackground(new Color(236, 236, 236));
+		GroupLayout gl_roundedBorder = new GroupLayout(roundedBorder);
+		gl_roundedBorder.setHorizontalGroup(
+			gl_roundedBorder.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_roundedBorder.createSequentialGroup()
+					.addGap(40)
+					.addComponent(lblNewLabel, GroupLayout.DEFAULT_SIZE, 187, Short.MAX_VALUE)
+					.addGap(71)
+					.addComponent(lblHora, GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE)
+					.addGap(141))
+				.addGroup(gl_roundedBorder.createSequentialGroup()
+					.addGap(31)
+					.addComponent(textFieldData, GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE)
+					.addGap(60)
+					.addComponent(textFieldHora, GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE)
+					.addGap(141))
+				.addGroup(gl_roundedBorder.createSequentialGroup()
+					.addGap(41)
+					.addComponent(lblNewLabel_1_1_1, GroupLayout.DEFAULT_SIZE, 186, Short.MAX_VALUE)
+					.addGap(397))
+				.addGroup(gl_roundedBorder.createSequentialGroup()
+					.addGap(31)
+					.addComponent(lblMensagem, GroupLayout.DEFAULT_SIZE, 294, Short.MAX_VALUE)
+					.addGap(70)
+					.addComponent(cstmbtnVoltar, GroupLayout.PREFERRED_SIZE, 117, GroupLayout.PREFERRED_SIZE)
+					.addGap(10)
+					.addComponent(cstmbtnSalvar, GroupLayout.PREFERRED_SIZE, 92, GroupLayout.PREFERRED_SIZE)
+					.addGap(10))
+				.addGroup(gl_roundedBorder.createSequentialGroup()
+					.addGap(31)
+					.addGroup(gl_roundedBorder.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_roundedBorder.createSequentialGroup()
+							.addGap(9)
+							.addComponent(lblNewLabel_1_1, GroupLayout.DEFAULT_SIZE, 187, Short.MAX_VALUE))
+						.addComponent(textFieldAluno, GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE)
+						.addComponent(textFieldInstrutor, GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE))
+					.addGap(56)
+					.addGroup(gl_roundedBorder.createParallelGroup(Alignment.TRAILING)
+						.addGroup(gl_roundedBorder.createSequentialGroup()
+							.addGap(15)
+							.addComponent(lblNewLabel_1_1_1_1, GroupLayout.DEFAULT_SIZE, 92, Short.MAX_VALUE)
+							.addGap(93))
+						.addComponent(textFieldSala, GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+						.addGroup(gl_roundedBorder.createSequentialGroup()
+							.addGap(9)
+							.addComponent(panel, GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE)))
+					.addGap(141))
+		);
+		gl_roundedBorder.setVerticalGroup(
+			gl_roundedBorder.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_roundedBorder.createSequentialGroup()
+					.addGap(62)
+					.addGroup(gl_roundedBorder.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblHora, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE))
+					.addGap(2)
+					.addGroup(gl_roundedBorder.createParallelGroup(Alignment.LEADING)
+						.addComponent(textFieldData, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE)
+						.addComponent(textFieldHora, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE))
+					.addGap(37)
+					.addGroup(gl_roundedBorder.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_roundedBorder.createSequentialGroup()
+							.addComponent(lblNewLabel_1_1, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)
+							.addComponent(textFieldAluno, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_roundedBorder.createSequentialGroup()
+							.addGap(4)
+							.addComponent(lblNewLabel_1_1_1_1, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)
+							.addGap(2)
+							.addComponent(textFieldSala, GroupLayout.PREFERRED_SIZE, 44, GroupLayout.PREFERRED_SIZE)))
+					.addGroup(gl_roundedBorder.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_roundedBorder.createSequentialGroup()
+							.addGap(7)
+							.addComponent(lblNewLabel_1_1_1, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)
+							.addGap(2)
+							.addComponent(textFieldInstrutor, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_roundedBorder.createSequentialGroup()
+							.addGap(32)
+							.addComponent(panel, GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
+							.addGap(8)))
+					.addGap(18)
+					.addGroup(gl_roundedBorder.createParallelGroup(Alignment.LEADING, false)
+						.addComponent(lblMensagem, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 41, GroupLayout.PREFERRED_SIZE)
+						.addComponent(cstmbtnVoltar, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
+						.addComponent(cstmbtnSalvar, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE))
+					.addGap(8))
+		);
+		roundedBorder.setLayout(gl_roundedBorder);
+		setLayout(groupLayout);
 
 	}
 }

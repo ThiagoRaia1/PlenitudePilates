@@ -91,6 +91,7 @@ public class MenuPrincipal extends JPanel {
 		JLabel lblHorario = new JLabel("Horario:");
 		
 		textFieldHorario = new JTextField();
+		textFieldHorario.setToolTipText("(XX:XX)");
 		textFieldHorario.setColumns(10);
 		
 		JLabel lblMensagem = new JLabel("");
@@ -369,20 +370,6 @@ public class MenuPrincipal extends JPanel {
 		JLabel lblNomeUsuario_1 = new JLabel(funcionario.getNome());
 		lblNomeUsuario_1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNomeUsuario_1.setFont(new Font("Tahoma", Font.BOLD, 20));
-		GroupLayout gl_panel_2_1 = new GroupLayout(panel_2_1);
-		gl_panel_2_1.setHorizontalGroup(
-			gl_panel_2_1.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel_2_1.createSequentialGroup()
-					.addComponent(lblNomeUsuario_1, GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE)
-					.addContainerGap())
-		);
-		gl_panel_2_1.setVerticalGroup(
-			gl_panel_2_1.createParallelGroup(Alignment.LEADING)
-				.addGroup(Alignment.TRAILING, gl_panel_2_1.createSequentialGroup()
-					.addContainerGap(22, Short.MAX_VALUE)
-					.addComponent(lblNomeUsuario_1, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE))
-		);
-		panel_2_1.setLayout(gl_panel_2_1);
 		
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
@@ -397,6 +384,24 @@ public class MenuPrincipal extends JPanel {
 				.addComponent(PanelMenu, GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
 				.addComponent(menuExibicao, GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
 		);
+		GroupLayout gl_panel_2_1 = new GroupLayout(panel_2_1);
+		gl_panel_2_1.setHorizontalGroup(
+			gl_panel_2_1.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel_2_1.createSequentialGroup()
+					.addComponent(lblNomeUsuario_1, GroupLayout.PREFERRED_SIZE, 55, Short.MAX_VALUE)
+					.addGap(3)
+					.addComponent(btnLogout, GroupLayout.DEFAULT_SIZE, 71, Short.MAX_VALUE))
+		);
+		gl_panel_2_1.setVerticalGroup(
+			gl_panel_2_1.createParallelGroup(Alignment.LEADING)
+				.addGroup(Alignment.TRAILING, gl_panel_2_1.createSequentialGroup()
+					.addGap(55)
+					.addComponent(lblNomeUsuario_1))
+				.addGroup(gl_panel_2_1.createSequentialGroup()
+					.addContainerGap(57, Short.MAX_VALUE)
+					.addComponent(btnLogout))
+		);
+		panel_2_1.setLayout(gl_panel_2_1);
 		GroupLayout gl_panelMenu = new GroupLayout(PanelMenu);
 		gl_panelMenu.setHorizontalGroup(
 			gl_panelMenu.createParallelGroup(Alignment.LEADING)
@@ -405,28 +410,26 @@ public class MenuPrincipal extends JPanel {
 					.addGap(6)
 					.addGroup(gl_panelMenu.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_panelMenu.createSequentialGroup()
-							.addGroup(gl_panelMenu.createParallelGroup(Alignment.LEADING)
-								.addGroup(gl_panelMenu.createSequentialGroup()
-									.addComponent(panel_2, GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)
-									.addGap(2))
-								.addComponent(btnAgenda, GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
-								.addComponent(panel_3, GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
-								.addGroup(gl_panelMenu.createSequentialGroup()
-									.addComponent(btnAlunos, GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)
-									.addGap(2))
-								.addGroup(gl_panelMenu.createSequentialGroup()
-									.addComponent(panel_3_1, GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)
-									.addGap(2))
-								.addGroup(gl_panelMenu.createSequentialGroup()
-									.addComponent(btnEquipe, GroupLayout.DEFAULT_SIZE, 126, Short.MAX_VALUE)
-									.addGap(4))
-								.addGroup(gl_panelMenu.createSequentialGroup()
-									.addComponent(panel_3_2, GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)
-									.addGap(2)))
-							.addGap(9))
+							.addComponent(panel_2, GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)
+							.addGap(2))
+						.addComponent(btnAgenda, GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
+						.addComponent(panel_3, GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
+						.addGroup(gl_panelMenu.createSequentialGroup()
+							.addComponent(btnAlunos, GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)
+							.addGap(2))
+						.addGroup(gl_panelMenu.createSequentialGroup()
+							.addComponent(panel_3_1, GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)
+							.addGap(2))
+						.addGroup(gl_panelMenu.createSequentialGroup()
+							.addComponent(btnEquipe, GroupLayout.DEFAULT_SIZE, 126, Short.MAX_VALUE)
+							.addGap(4))
+						.addGroup(gl_panelMenu.createSequentialGroup()
+							.addComponent(panel_3_2, GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)
+							.addGap(2))
 						.addGroup(gl_panelMenu.createSequentialGroup()
 							.addComponent(panel_2_1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addContainerGap())))
+							.addGap(1)))
+					.addGap(9))
 		);
 		gl_panelMenu.setVerticalGroup(
 			gl_panelMenu.createParallelGroup(Alignment.LEADING)
@@ -449,7 +452,7 @@ public class MenuPrincipal extends JPanel {
 							.addGap(6)
 							.addComponent(panel_3_2, GroupLayout.DEFAULT_SIZE, 14, Short.MAX_VALUE)
 							.addGap(18)
-							.addComponent(panel_2_1, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE))))
+							.addComponent(panel_2_1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
 		);
 		PanelMenu.setLayout(gl_panelMenu);
 		
