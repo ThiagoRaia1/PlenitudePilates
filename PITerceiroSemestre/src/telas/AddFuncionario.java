@@ -34,7 +34,9 @@ public class AddFuncionario extends JPanel {
 	private JTextField textField_NivelDePermissao;
 
 	/**
-	 * Create the panel.
+	 * Cria o painel para registrar um novo funcionário.
+	 * @param funcionario - Dados do funcionario logado.
+	 * @param frame - Frame principal.
 	 */
 	public AddFuncionario(Funcionario funcionario, MainFrame frame) {
 		setBackground(Color.WHITE);
@@ -101,6 +103,10 @@ public class AddFuncionario extends JPanel {
 		
 		JButton btnVoltar = new JButton("Voltar");
 		btnVoltar.addActionListener(new ActionListener() {
+			/**
+			 * Retorna ao menu principal.
+			 * @param e
+			 */
 			public void actionPerformed(ActionEvent e) {
 				MenuPrincipal mp = new MenuPrincipal(funcionario, frame);
 				frame.setContentPane(mp);
@@ -111,6 +117,9 @@ public class AddFuncionario extends JPanel {
 		
 		JButton btnRegistrar = new JButton("Registrar");
 		btnRegistrar.addActionListener(new ActionListener() {
+			/**
+			 * Valida se todos os dados foram digitados corretamente e realiza o registro no banco de dados.
+			 */
 			public void actionPerformed(ActionEvent e) {
 				boolean dadosPreenchidos = true;
 				String[] dados = new String[10];
