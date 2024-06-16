@@ -271,7 +271,10 @@ public class MenuPrincipal extends JPanel {
 			}
 		});
 		
-		// Verifica se o usuário ter permissão para registrar novas aulas, para iniciar habilitado ou não.
+		/*
+		 * Verifica se o usuário ter permissão para registrar novas aulas, para que os botões iniciem 
+		 * habilitados ou não.
+		 */
 		if (funcionario.getNivelDeAcesso() > PERMISSAO_MINIMA_PARA_REGISTRAR_AULA) {
         	btnDois.setEnabled(false);
         	btnUm.setEnabled(true);
