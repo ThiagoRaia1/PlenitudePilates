@@ -34,6 +34,9 @@ public class EditAluno extends JPanel {
 	/**
 	 * Cria um painel para o usuário editar as informações do aluno pesquisado. Os campos são iniciados contendo
 	 * as informações atuais do aluno.
+	 * @param funcionario - Dados do funcionario logado.
+	 * @param frame - Frame principal.
+	 * @param alunoProcurado - Dados do aluno buscado no painel "ChooseAluno".
 	 */
 	public EditAluno(Funcionario funcionario, MainFrame frame, Aluno alunoProcurado) {
 		setBackground(Color.WHITE);

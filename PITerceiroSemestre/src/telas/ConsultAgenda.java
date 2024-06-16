@@ -27,11 +27,13 @@ public class ConsultAgenda extends JPanel {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Cria o painel para visualizar os alunos registrados na data digitada pelo usuário no painel "ChooseAula".
+	 * Cria o painel para visualizar os alunos registrados na data e horário escolhidos pelo usuário no painel
+	 * "MenuPrincipal".
 	 * @param funcionario - Dados do funcionario logado.
 	 * @param frame - Frame principal.
 	 * @param aula - Array de objetos da classe "Aula", onde serão consultados os IDs dos alunos registrados.
-	 * @param data - Data procurada pelo usuário
+	 * @param qtdeDeAlunosNaAula - Quantidade de alunos registrados na aula buscada.
+	 * @param data - Data procurada pelo usuário.
 	 */
 	public ConsultAgenda(Funcionario funcionario, MainFrame frame, Aula[] aula, int qtdeDeAlunosNaAula, String data) {
 		setBackground(Color.WHITE);
@@ -74,6 +76,10 @@ public class ConsultAgenda extends JPanel {
 		
 		JButton btnVoltar = new JButton("Voltar");
 		btnVoltar.addActionListener(new ActionListener() {
+			/**
+			 * Retorna ao menu principal.
+			 * @param e
+			 */
 			public void actionPerformed(ActionEvent e) {
 				MenuPrincipal mp = new MenuPrincipal(funcionario, frame);
 				frame.setContentPane(mp);

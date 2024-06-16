@@ -24,7 +24,9 @@ public class ChooseFuncionario extends JPanel {
 	private JButton btnAvancar;
 
 	/**
-	 * Cria um painel para o usuário informar qual funcionario deve ser pesquisado.
+	 * Cria o painel para que o usuário digite o nome completo do funcionário que deseja editar.
+	 * @param funcionario - Dados do funcionario logado.
+	 * @param frame - Frame principal.
 	 */
 	public ChooseFuncionario(Funcionario funcionario, MainFrame frame) {
 		setBackground(Color.WHITE);
@@ -59,7 +61,7 @@ public class ChooseFuncionario extends JPanel {
 		btnAvancar.addActionListener(new ActionListener() {
 			/**
 			 * Valida se o funcionário procurado existe no banco de dados. Se sim, avança para a tela 
-			 * EditFuncionario, se não, exibe em tela a mensagem "Funcionário não encontrado.".
+			 * "EditFuncionario", se não, exibe em tela a mensagem "Funcionário não encontrado.".
 			 */
 			public void actionPerformed(ActionEvent e) {
 				String funcionarioProcurado = textField_FuncionarioProcurado.getText();

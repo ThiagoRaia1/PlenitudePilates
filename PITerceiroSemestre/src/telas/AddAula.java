@@ -29,7 +29,7 @@ public class AddAula extends JPanel {
 	private static final int NUMERO_MAXIMO_DE_ALUNOS_POR_AULA = 5;
 
 	/**
-	 * Cria o painel.
+	 * Cria o painel para registrar nova aula.
 	 * @param funcionario - Dados do funcionario logado
 	 * @param frame - Frame principal
 	 * @param horarioComeco - O horário de início da aula digitado pelo usuário.
@@ -69,6 +69,10 @@ public class AddAula extends JPanel {
 		cstmbtnVoltar.setForeground(new Color(159, 150, 138));
 		cstmbtnVoltar.setText("Voltar");
 		cstmbtnVoltar.addActionListener(new ActionListener() {
+			/**
+			 * Retorna ao menu principal.
+			 * @param e
+			 */
 			public void actionPerformed(ActionEvent e) {
 				MenuPrincipal mp = new MenuPrincipal(funcionario, frame);
 				frame.setContentPane(mp);
@@ -83,6 +87,12 @@ public class AddAula extends JPanel {
 		
 		CustomButton cstmbtnSalvar = new CustomButton();
 		cstmbtnSalvar.addActionListener(new ActionListener() {
+			/**
+			 * Verifica se todos os dados foram preenchidos corretamente. Se ja existirem alunos cadastrados
+			 * na mesma data e horário inseridas para o novo registro, atualiza os campos qtdeVagasDisponiveis 
+			 * (subtraindo um) e vagasOcupadas (somando um) dos registros ja existentes.
+			 * @param e
+			 */
 			public void actionPerformed(ActionEvent e) {
 
 				int dia = Integer.parseInt(textFieldData.getText().substring(0, 2));
@@ -124,7 +134,6 @@ public class AddAula extends JPanel {
 						// Adicionar condicional para ter uma idade mínima e máxima
 						try {
 							Aula aula = new Aula();
-							// Adionar horario
 							aula.setData(Date.valueOf(dados[0]));
 							aula.setHoraComeco(dados[1]);
 							
@@ -236,10 +245,6 @@ public class AddAula extends JPanel {
 		lblNewLabel_1_1_1_1.setForeground(new Color(159, 150, 138));
 		lblNewLabel_1_1_1_1.setFont(new Font("Tahoma", Font.BOLD, 14));
 		layeredPane.setLayout(new CardLayout(0, 0));
-		
-	
-		
-		
 		
 		CustomButton cstmbtnNovoAgendamento = new CustomButton();
 		layeredPane.add(cstmbtnNovoAgendamento, "name_227161219541700");
