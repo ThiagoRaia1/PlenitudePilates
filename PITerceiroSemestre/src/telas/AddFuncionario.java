@@ -4,17 +4,18 @@ import javax.swing.JPanel;
 
 import entities.Funcionario;
 import main.GetRowCount;
+import customComponents.TextField;
+import customComponents.CustomButton;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import java.awt.Color;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import java.awt.Font;
 import javax.swing.border.EtchedBorder;
 
-import javax.swing.JTextField;
+
 import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -22,29 +23,28 @@ import java.awt.event.ActionEvent;
 public class AddFuncionario extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	private JTextField textField_Nome;
-	private JTextField textField_Telefone;
-	private JTextField textField_CEP;
-	private JTextField textField_Cidade;
-	private JTextField textField_Rua;
-	private JTextField textField_Bairro;
-	private JTextField textField_Funcao;
-	private JTextField textField_Usuario;
-	private JTextField textField_Senha;
-	private JTextField textField_NivelDePermissao;
+	private TextField textField_Nome;
+	private TextField textField_Telefone;
+	private TextField textField_CEP;
+	private TextField textField_Cidade;
+	private TextField textField_Rua;
+	private TextField textField_Bairro;
+	private TextField textField_Funcao;
+	private TextField textField_Usuario;
+	private TextField textField_Senha;
+	private TextField textField_NivelDePermissao;
 
 	/**
-	 * Cria o painel para registrar um novo funcionário.
-	 * @param funcionario - Dados do funcionario logado.
-	 * @param frame - Frame principal.
+	 * Create the panel.
 	 */
 	public AddFuncionario(Funcionario funcionario, MainFrame frame) {
 		setBackground(Color.WHITE);
 		
 		JPanel panel = new JPanel();
+		panel.setBackground(new Color(236, 236, 236));
 		panel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, Color.DARK_GRAY, null));
 		
-		textField_Nome = new JTextField();
+		textField_Nome = new TextField();
 		textField_Nome.setColumns(10);
 		
 		JLabel lblNome = new JLabel("Nome:*");
@@ -53,39 +53,39 @@ public class AddFuncionario extends JPanel {
 		
 		JLabel lblTelefone = new JLabel("Telefone:*");
 		
-		textField_Telefone = new JTextField();
+		textField_Telefone = new TextField();
 		textField_Telefone.setColumns(10);
 		
 		JLabel lblCEP = new JLabel("CEP:*");
 		
-		textField_CEP = new JTextField();
+		textField_CEP = new TextField();
 		textField_CEP.setColumns(10);
 		
 		JLabel lblCidade = new JLabel("Cidade:*");
 		
-		textField_Cidade = new JTextField();
+		textField_Cidade = new TextField();
 		textField_Cidade.setColumns(10);
 		
 		JLabel lblRua = new JLabel("Rua:*");
 		
-		textField_Rua = new JTextField();
+		textField_Rua = new TextField();
 		textField_Rua.setColumns(10);
 		
 		JLabel lblBairro = new JLabel("Bairro:*");
 		
-		textField_Bairro = new JTextField();
+		textField_Bairro = new TextField();
 		textField_Bairro.setColumns(10);
 
-		textField_Funcao = new JTextField();
+		textField_Funcao = new TextField();
 		textField_Funcao.setColumns(10);
 		
-		textField_Usuario = new JTextField();
+		textField_Usuario = new TextField();
 		textField_Usuario.setColumns(10);
 
-		textField_Senha = new JTextField();
+		textField_Senha = new TextField();
 		textField_Senha.setColumns(10);
 		
-		textField_NivelDePermissao = new JTextField();
+		textField_NivelDePermissao = new TextField();
 		textField_NivelDePermissao.setColumns(10);
 		
 		JLabel lblMensagem = new JLabel("Preencha todos os dados obrigatórios.");
@@ -101,7 +101,15 @@ public class AddFuncionario extends JPanel {
 		
 		lblMensagem.setHorizontalAlignment(SwingConstants.CENTER);
 		
-		JButton btnVoltar = new JButton("Voltar");
+		CustomButton btnVoltar = new CustomButton();
+		btnVoltar.setRadius(10);
+		btnVoltar.setBorderPainted(false);
+		btnVoltar.setBorder(null);
+		btnVoltar.setColorOver(new Color(179, 250, 160));
+		btnVoltar.setBorderColor(new Color(236, 236, 236));
+		btnVoltar.setColor(new Color(255, 255, 255));
+		btnVoltar.setColorClick(new Color(236, 236, 236));
+		btnVoltar.setText("Voltar");
 		btnVoltar.addActionListener(new ActionListener() {
 			/**
 			 * Retorna ao menu principal.
@@ -115,7 +123,16 @@ public class AddFuncionario extends JPanel {
 			}
 		});
 		
-		JButton btnRegistrar = new JButton("Registrar");
+		CustomButton btnRegistrar = new CustomButton();
+		btnRegistrar.setRadius(10);
+		btnRegistrar.setBorder(null);
+		btnRegistrar.setBorderPainted(false);
+		btnRegistrar.setBackground(new Color(236, 236, 236));
+		btnRegistrar.setBorderColor(new Color(236, 236, 236));
+		btnRegistrar.setColor(new Color(255, 255, 255));
+		btnRegistrar.setColorClick(new Color(236, 236, 236));
+		btnRegistrar.setColorOver(new Color(236, 236, 236));
+		btnRegistrar.setText("Registrar");
 		btnRegistrar.addActionListener(new ActionListener() {
 			/**
 			 * Valida se todos os dados foram digitados corretamente e realiza o registro no banco de dados.
@@ -143,6 +160,7 @@ public class AddFuncionario extends JPanel {
 						dadosPreenchidos = true;
 					}
 				}
+				
 				boolean usuarioJaExistente = true;
 				if (dadosPreenchidos) {
 					int numeroDeLinhas = GetRowCount.getRowCount(Funcionario.getNOME_TABELA());
@@ -185,39 +203,49 @@ public class AddFuncionario extends JPanel {
 		
 		JLabel lblNivelDePermissao = new JLabel("Nível de permissão: (1;2;3)");
 		
+		JPanel panel_3 = new JPanel();
+		
+		JPanel panel_3_1 = new JPanel();
+		
 		GroupLayout gl_panel_1 = new GroupLayout(panel_1);
 		gl_panel_1.setHorizontalGroup(
-			gl_panel_1.createParallelGroup(Alignment.TRAILING)
+			gl_panel_1.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel_1.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(gl_panel_1.createParallelGroup(Alignment.TRAILING)
-						.addComponent(lblNivelDePermissao, GroupLayout.DEFAULT_SIZE, 179, Short.MAX_VALUE)
-						.addComponent(textField_NivelDePermissao, GroupLayout.DEFAULT_SIZE, 179, Short.MAX_VALUE))
-					.addGap(48)
-					.addGroup(gl_panel_1.createParallelGroup(Alignment.TRAILING)
+						.addComponent(panel_3, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
+						.addComponent(lblNivelDePermissao, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
+						.addComponent(textField_NivelDePermissao, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE))
+					.addGap(26)
+					.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblMensagem, GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE)
 						.addGroup(gl_panel_1.createSequentialGroup()
-							.addComponent(btnRegistrar, GroupLayout.DEFAULT_SIZE, 77, Short.MAX_VALUE)
+							.addComponent(btnRegistrar, GroupLayout.DEFAULT_SIZE, 122, Short.MAX_VALUE)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnVoltar, GroupLayout.DEFAULT_SIZE, 82, Short.MAX_VALUE))
-						.addComponent(lblMensagem, GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE))
+							.addComponent(btnVoltar, GroupLayout.DEFAULT_SIZE, 92, Short.MAX_VALUE))
+						.addComponent(panel_3_1, GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE))
 					.addContainerGap())
 		);
 		gl_panel_1.setVerticalGroup(
 			gl_panel_1.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel_1.createSequentialGroup()
-					.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_panel_1.createSequentialGroup()
-							.addContainerGap()
-							.addComponent(lblNivelDePermissao))
+					.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING, false)
 						.addGroup(gl_panel_1.createSequentialGroup()
 							.addGap(5)
-							.addComponent(lblMensagem, GroupLayout.DEFAULT_SIZE, 20, Short.MAX_VALUE)))
+							.addComponent(lblMensagem, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+						.addGroup(gl_panel_1.createSequentialGroup()
+							.addContainerGap()
+							.addComponent(lblNivelDePermissao)))
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
+					.addGroup(gl_panel_1.createParallelGroup(Alignment.TRAILING, false)
 						.addComponent(btnVoltar, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(btnRegistrar, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(textField_NivelDePermissao, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(4))
+						.addComponent(btnRegistrar, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(textField_NivelDePermissao, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+					.addGap(6)
+					.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
+						.addComponent(panel_3_1, GroupLayout.DEFAULT_SIZE, 10, Short.MAX_VALUE)
+						.addComponent(panel_3, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+					.addContainerGap())
 		);
 		panel_1.setLayout(gl_panel_1);
 		GroupLayout groupLayout = new GroupLayout(this);
@@ -271,7 +299,6 @@ public class AddFuncionario extends JPanel {
 					.addGap(52)
 					.addComponent(textField_Bairro, GroupLayout.DEFAULT_SIZE, 179, Short.MAX_VALUE)
 					.addGap(8))
-				.addComponent(panel_1, GroupLayout.DEFAULT_SIZE, 426, Short.MAX_VALUE)
 				.addGroup(gl_panel.createSequentialGroup()
 					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_panel.createSequentialGroup()
@@ -299,6 +326,7 @@ public class AddFuncionario extends JPanel {
 						.addComponent(textField_CEP, GroupLayout.DEFAULT_SIZE, 179, Short.MAX_VALUE)
 						.addComponent(lblCEP, GroupLayout.DEFAULT_SIZE, 179, Short.MAX_VALUE))
 					.addContainerGap())
+				.addComponent(panel_1, GroupLayout.DEFAULT_SIZE, 426, Short.MAX_VALUE)
 		);
 		gl_panel.setVerticalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
@@ -336,11 +364,11 @@ public class AddFuncionario extends JPanel {
 						.addComponent(lblSenha))
 					.addGap(2)
 					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(textField_CEP)
-						.addComponent(textField_Usuario)
-						.addComponent(textField_Senha))
+						.addComponent(textField_CEP, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(textField_Usuario, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(textField_Senha, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 58, GroupLayout.PREFERRED_SIZE))
+					.addComponent(panel_1, GroupLayout.DEFAULT_SIZE, 93, Short.MAX_VALUE))
 		);
 		panel.setLayout(gl_panel);
 		setLayout(groupLayout);

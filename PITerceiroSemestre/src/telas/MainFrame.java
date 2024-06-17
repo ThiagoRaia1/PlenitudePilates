@@ -27,7 +27,7 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
 /**
- * Classe para instanciação do frame principal da aplicação.
+ * Classe para instanciacao do frame principal da aplicacao.
  */
 public class MainFrame extends JFrame {
 
@@ -43,7 +43,7 @@ public class MainFrame extends JFrame {
 	private JPanel panel_4;
 
 	/**
-	 * Inicia a aplicação.
+	 * Inicia a aplicacao.
 	 */
 	public static void main() {
 		EventQueue.invokeLater(new Runnable() {
@@ -183,8 +183,8 @@ public class MainFrame extends JFrame {
 		
 		btnLogin.addActionListener(new ActionListener() {
 			/**
-			 * Valida o login. Se o login for válido, avança para a tela "MenuPrincipal", se não, exibe
-			 * a mensagem "Usuário ou senha incorretos.".
+			 * Valida o login. Se o login for valido, avanca para a tela "MenuPrincipal", se nao, exibe
+			 * a mensagem "Usuario ou senha incorretos.".
 			 */
 			public void actionPerformed(ActionEvent e) {
 				String login = textFieldLogin.getText();
@@ -195,8 +195,8 @@ public class MainFrame extends JFrame {
 				
 				for (int i = 1; i <= numeroDeLinhas; i++) {
 					Funcionario funcionario = new Funcionario();
-					/* 
-					 * Após validação, as informações do usuario logado serão armazenadas em um objeto
+					/**
+					 * Apos validacao, as informacoes do usuario logado serao armazenadas em um objeto.
 					*/
 					funcionario = Funcionario.read(i);
 					
@@ -209,7 +209,7 @@ public class MainFrame extends JFrame {
 						repaint();
 					}
 				}
-				// Se o login não for realizado
+				// Se o login nao for realizado
 				if (loginFalhou) {
 					lblLoginFalhou.setVisible(true);
 				}

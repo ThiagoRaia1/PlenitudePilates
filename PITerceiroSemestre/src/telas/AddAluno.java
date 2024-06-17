@@ -1,18 +1,19 @@
-package telas;
+ package telas;
 
 import javax.swing.JPanel;
 
+
 import entities.Aluno;
 import entities.Funcionario;
+import customComponents.TextField;
+import customComponents.CustomButton;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import java.awt.Color;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import java.awt.Font;
 import javax.swing.border.EtchedBorder;
-import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.event.ActionListener;
 import java.sql.Date;
@@ -21,18 +22,20 @@ import java.awt.event.ActionEvent;
 public class AddAluno extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	private JTextField textField_Nome;
-	private JTextField textField_DataNascimento_Dia;
-	private JTextField textField_Telefone;
-	private JTextField textField_CEP;
-	private JTextField textField_Cidade;
-	private JTextField textField_Rua;
-	private JTextField textField_Bairro;
-	private JTextField textField_DataNascimento_Mes;
-	private JTextField textField_DataNascimento_Ano;
+	private TextField textField_Nome;
+	private TextField textField_DataNascimento_Dia;
+	private TextField textField_Telefone;
+	private TextField textField_CEP;
+	private TextField textField_Cidade;
+	private TextField textField_Rua;
+	private TextField textField_Bairro;
+	private TextField textField_DataNascimento_Mes;
+	private TextField textField_DataNascimento_Ano;
 
 	/**
-	 * Create the panel.
+	 * Cria o painel para registrar um novo aluno.
+	 * @param funcionario - Dados do funcionario logado.
+	 * @param frame - Frame principal.
 	 */
 	public AddAluno(Funcionario funcionario, MainFrame frame) {
 		setBackground(Color.WHITE);
@@ -40,7 +43,7 @@ public class AddAluno extends JPanel {
 		JPanel panel = new JPanel();
 		panel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, Color.DARK_GRAY, null));
 		
-		textField_Nome = new JTextField();
+		textField_Nome = new TextField();
 		textField_Nome.setColumns(10);
 		
 		JLabel lblNome = new JLabel("Nome:");
@@ -49,33 +52,45 @@ public class AddAluno extends JPanel {
 		
 		JLabel lblTelefone = new JLabel("Telefone:");
 		
-		textField_Telefone = new JTextField();
+		textField_Telefone = new TextField();
 		textField_Telefone.setColumns(10);
 		
 		JLabel lblCEP = new JLabel("CEP:");
 		
-		textField_CEP = new JTextField();
+		textField_CEP = new TextField();
 		textField_CEP.setColumns(10);
 		
 		JLabel lblCidade = new JLabel("Cidade:");
 		
-		textField_Cidade = new JTextField();
+		textField_Cidade = new TextField();
 		textField_Cidade.setColumns(10);
 		
 		JLabel lblRua = new JLabel("Rua:");
 		
-		textField_Rua = new JTextField();
+		textField_Rua = new TextField();
 		textField_Rua.setColumns(10);
 		
 		JLabel lblBairro = new JLabel("Bairro:");
 		
-		textField_Bairro = new JTextField();
+		textField_Bairro = new TextField();
 		textField_Bairro.setColumns(10);
 		
 		JLabel lblMensagem = new JLabel("Preencha todos os dados.");
 		lblMensagem.setVisible(false);
 		
-		JButton btnRegistrar = new JButton("Registrar");
+		CustomButton btnRegistrar = new CustomButton();
+		btnRegistrar.setBorderPainted(false);
+		btnRegistrar.setBorder(null);
+		btnRegistrar.setFocusable(false);
+		btnRegistrar.setFocusTraversalKeysEnabled(false);
+		btnRegistrar.setFocusPainted(false);
+		btnRegistrar.setColorOver(new Color(255, 255, 255));
+		btnRegistrar.setRadius(10);
+		btnRegistrar.setBackground(new Color(255, 255, 255));
+		btnRegistrar.setColorClick(new Color(255, 255, 255));
+		btnRegistrar.setColor(new Color(255, 255, 255));
+		btnRegistrar.setBorderColor(new Color(255, 255, 255));
+		btnRegistrar.setText("Registar");
 		btnRegistrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				boolean dadosPreenchidos = true;
@@ -100,13 +115,14 @@ public class AddAluno extends JPanel {
 					}
 				}
 				if (dadosPreenchidos) {
-					// Adicionar condicional para ter uma idade mínima e máxima
+					// Adicionar condicional para ter uma idade minima e maxima
 					try {
 						Aluno aluno = new Aluno();
 						aluno.setNome(dados[0]);
 						aluno.setCidade(dados[1]);
 						aluno.setDataNascimento(Date.valueOf(dados[4] +"-"+ dados[3] +"-"+ 
-												dados[2]));aluno.setTelefone(dados[5]);
+												dados[2]));
+						aluno.setTelefone(dados[5]);
 						aluno.setCep(dados[6]);
 						aluno.setRua(dados[7]);
 						aluno.setBairro(dados[8]);
@@ -134,8 +150,20 @@ public class AddAluno extends JPanel {
 		
 		lblMensagem.setHorizontalAlignment(SwingConstants.CENTER);
 		
-		JButton btnVoltar = new JButton("Voltar");
+		CustomButton btnVoltar = new CustomButton();
+		btnVoltar.setBorder(null);
+		btnVoltar.setBorderPainted(false);
+		btnVoltar.setRadius(10);
+		btnVoltar.setBackground(new Color(255, 255, 255));
+		btnVoltar.setColorClick(new Color(236, 236, 236));
+		btnVoltar.setColor(new Color(255, 255, 255));
+		btnVoltar.setBorderColor(new Color(255, 255, 255));
+		btnVoltar.setText("Voltar");
 		btnVoltar.addActionListener(new ActionListener() {
+			/**
+			 * Retorna ao menu principal.
+			 * @param e
+			 */
 			public void actionPerformed(ActionEvent e) {
 				MenuPrincipal mp = new MenuPrincipal(funcionario, frame);
 				frame.setContentPane(mp);
@@ -185,13 +213,13 @@ public class AddAluno extends JPanel {
 		
 		JPanel panel_3 = new JPanel();
 		
-		textField_DataNascimento_Dia = new JTextField();
+		textField_DataNascimento_Dia = new TextField();
 		textField_DataNascimento_Dia.setColumns(10);
 		
-				textField_DataNascimento_Mes = new JTextField();
+				textField_DataNascimento_Mes = new TextField();
 				textField_DataNascimento_Mes.setColumns(10);
 		
-				textField_DataNascimento_Ano = new JTextField();
+				textField_DataNascimento_Ano = new TextField();
 				textField_DataNascimento_Ano.setColumns(10);
 		GroupLayout gl_panel_3 = new GroupLayout(panel_3);
 		gl_panel_3.setHorizontalGroup(

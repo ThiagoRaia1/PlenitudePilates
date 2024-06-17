@@ -12,7 +12,7 @@ import main.CalculaIdade;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import java.awt.Color;
-import javax.swing.JButton;
+import customComponents.CustomButton;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import java.awt.Font;
@@ -27,13 +27,13 @@ public class ConsultAgenda extends JPanel {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Cria o painel para visualizar os alunos registrados na data e horário escolhidos pelo usuário no painel
+	 * Cria o painel para visualizar os alunos registrados na data e horario escolhidos pelo usuario no painel
 	 * "MenuPrincipal".
 	 * @param funcionario - Dados do funcionario logado.
 	 * @param frame - Frame principal.
-	 * @param aula - Array de objetos da classe "Aula", onde serão consultados os IDs dos alunos registrados.
+	 * @param aula - Array de objetos da classe "Aula", onde serao consultados os IDs dos alunos registrados.
 	 * @param qtdeDeAlunosNaAula - Quantidade de alunos registrados na aula buscada.
-	 * @param data - Data procurada pelo usuário.
+	 * @param data - Data procurada pelo usuario.
 	 */
 	public ConsultAgenda(Funcionario funcionario, MainFrame frame, Aula[] aula, int qtdeDeAlunosNaAula, String data) {
 		setBackground(Color.WHITE);
@@ -74,7 +74,16 @@ public class ConsultAgenda extends JPanel {
 		
 		JPanel panel_1 = new JPanel();
 		
-		JButton btnVoltar = new JButton("Voltar");
+		CustomButton btnVoltar = new CustomButton();
+		btnVoltar.setFocusPainted(false);
+		btnVoltar.setFont(new Font("Tahoma", Font.BOLD, 10));
+		btnVoltar.setBorderPainted(false);
+		btnVoltar.setRadius(10);
+		btnVoltar.setText("VOLTAR");
+		btnVoltar.setColorOver(new Color(236, 236, 236));
+		btnVoltar.setColorClick(new Color(236, 236, 236));
+		btnVoltar.setColor(new Color(255, 255, 255));
+		btnVoltar.setBorderColor(new Color(255, 255, 255));
 		btnVoltar.addActionListener(new ActionListener() {
 			/**
 			 * Retorna ao menu principal.
@@ -91,49 +100,41 @@ public class ConsultAgenda extends JPanel {
 		JPanel panel_2 = new JPanel();
 		
 		JPanel panel_2_1 = new JPanel();
+		
+		JPanel panel_3 = new JPanel();
+		
+		JPanel panel_3_1 = new JPanel();
 		GroupLayout gl_panel_1 = new GroupLayout(panel_1);
 		gl_panel_1.setHorizontalGroup(
 			gl_panel_1.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel_1.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(panel_2, GroupLayout.DEFAULT_SIZE, 143, Short.MAX_VALUE)
-					.addGap(13)
-					.addComponent(btnVoltar, GroupLayout.DEFAULT_SIZE, 89, Short.MAX_VALUE)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(panel_2_1, GroupLayout.DEFAULT_SIZE, 143, Short.MAX_VALUE)
-					.addGap(18))
-		);
-		gl_panel_1.setVerticalGroup(
-			gl_panel_1.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel_1.createSequentialGroup()
-					.addContainerGap()
 					.addGroup(gl_panel_1.createParallelGroup(Alignment.TRAILING)
 						.addGroup(gl_panel_1.createSequentialGroup()
-							.addComponent(panel_2_1, GroupLayout.DEFAULT_SIZE, 22, Short.MAX_VALUE)
-							.addGap(5))
-						.addGroup(gl_panel_1.createSequentialGroup()
+							.addContainerGap()
+							.addComponent(panel_2, GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED)
 							.addGroup(gl_panel_1.createParallelGroup(Alignment.TRAILING)
-								.addComponent(panel_2, GroupLayout.DEFAULT_SIZE, 27, Short.MAX_VALUE)
-								.addComponent(btnVoltar, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-							.addGap(4)))
-					.addGap(14))
+								.addComponent(btnVoltar, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE)
+								.addComponent(panel_3_1, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(panel_2_1, GroupLayout.DEFAULT_SIZE, 129, Short.MAX_VALUE))
+						.addComponent(panel_3, GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE))
+					.addContainerGap())
+		);
+		gl_panel_1.setVerticalGroup(
+			gl_panel_1.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_panel_1.createSequentialGroup()
+					.addComponent(panel_3, GroupLayout.PREFERRED_SIZE, 16, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_panel_1.createParallelGroup(Alignment.TRAILING)
+						.addComponent(panel_2_1, GroupLayout.DEFAULT_SIZE, 41, Short.MAX_VALUE)
+						.addGroup(gl_panel_1.createSequentialGroup()
+							.addComponent(btnVoltar, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
+							.addGap(4)
+							.addComponent(panel_3_1, GroupLayout.DEFAULT_SIZE, 13, Short.MAX_VALUE))
+						.addComponent(panel_2, GroupLayout.DEFAULT_SIZE, 41, Short.MAX_VALUE)))
 		);
 		panel_1.setLayout(gl_panel_1);
-		GroupLayout groupLayout = new GroupLayout(this);
-		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(10)
-					.addComponent(panel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-					.addGap(10))
-		);
-		groupLayout.setVerticalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(11)
-					.addComponent(panel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-					.addGap(11))
-		);
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
@@ -145,19 +146,36 @@ public class ConsultAgenda extends JPanel {
 					.addGap(8)
 					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 408, Short.MAX_VALUE)
 					.addGap(10))
-				.addComponent(panel_1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+				.addGroup(gl_panel.createSequentialGroup()
+					.addComponent(panel_1, GroupLayout.DEFAULT_SIZE, 407, Short.MAX_VALUE)
+					.addContainerGap())
 		);
 		gl_panel.setVerticalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel.createSequentialGroup()
 					.addGap(4)
-					.addComponent(lblAlunosNaAula, GroupLayout.DEFAULT_SIZE, 19, Short.MAX_VALUE)
+					.addComponent(lblAlunosNaAula, GroupLayout.DEFAULT_SIZE, 20, Short.MAX_VALUE)
 					.addGap(10)
-					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE)
-					.addGap(29)
-					.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE))
+					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 169, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(panel_1, GroupLayout.DEFAULT_SIZE, 64, Short.MAX_VALUE))
 		);
 		panel.setLayout(gl_panel);
+		GroupLayout groupLayout = new GroupLayout(this);
+		groupLayout.setHorizontalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(10)
+					.addComponent(panel, GroupLayout.DEFAULT_SIZE, 401, Short.MAX_VALUE)
+					.addGap(8))
+		);
+		groupLayout.setVerticalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(11)
+					.addComponent(panel, GroupLayout.DEFAULT_SIZE, 274, Short.MAX_VALUE)
+					.addGap(11))
+		);
 		setLayout(groupLayout);
 
 	}

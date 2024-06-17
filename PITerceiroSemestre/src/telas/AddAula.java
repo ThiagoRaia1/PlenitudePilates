@@ -33,8 +33,8 @@ public class AddAula extends JPanel {
 	 * Cria o painel para registrar nova aula.
 	 * @param funcionario - Dados do funcionario logado
 	 * @param frame - Frame principal
-	 * @param horarioComeco - O horário de início da aula digitado pelo usuário.
-	 * @param dataBr - A data escolhida pelo usuário no formato dd/MM/yyyy
+	 * @param horarioComeco - O horario de inicio da aula digitado pelo usuario.
+	 * @param dataBr - A data escolhida pelo usuario no formato dd/MM/yyyy
 	 */
 	public AddAula(Funcionario funcionario, MainFrame frame, String dataBr, String horarioComeco) {
 		
@@ -90,7 +90,7 @@ public class AddAula extends JPanel {
 		cstmbtnSalvar.addActionListener(new ActionListener() {
 			/**
 			 * Verifica se todos os dados foram preenchidos corretamente. Se ja existirem alunos cadastrados
-			 * na mesma data e horário inseridas para o novo registro, atualiza os campos qtdeVagasDisponiveis 
+			 * na mesma data e horario inseridas para o novo registro, atualiza os campos qtdeVagasDisponiveis 
 			 * (subtraindo um) e vagasOcupadas (somando um) dos registros ja existentes.
 			 * @param e
 			 */
@@ -132,7 +132,7 @@ public class AddAula extends JPanel {
 						}
 					}
 					if (dadosPreenchidos) {
-						// Adicionar condicional para ter uma idade mínima e máxima
+						// Adicionar condicional para ter uma idade minima e maxima
 						try {
 							Aula aula = new Aula();
 							aula.setData(Date.valueOf(dados[0]));
@@ -156,8 +156,8 @@ public class AddAula extends JPanel {
 							boolean aulaSeraRegistrada = true, vagasAtualizadas = false;
 							int numeroDeLinhas = GetRowCount.getRowCount(Aula.getNOME_TABELA());
 							Aula aulaExistente = new Aula();
-
-							// Verificar se existe um aluno no ID informado.
+              
+							// Verifica se existe um aluno no ID informado.
 							if (Aluno.read(aula.getIdAluno()).getId() != 0) {
 								// Verificar se existe um aluno no ID informado.
 								if (Funcionario.read(aula.getIdFuncionario()).getId() != 0) {
