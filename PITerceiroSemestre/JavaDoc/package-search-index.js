@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"customComponents"},{"l":"entities"},{"l":"main"},{"l":"telas"}];updateSearchResults();
