@@ -47,7 +47,7 @@ public class MenuPrincipal extends JPanel {
 	SimpleDateFormat formatoDate = new SimpleDateFormat(PADRAO_DATE);
 	
 	/**
-	 * Cria o painel do menu principal para navegação.
+	 * Cria o painel do menu principal para navegacao.
 	 * @param funcionario - Dados do funcionario logado.
 	 * @param frame - Frame principal.
 	 */
@@ -106,7 +106,7 @@ public class MenuPrincipal extends JPanel {
 		JButton btnLogout = new JButton("Logout");
 		btnLogout.addActionListener(new ActionListener() {
 			/**
-			 * Fecha a aplicação.
+			 * Fecha a aplicacao.
 			 */
 			public void actionPerformed(ActionEvent e) {
 				System.exit(0);
@@ -123,7 +123,7 @@ public class MenuPrincipal extends JPanel {
 		JButton btnUm = new JButton("Consultar");
 		btnUm.addActionListener(new ActionListener() {
 			/**
-			 * Direciona para a próxima tela de acordo com o menu selecionado.
+			 * Direciona para a proxima tela de acordo com o menu selecionado.
 			 * "ConsultAgenda", se "Agenda" estiver selecionada;
 			 * "ChooseAluno", se "Alunos" estiver selecionado;
 			 * "ChooseFuncionario", se a "Equipe" estiver selecionado";
@@ -202,7 +202,7 @@ public class MenuPrincipal extends JPanel {
 		JButton btnDois = new JButton("Novo");
 		btnDois.addActionListener(new ActionListener() {
 			/**
-			 * Direciona para a próxima tela de acordo com o menu selecionado.
+			 * Direciona para a proxima tela de acordo com o menu selecionado.
 			 * "AddAula", se "Agenda" estiver selecionada;
 			 * "AddAluno", se "Alunos" estiver selecionado;
 			 * "AddFuncionario", se a "Equipe" estiver selecionado";
@@ -271,9 +271,9 @@ public class MenuPrincipal extends JPanel {
 			}
 		});
 		
-		/*
-		 * Verifica se o usuário ter permissão para registrar novas aulas, para que os botões iniciem 
-		 * habilitados ou não.
+		/**
+		 * Verifica se o usuario tem permissao para registrar novas aulas, para que os botoes iniciem 
+		 * habilitados ou nao.
 		 */
 		if (funcionario.getNivelDeAcesso() > PERMISSAO_MINIMA_PARA_REGISTRAR_AULA) {
         	btnDois.setEnabled(false);
@@ -284,9 +284,12 @@ public class MenuPrincipal extends JPanel {
         }
 		
 		JButton btnAgenda = new JButton("Agenda");
+		btnAgenda.setForeground(new Color(255, 255, 255));
+		btnAgenda.setBorderPainted(false);
+		btnAgenda.setBackground(new Color(153, 180, 209));
 		btnAgenda.addActionListener(new ActionListener() {
 			/**
-			 * Faz as alterações necessárias para que apenas os componentes relacionados a "Agenda" sejam exibidos.
+			 * Faz as alteracoes necessarias para que apenas os componentes relacionados a "Agenda" sejam exibidos.
 			 * @param e
 			 */
 			public void actionPerformed(ActionEvent e) {
@@ -301,7 +304,7 @@ public class MenuPrincipal extends JPanel {
 				calendar.setVisible(true);
 				lblHorario.setVisible(true);
 				textFieldHorario.setVisible(true);
-				// Verifica se o usuário ter permissão para registrar novas aulas.		
+				// Verifica se o usuario ter permissao para registrar novas aulas.		
 				if (funcionario.getNivelDeAcesso() > PERMISSAO_MINIMA_PARA_REGISTRAR_AULA) {
 		        	btnDois.setEnabled(false);
 		        	btnUm.setEnabled(true);
@@ -318,9 +321,12 @@ public class MenuPrincipal extends JPanel {
 		btnAgenda.setFont(new Font("Tahoma", Font.BOLD, 20));
 		
 		JButton btnAlunos = new JButton("Alunos");
+		btnAlunos.setForeground(new Color(255, 255, 255));
+		btnAlunos.setBackground(new Color(153, 180, 209));
+		btnAlunos.setBorderPainted(false);
 		btnAlunos.addActionListener(new ActionListener() {
 			/**
-			 * Faz as alterações necessárias para que apenas os componentes relacionados a "Alunos" sejam exibidos.
+			 * Faz as alteracoes necessarias para que apenas os componentes relacionados a "Alunos" sejam exibidos.
 			 * @param e
 			 */
 			public void actionPerformed(ActionEvent e) {
@@ -372,9 +378,12 @@ public class MenuPrincipal extends JPanel {
 		btnAlunos.setFont(new Font("Tahoma", Font.BOLD, 20));
 		
 		JButton btnEquipe = new JButton("Equipe");
+		btnEquipe.setForeground(new Color(255, 255, 255));
+		btnEquipe.setBackground(new Color(153, 180, 209));
+		btnEquipe.setBorderPainted(false);
 		btnEquipe.addActionListener(new ActionListener() {
 			/**
-			 * Faz as alterações necessárias para que apenas os componentes relacionados a "Alunos" sejam exibidos.
+			 * Faz as alteracoes necessarias para que apenas os componentes relacionados a "Alunos" sejam exibidos.
 			 * @param e
 			 */
 			public void actionPerformed(ActionEvent e) {

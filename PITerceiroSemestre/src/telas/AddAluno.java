@@ -115,7 +115,7 @@ public class AddAluno extends JPanel {
 					}
 				}
 				if (dadosPreenchidos) {
-					// Adicionar condicional para ter uma idade mínima e máxima
+					// Adicionar condicional para ter uma idade minima e maxima
 					try {
 						Aluno aluno = new Aluno();
 						aluno.setNome(dados[0]);
