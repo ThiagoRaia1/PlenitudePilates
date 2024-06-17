@@ -19,6 +19,9 @@ import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+/**
+ * Painel para que o usuario digite o nome completo do funcionario que deseja editar.
+ */
 public class ChooseFuncionario extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private CustomButton btnAvancar;

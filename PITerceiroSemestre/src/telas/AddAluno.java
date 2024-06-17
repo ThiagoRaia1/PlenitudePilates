@@ -19,6 +19,9 @@ import java.awt.event.ActionListener;
 import java.sql.Date;
 import java.awt.event.ActionEvent;
 
+/**
+ * Painel responsavel por realizar novos registros de alunos.
+ */
 public class AddAluno extends JPanel {
 
 	private static final long serialVersionUID = 1L;

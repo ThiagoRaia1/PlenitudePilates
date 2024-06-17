@@ -4,7 +4,7 @@ use DatabasePI
 create table Aluno (
 id_aluno int primary key,
 nome_aluno varchar(70) not null,
-dataNascimento_aluno datetime not null, -- alterar varchar para datetime
+dataNascimento_aluno datetime not null,
 telefone_aluno varchar(15),
 cep_aluno varchar(10) not null,
 cidade_aluno varchar(50) not null,
@@ -27,15 +27,6 @@ senha_funcionario varchar(20),
 nivelDeAcesso_funcionario int
 )
  
-create table Pagamento (
-id_pagamento int primary key,
-data_pagamento datetime not null, -- alterar varchar para datetime
-horario_pagamento datetime not null, -- alterar varchar para datetime
-valorMensalidade_pagamento money not null,
-id_aluno int not null references Aluno,
-id_funcionario int not null references Funcionario
-)
- 
 create table Aula (
 id_aula int primary key,
 data_aula datetime not null,
@@ -52,9 +43,7 @@ insert into Funcionario values(1, 'Thiago', 'Funcao', 'Telefone', 'cep', 'cidade
  
 insert into Aluno values(1, 'Thiago', '19/09/2004', '(XX)X XXXX-XXXX', 'cep', 'Indaiatuba', 'rua', 'bairro', 1)
  
-insert into Aula values(1, '30/05/2024 8:00', '2024-11-19 09:00', 4, 1, 1, 1, 1)
- 
-insert into Pagamento values(1, '30/05/2004', '08:00', 200.00, 1, 1)  
+insert into Aula values(6, '30/05/2024', '08:00', '09:00', 4, 1, 1, 1, 1)
  
 drop table Funcionario
  
@@ -62,15 +51,11 @@ drop table Aluno
  
 drop table Aula
  
-drop table pagamento
- 
 update Funcionario set nivelDeAcesso_funcionario = 1 where id_funcionario = 1
  
 select * from Funcionario
  
 select * from Aluno
- 
-select * from Pagamento
  
 select * from Aula
  
@@ -87,5 +72,3 @@ delete from Aula where id_aula = 4
 delete from Aula where id_aula = 5
 delete from Aula where id_aula = 6
 delete from Aula where id_aula = 7
- 
-delete from Pagamento where id_pagamento = 1

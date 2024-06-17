@@ -28,6 +28,9 @@ import javax.swing.ImageIcon;
 import com.toedter.calendar.JCalendar;
 import javax.swing.JTextField;
 
+/**
+ * Painel do menu principal para navegacao.
+ */
 public class MenuPrincipal extends JPanel {
 	private static final long serialVersionUID = 1L;
 	

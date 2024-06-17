@@ -19,6 +19,9 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+/**
+ * Painel para o usuario editar as informacoes do funcionario pesquisado.
+ */
 public class EditFuncionario extends JPanel {
 
 	private static final long serialVersionUID = 1L;
