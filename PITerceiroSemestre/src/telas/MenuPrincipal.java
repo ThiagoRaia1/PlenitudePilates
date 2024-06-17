@@ -246,6 +246,9 @@ public class MenuPrincipal extends JPanel {
 								lblMensagem.setText("Não há vagas disponíveis.");
 								lblMensagem.setVisible(true);
 							} else {
+								if (qtdeDeAlunosNaAula == 0) {
+									qtdeDeAlunosNaAula++;
+								}
 								System.out.println(qtdeDeAlunosNaAula);
 								AddAula addAula = new AddAula(funcionario, frame, dataBr, horarioComeco);
 								frame.setContentPane(addAula);
