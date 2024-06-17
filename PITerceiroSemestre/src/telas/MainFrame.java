@@ -77,10 +77,12 @@ public class MainFrame extends JFrame {
 		setContentPane(contentPane);
 		
 		textFieldLogin = new JTextField();
+		textFieldLogin.setToolTipText("Usuário");
 		textFieldLogin.setFont(new Font("Arial", Font.BOLD, 24));
 		textFieldLogin.setColumns(10);
 		
 		passwordField = new JPasswordField();
+		passwordField.setToolTipText("Senha");
 		passwordField.setFont(new Font("Arial", Font.BOLD, 24));
 		
 		JButton btnLogin = new JButton("LOGIN");
