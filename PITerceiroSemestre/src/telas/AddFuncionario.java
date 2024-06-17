@@ -38,7 +38,9 @@ public class AddFuncionario extends JPanel {
 	private TextField textField_NivelDePermissao;
 
 	/**
-	 * Create the panel.
+	 * Cria o painel para registrar um novo aluno.
+	 * @param funcionario - Dados do funcionario logado.
+	 * @param frame - Frame principal.
 	 */
 	public AddFuncionario(Funcionario funcionario, MainFrame frame) {
 		setBackground(Color.WHITE);
