@@ -6,6 +6,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Classe para realizar operações com o banco de dados.
+ */
 public class BD {
 
 	public Connection con = null;
