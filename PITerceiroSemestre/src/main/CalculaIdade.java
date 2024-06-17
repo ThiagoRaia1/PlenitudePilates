@@ -3,8 +3,17 @@ package main;
 import java.sql.Date;
 import java.time.LocalDate;
 
+/**
+ * Classe para calcular a idade baseada na data de nascimento.
+ */
 public class CalculaIdade {
 	// especificação
+	/**
+	 * Calcula a idade baseada na data de nascimento. O intuito do metodo e verificar se ja passou o aniversario
+	 * no ano. EX: 2024 - 2004 = 20; 17/06/2024 - 19/09/2004 = 19; 20/10/2024 - 19/09/2004 = 20.
+	 * @param dataNascimentoDate - A data de nascimento da pessoa.
+	 * @return - A idade da pessoa.
+	 */
 	public static int calculaIdade(Date dataNascimentoDate) {
 		// {
 		// corpo

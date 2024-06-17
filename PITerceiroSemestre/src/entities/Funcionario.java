@@ -6,9 +6,14 @@ import com.microsoft.sqlserver.jdbc.SQLServerException;
 
 import main.BD;
 
+/**
+ * Classe para instaciacao de objetos referente a tabela "Funcionario" no banco de dados.
+ * Possui metodos para CRUD.
+ */
 public class Funcionario {
 	private final static String NOME_TABELA = "Funcionario";
 	private static String sql = null;
+	private static String msg = null;
 	
 	private int id;
 	private String nome;
@@ -22,9 +27,16 @@ public class Funcionario {
 	private String senha;
 	private int nivelDeAcesso;
 	
+	/**
+	 * Realiza um insert no banco de dados definido na classe "BD" em "entities".
+	 * @param funcionario - Objeto da classe "Funcionario" que possui os dados a serem inseridos no banco, 
+	 * dados esses que serao solicitados no painel "AddFuncionario".
+	 * @return - Retorna a variavel "msg" contendo o resultado da operacao, seja "Erro ao cadastrar funcionario." 
+	 * em caso de erro e "Aula cadastrada." em caso de sucesso.
+	 */
 	public static String create(Funcionario funcionario) {
 		int i = 1;
-		String msg = "Funcionario cadastrado.";
+		msg = "Erro ao cadastrar funcionario.";
 		BD bd = new BD();
 		if (bd.getConnection()) {
 			while (true) {
@@ -46,11 +58,12 @@ public class Funcionario {
 					bd.st.execute();
 					// System.out.println("Funcionario cadastrado.");
 					bd.close();
+					msg = "Funcionario cadastrado.";
 					break;
 				} catch (SQLServerException e) {
-					System.out.println(e);
+					e.printStackTrace();
 					// System.out.println("ID ja registrado.");
-					i++;
+					i++; // autonumeração
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
@@ -58,7 +71,15 @@ public class Funcionario {
 		}
 		return msg;
 	}
-	
+
+	/**
+	 * Realiza a query "select * from Funcionairo where id_funcionario = ?" no banco de dados definido 
+	 * na classe "BD" em "entites", onde "?" e substituido pelo parametro "id". 
+	 * Pode ser usado em um loop para que todos os funcionarios sejam lidos.
+	 * @param id - O id do funcionario a ser lido.
+	 * @return - Retorna um objeto chamado "funcionario" da classe "Funcionario" contendo os dados do 
+	 * funcionario lido.
+	 */
 	public static Funcionario read(int id) {
 		Funcionario funcionario = new Funcionario();
 		BD bd = new BD();
@@ -85,8 +106,7 @@ public class Funcionario {
 					//System.out.println("Funcionario lido.");
 				}
 			} catch (SQLServerException e) {
-				System.out.println("ID ja registrado.");
-				System.out.println(e);
+				e.printStackTrace();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -97,9 +117,18 @@ public class Funcionario {
 		}
 		return funcionario;
 	}
-	
-	public static String update(int id, Funcionario funcionario) {
-		String msg = "Erro ao atualizar dados.";
+
+	/**
+	 * Realiza um update no banco de dados definido na classe "BD" em "entites" no id do funcionario 
+	 * informado no parametro "funcionario".
+	 * @param funcionario - Um objeto da classe "Funcionario" contendo os dados que serao atualizados 
+	 * (ou nao, para os dados que nao forem alterados) e onde serao atualizados.
+	 * @return - Retorna a variavel "msg" contendo o resultado da operacao, 
+	 * seja "Erro ao atualizar dados do funcionario." em caso de erro e 
+	 * "Dados do funcionario (nome do funcionario) atualizados." em caso de sucesso.
+	 */
+	public static String update(Funcionario funcionario) {
+		String msg = "Erro ao atualizar dados do funcionario.";
 		BD bd = new BD();
 		if (bd.getConnection()) {
 			try {
@@ -132,7 +161,14 @@ public class Funcionario {
 		return msg;
 	}
 	
-	public static void delete(int id) {
+	/**
+	 * Deleta o registro no id informado.
+	 * @param id - ID que tera os dados deletados.
+	 * @return - Retorna a variavel "msg" contendo o resultado da operacao, seja "Erro ao deletar dados." 
+	 * em caso de erro e "Dados deletados com sucesso." em caso de sucesso.
+	 */
+	public static String delete(int id) {
+		msg = "Erro ao deletar dados.";
 		BD bd = new BD();
 			if (bd.getConnection()) {
 			try {
@@ -140,15 +176,18 @@ public class Funcionario {
 				bd.st = bd.con.prepareStatement(sql);
 				bd.st.setInt(1, id);
 				bd.st.execute();
+				msg = "Dados deletados com sucesso.";
 			} catch (SQLServerException e) {
-				System.out.println(e);
+				e.printStackTrace();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 			bd.close();
 		}
+		return msg;
 	}
-	
+
+	// GETTERS AND SETTERS
 	public int getId() {
 		return id;
 	}
@@ -218,6 +257,9 @@ public class Funcionario {
 	public static String getNOME_TABELA() {
 		return NOME_TABELA;
 	}
+	// GETTERS AND SETTERS
+
+	// CONSTRUCTORS
 	public Funcionario() {
 		
 	}
@@ -236,6 +278,7 @@ public class Funcionario {
 		this.senha = senha;
 		this.nivelDeAcesso = nivelDeAcesso;
 	}
+	// CONSTRUCTORS
 
 	@Override
 	public String toString() {

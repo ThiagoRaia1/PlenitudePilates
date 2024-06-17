@@ -7,6 +7,10 @@ import com.microsoft.sqlserver.jdbc.SQLServerException;
 
 import main.BD;
 
+/**
+ * Classe para instaciacao de objetos referente a tabela "Aula" no banco de dados.
+ * Possui metodos para CRUD.
+ */
 public class Aula {
 	private final static String NOME_TABELA = "Aula";
 	private static String sql = null;
@@ -22,6 +26,13 @@ public class Aula {
 	private int idAluno;
 	private int idFuncionario;
 	
+	/**
+	 * Realiza um insert no banco de dados definido na classe "BD" em "entities".
+	 * @param aula - Objeto da classe "Aula" que possui os dados a serem inseridos no banco, dados esses
+	 * que serao solicitados no painel "AddAula".
+	 * @return - Retorna a variavel "msg" contendo o resultado da operacao, seja "Erro ao registrar aula." em caso de erro
+	 * e "Aula cadastrada." em caso de sucesso.
+	 */
 	public static String create(Aula aula) {
 		msg = "Erro ao registrar aula.";
 		int i = 1;
@@ -57,6 +68,12 @@ public class Aula {
 		return msg;
 	}
 	
+	/**
+	 * Realiza a query "select * from Aula where id_aula = ?" no banco de dados definido na classe "BD" em "entites",
+	 * onde "?" e substituido pelo parametro "id". Pode ser usado em um loop para que todos as aulas sejam lidas.
+	 * @param id - O id da aula a ser lida.
+	 * @return - Retorna um objeto chamado "aula" da classe "Aula" contendo os dados da aula lida.
+	 */
 	public static Aula read(int id) {
 		Aula aula = new Aula();
 		
@@ -82,8 +99,7 @@ public class Aula {
 					//System.out.println("Aula lida.");
 				}
 			} catch (SQLServerException e) {
-				System.out.println("ID ja registrado.");
-				System.out.println(e);
+				e.printStackTrace();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -94,27 +110,16 @@ public class Aula {
 		}
 		return aula;
 	}
-	
-	public static void update(Aula aulaExistente) {
-		/*
-		Aula aula = new Aula();
-		
-		// Recebe os dados atuais, campos em branco não serão alterados.
-		aula = Aula.read(id);
 
-		// Pedir dados ao usuário
-		aula.setId(1);
-		aula.setHoraComeco(Date.valueOf("2004-05-30 08:00:00"));
-		aula.setHoraFim(Date.valueOf("2004-05-30 09:00:00"));
-		aula.setVagasOcupadas(aula.getVagasOcupadas()+1);
-		aula.setQtdeVagasDisponiveis(5-aula.getVagasOcupadas());
-		aula.setSala(1);
-		
-		
-		// Recebe os dados atuais, campos em branco não serão alterados.
-		aula = Aula.read(id);
-		*/
-		
+	/**
+	 * Realiza um update na quantidade vagas disponiveis(-1) e nas vagas ocupadas(+1) 
+	 * no banco de dados definido na classe "BD" em "entites" em todos os registros que possuem
+	 * a mesma data e horario informados no parametro "aulaExistente".
+	 * @param aulaExistente - A classe "AddAula" chama este metodo caso um aluno seja registrado em uma aula 
+	 * em que ja tenha outros alunos registrados, passando como parametro a data e hora digitado pelo usuario
+	 * somente se estes ja existam no banco de dados.
+	 */
+	public static void update(Aula aulaExistente) {
 		BD bd = new BD();
 		if (bd.getConnection()) {
 			try {
@@ -126,8 +131,9 @@ public class Aula {
 				bd.st.setDate(3, aulaExistente.getData());
 				bd.st.setString(4, aulaExistente.getHoraComeco());
 				bd.st.execute();
+				System.out.println("Vagas atualizadas.");
 			} catch (SQLServerException e) {
-				System.out.println(e);
+				e.printStackTrace();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -135,16 +141,22 @@ public class Aula {
 		}
 	}
 	
-	public static void delete(int id) {
+	/** 
+	 * Deleta uma aula por completo, removendo todos os alunos referente a data e horario informados.
+	 * @param data - Data informada pelo usuario para ter seus dados apagados.
+	 * @param horaComeco - Hora da aula informada pelo usuario para ter seus registros apagados.
+	 */
+	public static void delete(Date data, String horaComeco) {
 		BD bd = new BD();
 		if (bd.getConnection()) {
 			try {
-				sql = "delete from "+NOME_TABELA+" where id_aula = ?";
+				sql = "delete from "+NOME_TABELA+" where data_aula = ? and horaComeco_aula = ?";
 				bd.st = bd.con.prepareStatement(sql);
-				bd.st.setInt(1, id);
+				bd.st.setDate(1, data);
+				bd.st.setString(2, horaComeco);
 				bd.st.execute();
 			} catch (SQLServerException e) {
-				System.out.println(e);
+				e.printStackTrace();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -152,6 +164,7 @@ public class Aula {
 		}
 	}
 	
+	// GETTERS AND SETTERS
 	public int getId() {
 		return id;
 	}
@@ -209,7 +222,9 @@ public class Aula {
 	public static String getNOME_TABELA() {
 		return NOME_TABELA;
 	}
-
+	// GETTERS AND SETTERS
+	
+	// CONSTRUCTORS
 	public Aula() {
 		
 	}
@@ -227,7 +242,8 @@ public class Aula {
 		this.idAluno = idAluno;
 		this.idFuncionario = idFuncionario;
 	}
-
+	// CONSTRUCTORS
+	
 	@Override
 	public String toString() {
 		return "Aula [id=" + id + ", data=" + data + ", horaComeco=" + horaComeco + ", horaFim=" + horaFim

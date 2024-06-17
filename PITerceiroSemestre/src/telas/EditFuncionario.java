@@ -19,6 +19,9 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+/**
+ * Painel para o usuario editar as informacoes do funcionario pesquisado.
+ */
 public class EditFuncionario extends JPanel {
 
 	private static final long serialVersionUID = 1L;
@@ -226,7 +229,7 @@ public class EditFuncionario extends JPanel {
 								lblMensagem.setText("Nível de acesso inválido.");
 								lblMensagem.setVisible(true);
 							} else {
-								lblMensagem.setText(Funcionario.update(funcionarioProcurado.getId(), funcionario));
+								lblMensagem.setText(Funcionario.update(funcionario));
 								lblMensagem.setVisible(true);
 								// Atualiza os dados do funcionario logado para alteracoes na interface.
 								if (funcionario.getId() == funcionarioLogado.getId()) {

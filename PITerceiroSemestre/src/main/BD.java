@@ -6,6 +6,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Classe para realizar operacoes com o banco de dados.
+ */
 public class BD {
 
 	public Connection con = null;
@@ -21,8 +24,8 @@ public class BD {
 	
 	
 	/**
-	 * Realiza a conexão com o banco de dados
-	 * @return - true em caso de sucesso, ou false caso contrário
+	 * Realiza a conexao com o banco de dados
+	 * @return - true em caso de sucesso, ou false caso contrario
 	 */
 	public boolean getConnection() {
 		try {
@@ -43,7 +46,7 @@ public class BD {
 	}
 
 	/**
-	 * Encerra a conexão e libera os objetos utilizados
+	 * Encerra a conexao e libera os objetos utilizados
 	 */
 	public void close() {
 		try {

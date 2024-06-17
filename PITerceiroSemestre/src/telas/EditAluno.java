@@ -18,6 +18,10 @@ import java.awt.event.ActionListener;
 import java.sql.Date;
 import java.awt.event.ActionEvent;
 
+/**
+ * Painel para o usuario editar as informacoes do aluno pesquisado. Os campos sao iniciados contendo
+ * as informacoes atuais do aluno.
+ */
 public class EditAluno extends JPanel {
 	private static final long serialVersionUID = 1L;
 	

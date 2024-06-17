@@ -9,12 +9,11 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JButton;
 
+/**
+ * Classe para a criacao de um botao com mais opcoes de personalizacao.
+ * E possivel importa-lo para a paleta do WindowBuilder.
+ */
 public class CustomButton extends JButton{
-	
-	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	public CustomButton(){

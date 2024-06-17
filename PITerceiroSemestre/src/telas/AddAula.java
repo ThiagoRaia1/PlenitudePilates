@@ -23,6 +23,9 @@ import javax.swing.SwingConstants;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 
+/**
+ * Painel responsavel por realizar novos registros de alunos em aulas.
+ */
 public class AddAula extends JPanel {
 
 	private static final long serialVersionUID = 1L;
@@ -132,7 +135,6 @@ public class AddAula extends JPanel {
 						}
 					}
 					if (dadosPreenchidos) {
-						// Adicionar condicional para ter uma idade minima e maxima
 						try {
 							Aula aula = new Aula();
 							aula.setData(Date.valueOf(dados[0]));

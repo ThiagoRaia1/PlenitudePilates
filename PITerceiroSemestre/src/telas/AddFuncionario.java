@@ -20,6 +20,9 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+/**
+ * Painel responsavel por realizar novos registros de funcionarios.
+ */
 public class AddFuncionario extends JPanel {
 
 	private static final long serialVersionUID = 1L;

@@ -22,6 +22,10 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+/**
+ *  Painel para visualizar os alunos registrados na data e horario escolhidos pelo usuario no painel
+ * "MenuPrincipal".
+ */
 public class ConsultAgenda extends JPanel {
 
 	private static final long serialVersionUID = 1L;
