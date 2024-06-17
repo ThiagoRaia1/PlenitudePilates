@@ -226,7 +226,7 @@ public class EditFuncionario extends JPanel {
 								lblMensagem.setText("Nível de acesso inválido.");
 								lblMensagem.setVisible(true);
 							} else {
-								lblMensagem.setText(Funcionario.update(funcionarioProcurado.getId(), funcionario));
+								lblMensagem.setText(Funcionario.update(funcionario));
 								lblMensagem.setVisible(true);
 								// Atualiza os dados do funcionario logado para alteracoes na interface.
 								if (funcionario.getId() == funcionarioLogado.getId()) {
