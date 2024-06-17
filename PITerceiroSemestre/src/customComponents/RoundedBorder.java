@@ -10,11 +10,10 @@ import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import javax.swing.JPanel;
 
+/**
+ * JPanel com parametros adicionais para transformar as bordas em bordas arredondadas.
+ */
 public class RoundedBorder extends JPanel {
-
-    /**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	public int getRoundTopLeft() {

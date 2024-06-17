@@ -132,7 +132,6 @@ public class AddAula extends JPanel {
 						}
 					}
 					if (dadosPreenchidos) {
-						// Adicionar condicional para ter uma idade minima e maxima
 						try {
 							Aula aula = new Aula();
 							aula.setData(Date.valueOf(dados[0]));

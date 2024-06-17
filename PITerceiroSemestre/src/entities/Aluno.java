@@ -29,9 +29,9 @@ public class Aluno {
 	/**
 	 * Realiza um insert no banco de dados definido na classe "BD" em "entities".
 	 * @param aluno - Objeto da classe "Aluno" que possui os dados a serem inseridos no banco, dados esses
-	 * que serão solicitados no painel "AddAluno".
-	 * @return - Retorna a variável "msg" contendo o resultado da operação, seja "Erro ao cadastrar aluno." em caso de erro
-	 * e "Aluno cadastrado." em caso de sucesso.
+	 * que serao solicitados no painel "AddAluno".
+	 * @return - Retorna a variavel "msg" contendo o resultado da operacao, seja "Erro ao cadastrar aluno." 
+	 * em caso de erro e "Aluno cadastrado." em caso de sucesso.
 	 */
 	public static String create(Aluno aluno) {
 		int i = 1;
@@ -40,7 +40,7 @@ public class Aluno {
 		if (bd.getConnection()) {
 			while (true) {
 				try {
-					aluno.setId(i); // autonumeração
+					aluno.setId(i); // autonumeracao
 					sql = "insert into "+NOME_TABELA+" values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
 					bd.st = bd.con.prepareStatement(sql);
 					bd.st.setInt(1, aluno.getId());
@@ -60,7 +60,7 @@ public class Aluno {
 				} catch (SQLServerException e) {
 					System.out.println(e);
 					System.out.println("ID ja registrado.");
-					i++;
+					i++; // autonumeracao
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
@@ -72,7 +72,7 @@ public class Aluno {
 	
 	/**
 	 * Realiza a query "select * from Aluno where id_aluno = ?" no banco de dados definido na classe "BD" em "entites",
-	 * onde "?" é substituído pelo parâmetro "id". Pode ser usado em um loop para que todos os alunos sejam lidos.
+	 * onde "?" e substituido pelo parametro "id". Pode ser usado em um loop para que todos os alunos sejam lidos.
 	 * @param id - O id do aluno a ser lido.
 	 * @return - Retorna um objeto chamado "aluno" da classe "Aluno" contendo os dados do aluno lido.
 	 */
@@ -101,8 +101,7 @@ public class Aluno {
 					//System.out.println("Aluno lido.");
 				}
 			} catch (SQLServerException e) {
-				System.out.println("ID ja registrado.");
-				System.out.println(e);
+				e.printStackTrace();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -115,12 +114,13 @@ public class Aluno {
 	}
 	
 	/**
-	 * Realiza um update no banco de dados definido na classe "BD" em "entites" no id do aluno informado no parâmetro
-	 * "aluno".
-	 * @param aluno - Um objeto da classe "Aluno" contendo os dados que serão atualizados (ou não, para os dados que
-	 * não forem alterados) e onde serão atualizados.
-	 * @return - Retorna a variável "msg" contendo o resultado da operação, seja "Erro ao atualizar dados do aluno." 
-	 * em caso de erro e "Dados do aluno (nome do aluno) atualizados." em caso de sucesso.
+	 * Realiza um update no banco de dados definido na classe "BD" em "entites" no id do aluno informado no 
+	 * parametro "aluno".
+	 * @param aluno - Um objeto da classe "Aluno" contendo os dados que serao atualizados 
+	 * (ou nao, para os dados que nao forem alterados) e onde serao atualizados.
+	 * @return - Retorna a variavel "msg" contendo o resultado da operacao, 
+	 * seja "Erro ao atualizar dados do aluno." em caso de erro e 
+	 * "Dados do aluno (nome do aluno) atualizados." em caso de sucesso.
 	 */
 	public static String update(Aluno aluno) {
 		msg = "Erro ao atualizar dados do aluno.";
@@ -153,9 +153,9 @@ public class Aluno {
 	}
 	
 	/**
-	 * Deleta o registro no id informado
-	 * @param id - ID que terá os dados deletados.
-	 * @return - Retorna a variável "msg" contendo o resultado da operação, seja "Erro ao deletar dados." 
+	 * Deleta o registro no id informado.
+	 * @param id - ID que tera os dados deletados.
+	 * @return - Retorna a variavel "msg" contendo o resultado da operacao, seja "Erro ao deletar dados." 
 	 * em caso de erro e "Dados deletados com sucesso." em caso de sucesso.
 	 */
 	public static String delete(int id) {
