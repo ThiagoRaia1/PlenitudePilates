@@ -7,6 +7,9 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 
+/**
+ * Classe usada para inserir fotos com mais opcoes de redimensionamento.
+ */
 public class JPictureBox extends JComponent {
     private static final long serialVersionUID = 1L;
     
