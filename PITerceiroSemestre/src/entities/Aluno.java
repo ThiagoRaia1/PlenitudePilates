@@ -7,6 +7,10 @@ import com.microsoft.sqlserver.jdbc.SQLServerException;
 
 import main.BD;
 
+/**
+ * Classe para instaciacao de objetos referente a tabela "Aluno" no banco de dados.
+ * Possui metodos para CRUD.
+ */
 public class Aluno {
 	private final static String NOME_TABELA = "Aluno";
 	private static String sql = null;
