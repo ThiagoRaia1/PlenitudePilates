@@ -13,11 +13,11 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.basic.BasicTextFieldUI;
 
 
+/**
+ * Classe para a criacao de um JTextField com mais opcoes de personalizacao.
+ * E possivel importa-lo para a paleta do WindowBuilder.
+ */
 public class TextField extends JTextField {
-
-    /**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	public int getRound() {
