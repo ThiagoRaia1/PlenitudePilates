@@ -43,20 +43,18 @@ public class CalculaIdade {
 		
 		// Verifica se é o mês do aniversário ou se ja passou
 		// System.out.println("Meses até o aniversário: "+(mesAtual - mesNascimento) * (-1));
-		if ((mesAtual - mesNascimento) >= 0) {
+		if ((mesAtual - mesNascimento) < 0) {
 			// System.out.println("Está no mês do aniversário ou ja passou");
 			// System.out.println();
-			
-			// System.out.println("Dias até o aniversário: "+(diaAtual - diaNascimento) * (-1));
-			if ((diaAtual - diaNascimento) < 0) {
-				// System.out.println("Aniversário ainda não passou");
-				idade--;
-			} else {
-				// System.out.println("Aniversário ja passou");
-			}
+			idade--;
 		} else {
 			// System.out.println("Aniversário ainda não passou");
-			idade--;
+			if ((mesAtual - mesNascimento) == 0) {
+				if ((diaNascimento - diaAtual) > 0) {
+					// System.out.println("Aniversário ainda não passou");
+					idade--;
+				} 
+			}
 		}	
 	return idade;
 	}

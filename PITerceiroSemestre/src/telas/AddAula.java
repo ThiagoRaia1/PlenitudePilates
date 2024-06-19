@@ -17,7 +17,6 @@ import main.GetRowCount;
 
 import java.awt.event.ActionListener;
 import java.sql.Date;
-import java.time.LocalDate;
 import java.awt.event.ActionEvent;
 import javax.swing.SwingConstants;
 import javax.swing.GroupLayout;
@@ -98,161 +97,145 @@ public class AddAula extends JPanel {
 			 * @param e
 			 */
 			public void actionPerformed(ActionEvent e) {
-
 				int dia = Integer.parseInt(textFieldData.getText().substring(0, 2));
 				int mes = Integer.parseInt(textFieldData.getText().substring(3, 5));
 				int ano = Integer.parseInt(textFieldData.getText().substring(6, 10));
-				
-				int anoAtual = Integer.parseInt(LocalDate.now().toString().substring(0, 4));
-				int mesAtual = Integer.parseInt(LocalDate.now().toString().substring(5, 7));
-				int diaAtual = Integer.parseInt(LocalDate.now().toString().substring(8, 10));
-				
-				if (anoAtual > ano) {
-					lblMensagem.setText("Data inválida.");
-					lblMensagem.setVisible(true);
-				} else if (mesAtual > mes) {
-					lblMensagem.setText("Data inválida.");
-					lblMensagem.setVisible(true);
-				} else if (diaAtual < dia) {
-					lblMensagem.setText("Data inválida.");
-					lblMensagem.setVisible(true);
-				} else {
-					boolean dadosPreenchidos = true;
-					String[] dados = new String[5];
-					dados[0] = ano +"-"+ mes +"-"+ dia;
-					dados[1] = textFieldHora.getText();
-					dados[2] = textFieldAluno.getText();
-					dados[3] = textFieldInstrutor.getText();
-					dados[4] = textFieldSala.getText();
-					for (int i = 0; i < dados.length; i++) {
-						if (dados[i].equals("")) {
-							lblMensagem.setText("Preencha todos os dados.");
-							lblMensagem.setVisible(true);
-							dadosPreenchidos = false;
-							break;
-						} else {
-							dadosPreenchidos = true;
-						}
+				boolean dadosPreenchidos = true;
+				String[] dados = new String[5];
+				dados[0] = ano +"-"+ mes +"-"+ dia;
+				dados[1] = textFieldHora.getText();
+				dados[2] = textFieldAluno.getText();
+				dados[3] = textFieldInstrutor.getText();
+				dados[4] = textFieldSala.getText();
+				for (int i = 0; i < dados.length; i++) {
+					if (dados[i].equals("")) {
+						lblMensagem.setText("Preencha todos os dados.");
+						lblMensagem.setVisible(true);
+						dadosPreenchidos = false;
+						break;
+					} else {
+						dadosPreenchidos = true;
 					}
-					if (dadosPreenchidos) {
-						try {
-							Aula aula = new Aula();
-							aula.setData(Date.valueOf(dados[0]));
-							aula.setHoraComeco(dados[1]);
-							
-							int horaFim = Integer.parseInt(dados[1].substring(0, 2));
-							horaFim++;
-							
-							if (horaFim > 9) {
-								aula.setHoraFim(horaFim +":00");
-							} else {
-								aula.setHoraFim("0"+ horaFim +":00");
-							}
-							
-							aula.setVagasOcupadas(1);
-							aula.setQtdeVagasDisponiveis(NUMERO_MAXIMO_DE_ALUNOS_POR_AULA - aula.getVagasOcupadas());
-							aula.setSala(Integer.parseInt(dados[4]));
-							aula.setIdAluno(Integer.parseInt(dados[2]));
-							aula.setIdFuncionario(Integer.parseInt(dados[3]));
-							
-							boolean aulaSeraRegistrada = true, vagasAtualizadas = false;
-							int numeroDeLinhas = GetRowCount.getRowCount(Aula.getNOME_TABELA());
-							Aula aulaExistente = new Aula();
-              
-							// Verifica se existe um aluno no ID informado.
-							if (Aluno.read(aula.getIdAluno()).getId() != 0) {
-								// Verificar se existe um aluno no ID informado.
-								if (Funcionario.read(aula.getIdFuncionario()).getId() != 0) {
-									// Verifica se ja existe um registro do aluno na data e hora informadas.
-									for (int i = 1; i <= numeroDeLinhas; i++) {
-										aulaExistente = Aula.read(i);
-										if (aulaExistente.getData().equals(aula.getData())
-												&& aulaExistente.getHoraComeco().equals(aula.getHoraComeco()) 
-												&& aulaExistente.getIdAluno() == aula.getIdAluno()) {
-											lblMensagem.setText("Aluno ja registrado para esta aula.");
-											lblMensagem.setVisible(true);
-											aulaSeraRegistrada = false;
-											vagasAtualizadas = false;
-											break;
-										} else {
-											aulaSeraRegistrada = true;
-										}
-									}
-									if (aulaSeraRegistrada) {
-										// Verifica se há registros de outros alunos nesta mesma hora e data.
-										for (int i = 1; i <= numeroDeLinhas; i++) {
-											aulaExistente = Aula.read(i);
-											if (aulaExistente.getData().equals(aula.getData())
-													&& aulaExistente.getHoraComeco().equals(aula.getHoraComeco())) {
-												if (aula.getIdFuncionario() == aulaExistente.getIdFuncionario()) {
-													System.out.println("Há registros de outros alunos nesta mesma hora e data.");
-													if (aulaExistente.getQtdeVagasDisponiveis() > 0) {
-														Aula.update(aulaExistente);
-														aulaExistente = Aula.read(i);
-														vagasAtualizadas = true;
-														aulaSeraRegistrada = true;
-														break;
-													} else {
-														lblMensagem.setText("Não há mais vagas para esta aula.");
-														lblMensagem.setVisible(true);
-														aulaSeraRegistrada = false;
-														break;
-													}
-												} else {
-													lblMensagem.setText("O funcionário com ID "+ aulaExistente.getIdFuncionario() 
-													+" já está registrado para esta aula.");
-													lblMensagem.setVisible(true);
-													aulaSeraRegistrada = false;
-												}
-											} else {
-												System.out.println("Não há registros de outros alunos nesta mesma hora e data.");
-												aulaSeraRegistrada = true;
-											}
-										}
-									}
-									if (aulaExistente.getIdFuncionario() != 0) {
-										if (aula.getIdFuncionario() == aulaExistente.getIdFuncionario()) {
-											if (vagasAtualizadas) {
-												// System.out.println("vagas disponiveis: "+aulaExistente.getQtdeVagasDisponiveis());
-												// System.out.println("vagas ocupadas: "+aulaExistente.getVagasOcupadas());
-												aula.setQtdeVagasDisponiveis(aulaExistente.getQtdeVagasDisponiveis());
-												aula.setVagasOcupadas(aulaExistente.getVagasOcupadas());
-												aulaSeraRegistrada = true;
-											}
-										} else {
-											lblMensagem.setText("O funcionário com ID "+ aulaExistente.getIdFuncionario() 
-											+" já está registrado para esta aula.");
-											lblMensagem.setVisible(true);
-											aulaSeraRegistrada = false;
-										}
+				}
+				if (dadosPreenchidos) {
+					try {
+						Aula aula = new Aula();
+						aula.setData(Date.valueOf(dados[0]));
+						aula.setHoraComeco(dados[1]);
+						
+						int horaFim = Integer.parseInt(dados[1].substring(0, 2));
+						horaFim++;
+						
+						if (horaFim > 9) {
+							aula.setHoraFim(horaFim +":00");
+						} else {
+							aula.setHoraFim("0"+ horaFim +":00");
+						}
+						
+						aula.setVagasOcupadas(1);
+						aula.setQtdeVagasDisponiveis(NUMERO_MAXIMO_DE_ALUNOS_POR_AULA - aula.getVagasOcupadas());
+						aula.setSala(Integer.parseInt(dados[4]));
+						aula.setIdAluno(Integer.parseInt(dados[2]));
+						aula.setIdFuncionario(Integer.parseInt(dados[3]));
+						
+						boolean aulaSeraRegistrada = true, vagasAtualizadas = false;
+						int numeroDeLinhas = GetRowCount.getRowCount(Aula.getNOME_TABELA());
+						Aula aulaExistente = new Aula();
+          
+						// Verifica se existe um aluno no ID informado.
+						if (Aluno.read(aula.getIdAluno()).getId() != 0) {
+							// Verificar se existe um aluno no ID informado.
+							if (Funcionario.read(aula.getIdFuncionario()).getId() != 0) {
+								// Verifica se ja existe um registro do aluno na data e hora informadas.
+								for (int i = 1; i <= numeroDeLinhas; i++) {
+									aulaExistente = Aula.read(i);
+									if (aulaExistente.getData().equals(aula.getData())
+											&& aulaExistente.getHoraComeco().equals(aula.getHoraComeco()) 
+											&& aulaExistente.getIdAluno() == aula.getIdAluno()) {
+										lblMensagem.setText("Aluno ja registrado para esta aula.");
+										lblMensagem.setVisible(true);
+										aulaSeraRegistrada = false;
+										vagasAtualizadas = false;
+										break;
 									} else {
 										aulaSeraRegistrada = true;
 									}
-									if (aulaSeraRegistrada) {
-										lblMensagem.setText(Aula.create(aula));
+								}
+								if (aulaSeraRegistrada) {
+									// Verifica se há registros de outros alunos nesta mesma hora e data.
+									for (int i = 1; i <= numeroDeLinhas; i++) {
+										aulaExistente = Aula.read(i);
+										if (aulaExistente.getData().equals(aula.getData())
+												&& aulaExistente.getHoraComeco().equals(aula.getHoraComeco())) {
+											if (aula.getIdFuncionario() == aulaExistente.getIdFuncionario()) {
+												System.out.println("Há registros de outros alunos nesta mesma hora e data.");
+												if (aulaExistente.getQtdeVagasDisponiveis() > 0) {
+													Aula.update(aulaExistente);
+													aulaExistente = Aula.read(i);
+													vagasAtualizadas = true;
+													aulaSeraRegistrada = true;
+													break;
+												} else {
+													lblMensagem.setText("Não há mais vagas para esta aula.");
+													lblMensagem.setVisible(true);
+													aulaSeraRegistrada = false;
+													break;
+												}
+											} else {
+												lblMensagem.setText("O funcionário com ID "+ aulaExistente.getIdFuncionario() 
+												+" já está registrado para esta aula.");
+												lblMensagem.setVisible(true);
+												aulaSeraRegistrada = false;
+											}
+										} else {
+											System.out.println("Não há registros de outros alunos nesta mesma hora e data.");
+											aulaSeraRegistrada = true;
+										}
+									}
+								}
+								if (aulaExistente.getIdFuncionario() != 0) {
+									if (aula.getIdFuncionario() == aulaExistente.getIdFuncionario()) {
+										if (vagasAtualizadas) {
+											// System.out.println("vagas disponiveis: "+aulaExistente.getQtdeVagasDisponiveis());
+											// System.out.println("vagas ocupadas: "+aulaExistente.getVagasOcupadas());
+											aula.setQtdeVagasDisponiveis(aulaExistente.getQtdeVagasDisponiveis());
+											aula.setVagasOcupadas(aulaExistente.getVagasOcupadas());
+											aulaSeraRegistrada = true;
+										}
+									} else {
+										lblMensagem.setText("O funcionário com ID "+ aulaExistente.getIdFuncionario() 
+										+" já está registrado para esta aula.");
 										lblMensagem.setVisible(true);
+										aulaSeraRegistrada = false;
 									}
 								} else {
-									lblMensagem.setText("Não há funcionário com o ID: "+aula.getIdFuncionario());
+									aulaSeraRegistrada = true;
+								}
+								if (aulaSeraRegistrada) {
+									lblMensagem.setText(Aula.create(aula));
 									lblMensagem.setVisible(true);
 								}
 							} else {
-								// System.out.println("aluno read id == 0: "+Aluno.read(aula.getIdAluno()));
-								lblMensagem.setText("Não há aluno com o ID: "+aula.getIdAluno());
+								lblMensagem.setText("Não há funcionário com o ID: "+aula.getIdFuncionario());
 								lblMensagem.setVisible(true);
 							}
-							
-						} catch (NumberFormatException erro) {
-							erro.printStackTrace();
-							lblMensagem.setText("Preencha os dados corretamente.");
-							lblMensagem.setVisible(true);
-						} catch (IllegalArgumentException erro) {
-							erro.printStackTrace();
-							lblMensagem.setText("Data inválida.");
+						} else {
+							// System.out.println("aluno read id == 0: "+Aluno.read(aula.getIdAluno()));
+							lblMensagem.setText("Não há aluno com o ID: "+aula.getIdAluno());
 							lblMensagem.setVisible(true);
 						}
+						
+					} catch (NumberFormatException erro) {
+						erro.printStackTrace();
+						lblMensagem.setText("Preencha os dados corretamente.");
+						lblMensagem.setVisible(true);
+					} catch (IllegalArgumentException erro) {
+						erro.printStackTrace();
+						lblMensagem.setText("Data inválida.");
+						lblMensagem.setVisible(true);
 					}
 				}
+			
 			}
 		});
 		cstmbtnSalvar.setBackground(new Color(255, 255, 255));

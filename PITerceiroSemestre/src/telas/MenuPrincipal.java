@@ -121,7 +121,10 @@ public class MenuPrincipal extends JPanel {
 		
 		PanelMenu = new JPanel();
 		PanelMenu.setBackground(SystemColor.activeCaption);
-		
+
+		JButton btnAgenda = new JButton("Agenda");
+		JButton btnAlunos = new JButton("Alunos");
+		JButton btnEquipe = new JButton("Equipe");
 		
 		JButton btnUm = new JButton("Consultar");
 		btnUm.addActionListener(new ActionListener() {
@@ -289,16 +292,18 @@ public class MenuPrincipal extends JPanel {
         	btnUm.setEnabled(true);
         }
 		
-		JButton btnAgenda = new JButton("Agenda");
 		btnAgenda.setForeground(new Color(255, 255, 255));
 		btnAgenda.setBorderPainted(false);
-		btnAgenda.setBackground(new Color(153, 180, 209));
+		btnAgenda.setBackground(new Color(153, 200, 209));
 		btnAgenda.addActionListener(new ActionListener() {
 			/**
 			 * Faz as alteracoes necessarias para que apenas os componentes relacionados a "Agenda" sejam exibidos.
 			 * @param e
 			 */
 			public void actionPerformed(ActionEvent e) {
+				btnAgenda.setBackground(new Color(153, 200, 209));
+				btnAlunos.setBackground(new Color(153, 180, 209));
+				btnEquipe.setBackground(new Color(153, 180, 209));
 				lblMensagem.setText("Selecione a data e hora.");
 				lblMensagem.setVisible(true);
 				menuAtual = Aula.getNOME_TABELA();
@@ -326,7 +331,6 @@ public class MenuPrincipal extends JPanel {
 		});
 		btnAgenda.setFont(new Font("Tahoma", Font.BOLD, 20));
 		
-		JButton btnAlunos = new JButton("Alunos");
 		btnAlunos.setForeground(new Color(255, 255, 255));
 		btnAlunos.setBackground(new Color(153, 180, 209));
 		btnAlunos.setBorderPainted(false);
@@ -336,6 +340,9 @@ public class MenuPrincipal extends JPanel {
 			 * @param e
 			 */
 			public void actionPerformed(ActionEvent e) {
+				btnAgenda.setBackground(new Color(153, 180, 209));
+				btnAlunos.setBackground(new Color(153, 200, 209));
+				btnEquipe.setBackground(new Color(153, 180, 209));
 				calendar.setVisible(false);
 				menuAtual = Aluno.getNOME_TABELA();
 				btnUm.setText("Editar");
@@ -383,7 +390,6 @@ public class MenuPrincipal extends JPanel {
 		});
 		btnAlunos.setFont(new Font("Tahoma", Font.BOLD, 20));
 		
-		JButton btnEquipe = new JButton("Equipe");
 		btnEquipe.setForeground(new Color(255, 255, 255));
 		btnEquipe.setBackground(new Color(153, 180, 209));
 		btnEquipe.setBorderPainted(false);
@@ -393,6 +399,9 @@ public class MenuPrincipal extends JPanel {
 			 * @param e
 			 */
 			public void actionPerformed(ActionEvent e) {
+				btnAgenda.setBackground(new Color(153, 180, 209));
+				btnAlunos.setBackground(new Color(153, 180, 209));
+				btnEquipe.setBackground(new Color(153, 200, 209));
 				calendar.setVisible(false);
 				menuAtual = Funcionario.getNOME_TABELA();
 				btnUm.setText("Editar");
